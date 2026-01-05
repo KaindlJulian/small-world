@@ -6,22 +6,30 @@ import { SmallWorldSearcher, parse_csv } from '../wasm/index.js';
 export const SearcherContext = createContext(null);
 
 export function SearcherProvider({ children }) {
-    const csvQuery = useQuery({
+    const { data, isSuccess } = useQuery({
         queryKey: ['small-world-csv'],
         queryFn: fetchCsv,
         staleTime: Infinity,
         gcTime: Infinity,
-        select: (data) => parse_csv(data),
+        select: (rawCsv) => parse_csv(rawCsv),
     });
 
-    const searcherRef = useRef(null);
+    const [searcher, setSearcher] = useState(null);
 
-    if (csvQuery.data && !searcherRef.current) {
-        searcherRef.current = new SmallWorldSearcher(csvQuery.data);
-    }
+    useEffect(() => {
+        if (!isSuccess || !data) return;
+
+        const instance = new SmallWorldSearcher(data);
+        setSearcher(instance);
+
+        return () => {
+            instance.free();
+            setSearcher(null);
+        };
+    }, [data, isSuccess]);
 
     return (
-        <SearcherContext.Provider value={{ searcher: searcherRef.current }}>
+        <SearcherContext.Provider value={searcher}>
             {children}
         </SearcherContext.Provider>
     );

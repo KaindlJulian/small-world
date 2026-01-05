@@ -1,20 +1,15 @@
-import { parse_csv, SmallWorldSearcher } from '../wasm';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCsv } from '../api/smallWorld.js';
+import { useContext } from 'react';
+import { SearcherContext } from '../context/SearcherContext.jsx';
 
-export function useSmallWorldSearcher() {
-    const csvQuery = useQuery({
-        queryKey: ['small-world-csv'],
-        queryFn: fetchCsv,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+export function useSearcher() {
+    const context = useContext(SearcherContext);
 
-    return useQuery({
-        queryKey: ['small-world-searcher'],
-        queryFn: () => Promise.resolve(new SmallWorldSearcher(csvQuery.data)),
-        enabled: csvQuery.data != null,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    if (context === undefined) {
+        throw new Error('useSearcher must be used within a SearcherProvider');
+    }
+
+    return {
+        searcher: context.searcher,
+        isReady: !!context.searcher,
+    };
 }
