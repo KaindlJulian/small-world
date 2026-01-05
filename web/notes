@@ -1,0 +1,40 @@
+- sidebar has list of monsters
+    - item in list is just an image (and name)
+    - list of components that have a hover state to show full card information
+- sidebar can be grouped by property
+
+- main area is force-directed graph of monsters
+    - nodes are monsters (image + name)
+    - hover over node shows full card information
+
+- bottom of main area has controls for filtering, adjusting graph layout and adding more nodes and links
+
+- different views
+    - deck view
+        - import deck list (ydke(e), plain text, link?)
+        - graph of cards in deck
+            - nodes are cards in deck
+            - links small world bridges between cards
+            - links shows icon of the bridge monster on hover
+        - sidebar acts as decklist overview
+            - on hover highlight card in graph and the cards reached via bridges
+            - also quick stats like
+                - cards without bridges
+                - most connected cards
+                - sort by amount of reachale cards, ref: https://small-world.yugioh-api.com/optimizer
+    - bridge view (find best bridges)
+        - sidebar acts query-like
+            - top, input start card(s)
+            - middle, computed bridges
+            - bottom, input target card(s)
+        - graph shows
+            - the start(left area) and end(right area) cards
+            - the bridges between them in the middle area
+            - this time no direct links for small world connections, but bridges as actual nodes in between, then connect them as 3 point connections
+            - edges are the property that connects the cards, e.g. attribute, type, level, etc.
+
+    - tutorial
+
+- connect rust lib to web via wasm-bindgen
+
+- indexeddb persister
