@@ -37,4 +37,6 @@
 
 - connect rust lib to web via wasm-bindgen
 
-- indexeddb persister
+- can remove name from csv
+
+- barrel files for cleaner imports
