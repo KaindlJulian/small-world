@@ -1,14 +1,14 @@
+import { useContext, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card } from '../core/Card.js';
 import { ForceGraph } from '../components/ForceGraph.jsx';
 import { Sidebar } from '../components/Sidebar.jsx';
 import { CardInfo } from '../components/CardInfo.jsx';
 import { CardInfoContext } from '../context/CardInfoContext.jsx';
-import { useContext, useState } from 'react';
 import { DeckInput } from '../components/DeckInput.jsx';
 import { decode_ydke, parse_ydk } from '../wasm/index.js';
 import { fetchCards } from '../api/ygoprodeck.js';
-import { SearcherContext } from '../context/SearcherContext.jsx';
+import { useSearcher } from '../hooks/useSearcher.js';
 
 const nodes = [
     { id: '1', name: 'Monster 1' },
@@ -45,9 +45,9 @@ function readFileAsText(file) {
 }
 
 export function DeckView() {
-    const { searcher } = useContext(SearcherContext);
-    const { closeCard, setCardInfo } = useContext(CardInfoContext);
     const [deckIds, setDeckIds] = useState(null);
+    const { searcher, isLoading } = useSearcher();
+    const { closeCard, setCardInfo } = useContext(CardInfoContext);
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckIds],
@@ -98,10 +98,15 @@ export function DeckView() {
         return <div>Error loading cards</div>;
     }
 
+    if (isLoading) {
+        return <div>Loading searcher…</div>;
+    }
+
     let cards = deckQuery.data;
 
     if (cards && searcher) {
         const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
+        console.log(bridges);
     }
 
     return (

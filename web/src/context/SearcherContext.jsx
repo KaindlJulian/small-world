@@ -1,35 +1,44 @@
-import { createContext, useRef } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCsv } from '../api/smallWorld.js';
-import { SmallWorldSearcher, parse_csv } from '../wasm/index.js';
+import { SmallWorldSearcher } from '../wasm/index.js';
 
 export const SearcherContext = createContext(null);
 
 export function SearcherProvider({ children }) {
-    const { data, isSuccess } = useQuery({
+    const { data: csvData, isSuccess } = useQuery({
         queryKey: ['small-world-csv'],
         queryFn: fetchCsv,
         staleTime: Infinity,
         gcTime: Infinity,
-        select: (rawCsv) => parse_csv(rawCsv),
     });
 
-    const [searcher, setSearcher] = useState(null);
+    const searcherRef = useRef(null);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        if (!isSuccess || !data) return;
-
-        const instance = new SmallWorldSearcher(data);
-        setSearcher(instance);
+        if (isSuccess && csvData && !searcherRef.current) {
+            console.log('creating wasm searcher instance');
+            searcherRef.current = new SmallWorldSearcher(csvData);
+            setIsReady(true);
+        }
 
         return () => {
-            instance.free();
-            setSearcher(null);
+            if (searcherRef.current) {
+                searcherRef.current.free();
+                searcherRef.current = null;
+                setIsReady(false);
+            }
         };
-    }, [data, isSuccess]);
+    }, [isSuccess, csvData]);
+
+    const contextValue = {
+        searcher: searcherRef.current,
+        isReady,
+    };
 
     return (
-        <SearcherContext.Provider value={searcher}>
+        <SearcherContext.Provider value={contextValue}>
             {children}
         </SearcherContext.Provider>
     );

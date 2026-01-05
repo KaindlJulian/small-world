@@ -1,5 +1,3 @@
-import { parse_csv } from '../wasm';
-
 const csvUrl = 'monsters.csv';
 
 export async function fetchCsv() {
@@ -11,6 +9,5 @@ export async function fetchCsv() {
         throw new Error(`Failed to fetch csv (${response.status})`);
     }
 
-    //return parse_csv(await response.text());
     return response.text();
 }

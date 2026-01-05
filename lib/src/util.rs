@@ -32,7 +32,6 @@ pub fn parse_csv_file<P: AsRef<Path>>(path: P) -> Vec<Monster> {
     monsters
 }
 
-#[wasm_bindgen]
 pub fn parse_csv(data: &str) -> Vec<Monster> {
     let mut rdr = ReaderBuilder::new().from_reader(data.as_bytes());
     let mut monsters = vec![];

@@ -8,8 +8,5 @@ export function useSearcher() {
         throw new Error('useSearcher must be used within a SearcherProvider');
     }
 
-    return {
-        searcher: context.searcher,
-        isReady: !!context.searcher,
-    };
+    return context;
 }

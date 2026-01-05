@@ -14,8 +14,7 @@ pub struct SmallWorldSearcher {
 
 #[wasm_bindgen]
 impl SmallWorldSearcher {
-    #[wasm_bindgen(constructor)]
-    pub fn new(monsters: Vec<Monster>) -> Self {
+    fn new(monsters: Vec<Monster>) -> Self {
         SmallWorldSearcher {
             index: BitSetIndex::new(&monsters),
             id2index: monsters
@@ -30,6 +29,12 @@ impl SmallWorldSearcher {
                 .collect::<HashMap<u32, usize>>(),
             monsters,
         }
+    }
+
+    #[wasm_bindgen(constructor)]
+    pub fn from_csv(data: &str) -> Self {
+        let monsters = crate::util::parse_csv(data);
+        SmallWorldSearcher::new(monsters)
     }
 
     fn find_bridges(&self, monsters: &[&Monster]) -> Option<Vec<&Monster>> {
