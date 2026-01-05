@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Card } from '../core/Card.js';
+import { useContext, useState } from 'react';
+import { fetchCards } from '../api/ygoprodeck.js';
+import { CardInfo } from '../components/CardInfo.jsx';
+import { DeckInput } from '../components/DeckInput.jsx';
 import { ForceGraph } from '../components/ForceGraph.jsx';
 import { Sidebar } from '../components/Sidebar.jsx';
-import { CardInfo } from '../components/CardInfo.jsx';
 import { CardInfoContext } from '../context/CardInfoContext.jsx';
-import { DeckInput } from '../components/DeckInput.jsx';
-import { decode_ydke, parse_ydk } from '../wasm/index.js';
-import { fetchCards } from '../api/ygoprodeck.js';
+import { Card } from '../core/Card.js';
 import { useSearcher } from '../hooks/useSearcher.js';
+import { decode_ydke, parse_ydk } from '../wasm/index.js';
 
 const nodes = [
     { id: '1', name: 'Monster 1' },

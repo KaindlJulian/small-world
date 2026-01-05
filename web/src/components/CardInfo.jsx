@@ -1,7 +1,7 @@
-import { useContext } from 'react';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
-import { CardInfoContext } from '../context/CardInfoContext';
+import { useContext } from 'react';
 import levelIcon from '../assets/level_star.svg';
+import { CardInfoContext } from '../context/CardInfoContext';
 
 const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     eager: true,

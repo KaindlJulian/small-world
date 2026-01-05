@@ -1,5 +1,5 @@
-import { createContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { createContext, useEffect, useRef, useState } from 'react';
 import { fetchCsv } from '../api/smallWorld.js';
 import { SmallWorldSearcher } from '../wasm/index.js';
 

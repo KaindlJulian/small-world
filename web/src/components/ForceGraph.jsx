@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'preact/hooks';
 import * as d3 from 'd3';
+import { useEffect, useRef } from 'preact/hooks';
 
 export function ForceGraph({ nodes, links }) {
     const svgRef = useRef(null);

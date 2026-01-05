@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
 import { Route, Router, hydrate, prerender as ssr } from 'preact-iso';
+import React, { useEffect } from 'react';
 import { Header } from './components/Header.jsx';
+import { Providers } from './core/Providers.jsx';
 import { DeckView } from './pages/DeckView.jsx';
 import { NotFound } from './pages/_404.jsx';
-import { Providers } from './core/Providers.jsx';
 import init from './wasm';
 
 export function App() {
