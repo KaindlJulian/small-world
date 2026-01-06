@@ -7,33 +7,9 @@ import { ForceGraph } from '../components/ForceGraph.jsx';
 import { Sidebar } from '../components/Sidebar.jsx';
 import { CardInfoContext } from '../context/CardInfoContext.jsx';
 import { Card } from '../core/Card.js';
+import { useGraphData } from '../hooks/useGraphData.js';
 import { useSearcher } from '../hooks/useSearcher.js';
 import { decode_ydke, parse_ydk } from '../wasm/index.js';
-
-const nodes = [
-    { id: '1', name: 'Monster 1' },
-    { id: '2', name: 'Monster 2' },
-    { id: '3', name: 'Monster 3' },
-];
-
-const links = [
-    { source: '1', target: '2' },
-    { source: '2', target: '3' },
-];
-
-const card = new Card(
-    55697723,
-    'Surfacing Big Jaws',
-    'WATER',
-    4,
-    ['Fish', 'Effect'],
-    `If this card is used for the Xyz Summon of a WATER monster, it can be treated as a Level 3 or 5 monster.
-You can only use each of the following effects of "Surfacing Big Jaws" once per turn.
-During your Main Phase, if a Spell Card was activated this turn: You can Special Summon this card from your hand, also you cannot Special Summon from the Extra Deck for the rest of this turn, except Xyz Monsters.
-If this card is Normal or Special Summoned: You can add 1 Fish "Shark" monster from your Deck to your hand.`,
-    1800,
-    300,
-);
 
 function readFileAsText(file) {
     return new Promise((resolve, reject) => {
@@ -46,7 +22,7 @@ function readFileAsText(file) {
 
 export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
-    const { searcher, isLoading } = useSearcher();
+    const { searcher, isSearcherLoading } = useSearcher();
     const { closeCard, setCardInfo } = useContext(CardInfoContext);
 
     const deckQuery = useQuery({
@@ -72,6 +48,8 @@ export function DeckView() {
                 ),
     });
 
+    const { nodes, links } = useGraphData(deckQuery.data, searcher);
+
     const handleInput = async (data) => {
         try {
             let cardList = [];
@@ -90,22 +68,19 @@ export function DeckView() {
         }
     };
 
-    if (deckQuery.isLoading) {
-        return <div>Loading cards…</div>;
+    if (deckQuery.isLoading || isSearcherLoading) {
+        return <div>Loading…</div>;
     }
 
     if (deckQuery.isError) {
         return <div>Error loading cards</div>;
     }
 
-    if (isLoading) {
-        return <div>Loading searcher…</div>;
-    }
-
-    let cards = deckQuery.data;
+    const cards = deckQuery.data;
 
     if (cards && searcher) {
         const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
+        console.log(cards.map((card) => card.id));
         console.log(bridges);
     }
 

@@ -34,7 +34,7 @@ export function SearcherProvider({ children }) {
 
     const contextValue = {
         searcher: searcherRef.current,
-        isReady,
+        isSearcherLoading: !isReady,
     };
 
     return (
