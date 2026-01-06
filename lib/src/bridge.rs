@@ -3,6 +3,14 @@ use crate::index::{BitSetIndex, MonsterIndex};
 use crate::monster::Monster;
 use itertools::Itertools;
 use std::collections::HashSet;
+use std::vec;
+
+#[derive(Debug)]
+pub struct Connection<'a> {
+    source: &'a Monster,
+    via: &'a Monster,
+    target: &'a Monster,
+}
 
 /// Finds bridge monsters using bitset intersections.
 ///
@@ -27,14 +35,32 @@ use std::collections::HashSet;
 /// // intersection of neighborhoods are bridges
 /// bridges = neighborhood(m1) & neighborhood(m2)
 /// ```
-pub fn search_bridge_bitset<'a>(monsters: &[&Monster], index: &'a BitSetIndex) -> Option<BitSet> {
+pub fn search_bridge_bitset(monsters: &[&Monster], index: &BitSetIndex) -> Option<BitSet> {
     monsters
         .iter()
         .map(|m| find_neighborhood_bitset(m, index))
         .reduce(|a, b| a.and(&b))
 }
 
-fn find_neighborhood_bitset(monster: &Monster, index: &BitSetIndex) -> BitSet {
+// compute neighborhood of m N(m)
+// we can remove m from remaining here because were not interested in self-links
+
+// intersect with remaining -> gives us the 1st step of small world in the pool
+// for each card in the neighborhood n in N(m), compute its neighborhood N(n)
+// intersect N(n) with remaining -> gives us the 2nd step of small world in the pool
+// thus every pair (m, x) with x in N(n) is a link
+pub fn findConnectionsWithinPool<'a>(
+    source: &Monster,
+    pool: &[&Monster],
+    index: &'a BitSetIndex,
+) -> Vec<Connection<'a>> {
+    let neighborhood = find_neighborhood_bitset(source, index);
+    
+
+    vec![]
+}
+
+pub fn find_neighborhood_bitset(monster: &Monster, index: &BitSetIndex) -> BitSet {
     let sets = [
         index.by_attribute.get(&monster.attribute()).unwrap(),
         index.by_level.get(&monster.level()).unwrap(),
@@ -142,7 +168,12 @@ mod tests {
             .collect::<Vec<&Monster>>();
 
         assert_eq!(search_bridges(&query, &index).unwrap().len(), 21);
-        assert_eq!(search_bridge_bitset(&query, &bs_index).unwrap().count_ones(), 21);
+        assert_eq!(
+            search_bridge_bitset(&query, &bs_index)
+                .unwrap()
+                .count_ones(),
+            21
+        );
     }
 
     #[test]
@@ -157,7 +188,12 @@ mod tests {
             .collect::<Vec<&Monster>>();
 
         assert_eq!(search_bridges(&query, &index).unwrap().len(), 3);
-        assert_eq!(search_bridge_bitset(&query, &bs_index).unwrap().count_ones(), 3);
+        assert_eq!(
+            search_bridge_bitset(&query, &bs_index)
+                .unwrap()
+                .count_ones(),
+            3
+        );
     }
 
     #[test]

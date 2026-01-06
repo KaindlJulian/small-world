@@ -53,34 +53,42 @@ impl Monster {
         }
     }
 
+    #[wasm_bindgen(getter)]
     pub fn id(&self) -> u32 {
         self.id
     }
 
+    #[wasm_bindgen(getter)]
     pub fn passcode(&self) -> u32 {
         self.passcode
     }
 
+    #[wasm_bindgen(getter)]
     pub fn name_wasm(&self) -> String {
         self.name.clone()
     }
 
+    #[wasm_bindgen(getter)]
     pub fn attribute(&self) -> Attribute {
         self.attribute
     }
 
+    #[wasm_bindgen(getter)]
     pub fn level(&self) -> Level {
         self.level
     }
 
+    #[wasm_bindgen(getter)]
     pub fn r#type(&self) -> Type {
         self.r#type
     }
 
+    #[wasm_bindgen(getter)]
     pub fn atk(&self) -> Option<u32> {
         self.atk
     }
 
+    #[wasm_bindgen(getter)]
     pub fn def(&self) -> Option<u32> {
         self.def
     }

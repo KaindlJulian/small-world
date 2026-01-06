@@ -25,8 +25,25 @@ impl BitSet {
         (self.data[vec_index] >> word_index) & 1 == 1
     }
 
+    pub fn clear(&mut self, index: usize) {
+        let vec_index = index / 64;
+        let word_index = index % 64;
+        self.data[vec_index] &= !(1 << word_index);
+    }
+
     pub fn len(&self) -> usize {
         self.len
+    }
+
+    /// returnes indices of all set bits
+    pub fn ones(&self) -> Vec<usize> {
+        let mut ones = vec![];
+        for i in 0..self.len {
+            if self.get(i) {
+                ones.push(i);
+            }
+        }
+        ones
     }
 
     /// count number of monsters in set
