@@ -1,15 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { fetchCards } from '../api/ygoprodeck.js';
-import { CardInfo } from '../components/CardInfo.jsx';
-import { DeckInput } from '../components/DeckInput.jsx';
-import { ForceGraph } from '../components/ForceGraph.jsx';
-import { Sidebar } from '../components/Sidebar.jsx';
-import { CardInfoContext } from '../context/CardInfoContext.jsx';
+import { CardInfo, DeckInput, ForceGraph, Sidebar } from '../components';
 import { Card } from '../core/Card.js';
-import { useGraphData } from '../hooks/useGraphData.js';
-import { useSearcher } from '../hooks/useSearcher.js';
-import { decode_ydke, parse_ydk } from '../wasm/index.js';
+import { useCardInfo, useGraphData, useSearcher } from '../hooks';
+import { decode_ydke, parse_ydk } from '../wasm';
 
 function readFileAsText(file) {
     return new Promise((resolve, reject) => {
@@ -23,7 +18,7 @@ function readFileAsText(file) {
 export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
-    const { closeCard, setCardInfo } = useContext(CardInfoContext);
+    const { closeCard, setCardInfo } = useCardInfo();
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckIds],

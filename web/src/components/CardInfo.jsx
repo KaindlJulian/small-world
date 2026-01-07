@@ -1,7 +1,6 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
-import { useContext } from 'react';
 import levelIcon from '../assets/level_star.svg';
-import { CardInfoContext } from '../context/CardInfoContext';
+import { useCardInfo } from '../hooks/useCardInfo';
 
 const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     eager: true,
@@ -9,8 +8,7 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
 });
 
 export function CardInfo() {
-    let { cardSignal, isOpenSignal, openCard, closeCard } =
-        useContext(CardInfoContext);
+    let { cardSignal, isOpenSignal, openCard, closeCard } = useCardInfo();
 
     if (!cardSignal.value) {
         return null;

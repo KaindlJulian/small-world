@@ -1,6 +1,6 @@
 import { Route, Router, hydrate, prerender as ssr } from 'preact-iso';
 import React, { useEffect, useState } from 'react';
-import { Header } from './components/Header.jsx';
+import { Header } from './components';
 import { Providers } from './core/Providers.jsx';
 import { DeckView } from './pages/DeckView.jsx';
 import { NotFound } from './pages/_404.jsx';
