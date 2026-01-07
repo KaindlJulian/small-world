@@ -79,7 +79,7 @@ export function DeckView() {
     }
 
     return (
-        <div class='grid h-full divide-x divide-slate-600 lg:grid-cols-[1fr_350px] xl:grid-cols-[1fr_650px]'>
+        <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_350px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
             <div
                 onClick={closeCard}
@@ -112,7 +112,7 @@ export function DeckView() {
                     />
                 )}
             </div>
-            <Sidebar class='lg:col-span-2' />
+            <Sidebar class='col-span-2 lg:col-span-1' />
         </div>
     );
 }

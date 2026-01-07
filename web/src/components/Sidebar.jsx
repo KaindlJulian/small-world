@@ -1,3 +1,3 @@
 export function Sidebar() {
-    return <div class='h-full bg-slate-800'></div>;
+    return <div class='min-h-100 bg-slate-800 lg:h-full'></div>;
 }

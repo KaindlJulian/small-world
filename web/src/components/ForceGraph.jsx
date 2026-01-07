@@ -86,7 +86,7 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
             .force('collide', d3.forceCollide(15))
             .force('charge', d3.forceManyBody().strength(-300))
             .force('center', d3.forceCenter(0, 0))
-            .force('radial', d3.forceRadial(100, 0, 0).strength(0.5));
+            .force('radial', d3.forceRadial(200, 0, 0).strength(0.5));
         simulationRef.current = simulation;
 
         // Links
