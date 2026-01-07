@@ -3,14 +3,6 @@ use crate::index::{BitSetIndex, MonsterIndex};
 use crate::monster::Monster;
 use itertools::Itertools;
 use std::collections::HashSet;
-use std::vec;
-
-#[derive(Debug)]
-pub struct Connection<'a> {
-    source: &'a Monster,
-    via: &'a Monster,
-    target: &'a Monster,
-}
 
 /// Finds bridge monsters using bitset intersections.
 ///
@@ -40,24 +32,6 @@ pub fn search_bridge_bitset(monsters: &[&Monster], index: &BitSetIndex) -> Optio
         .iter()
         .map(|m| find_neighborhood_bitset(m, index))
         .reduce(|a, b| a.and(&b))
-}
-
-// compute neighborhood of m N(m)
-// we can remove m from remaining here because were not interested in self-links
-
-// intersect with remaining -> gives us the 1st step of small world in the pool
-// for each card in the neighborhood n in N(m), compute its neighborhood N(n)
-// intersect N(n) with remaining -> gives us the 2nd step of small world in the pool
-// thus every pair (m, x) with x in N(n) is a link
-pub fn findConnectionsWithinPool<'a>(
-    source: &Monster,
-    pool: &[&Monster],
-    index: &'a BitSetIndex,
-) -> Vec<Connection<'a>> {
-    let neighborhood = find_neighborhood_bitset(source, index);
-    
-
-    vec![]
 }
 
 pub fn find_neighborhood_bitset(monster: &Monster, index: &BitSetIndex) -> BitSet {
