@@ -9,7 +9,7 @@ export class Card {
         text,
         atk,
         def,
-        border,
+        frame,
     ) {
         this.id = id;
         this.passcode = passcode;
@@ -20,6 +20,6 @@ export class Card {
         this.text = text;
         this.atk = atk;
         this.def = def;
-        this.border = border;
+        this.frame = frame;
     }
 }

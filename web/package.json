@@ -8,6 +8,7 @@
         "build:wasm": "wasm-pack build ../lib --target web --out-dir ../web/src/wasm --out-name index"
     },
     "dependencies": {
+        "@preact/signals": "^2.5.1",
         "d3": "^7.9.0",
         "idb-keyval": "^6.2.2",
         "preact": "^10.26.9",

@@ -9,11 +9,15 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
 });
 
 export function CardInfo() {
-    let { isOpen, card, openCard, closeCard } = useContext(CardInfoContext);
+    let { cardSignal, isOpenSignal, openCard, closeCard } =
+        useContext(CardInfoContext);
 
-    if (!card) {
+    if (!cardSignal.value) {
         return null;
     }
+
+    const card = cardSignal.value;
+    const isOpen = isOpenSignal.value;
 
     const attributeIcons = Object.fromEntries(
         Object.entries(attributeIconsImport).map(([path, mod]) => {
@@ -46,7 +50,7 @@ export function CardInfo() {
                     </div>
                     <div class='grid grid-cols-2 gap-2 overflow-hidden px-4'>
                         <img
-                            src='card.webp'
+                            src='bg.jpg'
                             alt='card'
                             class='col-span-2 rounded-sm'
                         />

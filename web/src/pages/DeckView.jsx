@@ -44,6 +44,7 @@ export function DeckView() {
                             cardData.desc,
                             cardData.atk,
                             cardData.def,
+                            cardData.frameType,
                         ),
                 ),
     });
@@ -80,8 +81,6 @@ export function DeckView() {
 
     if (cards && searcher) {
         const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
-        console.log(cards.map((card) => card.id));
-        console.log(bridges);
     }
 
     return (
@@ -110,7 +109,13 @@ export function DeckView() {
                         </button>
                     </>
                 )}
-                {deckIds !== null && <ForceGraph nodes={nodes} links={links} />}
+                {deckIds !== null && (
+                    <ForceGraph
+                        nodes={nodes}
+                        links={links}
+                        setCardInfo={setCardInfo}
+                    />
+                )}
             </div>
             <Sidebar class='lg:col-span-2' />
         </div>
