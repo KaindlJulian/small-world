@@ -39,6 +39,22 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
             .append('line')
             .attr('stroke-width', 1.3);
 
+        const linkLabel = svg
+            .append('g')
+            .attr('class', 'link-labels')
+            .selectAll('text')
+            .data(links)
+            .enter()
+            .append('text')
+            .text((d) => d.bridges.map((b) => b.name).join(', '))
+            .attr('font-size', 10)
+            .attr('fill', '#fff')
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('class', 'link-label')
+            .style('pointer-events', 'none')
+            .style('opacity', 0);
+
         // clip path for node images
         const defs = svg.append('defs');
         defs.append('clipPath')
@@ -76,6 +92,14 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
                 if (setCardInfo) {
                     setCardInfo(d);
                 }
+                svg.selectAll('.link-label')
+                    .transition()
+                    .duration(200)
+                    .style('opacity', (l) => {
+                        const isConnected = l.source === d || l.target === d;
+                        console.log(isConnected);
+                        return isConnected ? 1 : 0;
+                    });
             })
             .on('mouseout', () => {
                 tooltip.style('opacity', 0);
@@ -99,12 +123,23 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
             .attr('preserveAspectRatio', 'xMidYMid slice')
             .attr('clip-path', 'url(#circle-clip)');
 
+        // Simulation
         simulation.on('tick', () => {
             link.attr('x1', (d) => d.source.x)
                 .attr('y1', (d) => d.source.y)
                 .attr('x2', (d) => d.target.x)
                 .attr('y2', (d) => d.target.y);
+            linkLabel
+                .attr('x', (d) => (d.source.x + d.target.x) / 2)
+                .attr('y', (d) => (d.source.y + d.target.y) / 2);
             node.attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+        });
+
+        svg.on('click', () => {
+            svg.selectAll('.link-label')
+                .transition()
+                .duration(200)
+                .style('opacity', 0);
         });
 
         function dragstarted(event, d) {

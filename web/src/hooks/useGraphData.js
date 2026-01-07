@@ -24,6 +24,8 @@ export function useGraphData(cards, searcher) {
             });
 
         const seen = new Set();
+
+        // Filter out symmetric links
         const filteredLinks = links.filter((link) => {
             const key1 = `${link.source.id}-${link.bridge.id}-${link.target.id}`;
             const key2 = `${link.target.id}-${link.bridge.id}-${link.source.id}`;
@@ -34,6 +36,21 @@ export function useGraphData(cards, searcher) {
             return true;
         });
 
-        return { nodes, links: filteredLinks };
+        // Group links by source and target
+
+        const linkMap = new Map();
+        filteredLinks.forEach((link) => {
+            const key = `${link.source.id}-${link.target.id}`;
+            if (!linkMap.has(key)) {
+                linkMap.set(key, {
+                    source: link.source,
+                    target: link.target,
+                    bridges: [],
+                });
+            }
+            linkMap.get(key).bridges.push(link.bridge);
+        });
+
+        return { nodes, links: Array.from(linkMap.values()) };
     }, [cards]);
 }
