@@ -17,7 +17,6 @@
         "tailwindcss": "^4.1.18"
     },
     "devDependencies": {
-        "@heroicons/react": "^2.2.0",
         "@preact/preset-vite": "^2.10.2",
         "@tailwindcss/vite": "^4.1.18",
         "@tanstack/eslint-plugin-query": "^5.91.2",
@@ -27,6 +26,7 @@
         "@tanstack/react-query-persist-client": "^5.90.18",
         "eslint": "^9.39.2",
         "eslint-config-preact": "^2.0.0",
+        "lucide-preact": "^0.562.0",
         "prettier": "^3.7.4",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "vite": "^7.0.4"

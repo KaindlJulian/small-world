@@ -1,4 +1,4 @@
-import { ChevronLeftIcon } from '@heroicons/react/24/solid';
+import { ChevronLeft } from 'lucide-preact';
 import levelIcon from '../assets/level_star.svg';
 import { useCardInfo } from '../hooks/useCardInfo';
 
@@ -33,10 +33,10 @@ export function CardInfo() {
             >
                 <button
                     onClick={() => (isOpen ? closeCard() : openCard())}
-                    class='absolute top-1/2 -right-14 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-all duration-250 hover:bg-slate-600 hover:shadow-lg'
+                    class='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-all duration-250 hover:bg-slate-600 hover:shadow-lg'
                 >
-                    <ChevronLeftIcon
-                        class={`h-6 w-6 transform transition-transform duration-250 ${
+                    <ChevronLeft
+                        class={`transform transition-transform duration-250 ${
                             !isOpen && '-scale-x-100'
                         }`}
                     />

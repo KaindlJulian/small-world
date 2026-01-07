@@ -1,4 +1,4 @@
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { Upload } from 'lucide-preact';
 import { useRef } from 'react';
 
 export function DeckInput({ onFile, onText }) {
@@ -39,7 +39,7 @@ export function DeckInput({ onFile, onText }) {
                 onPaste={handlePaste}
                 class='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-600 hover:bg-slate-800'
             >
-                <CloudArrowUpIcon class='h-8 w-8' />
+                <Upload class='h-8 w-8' />
                 <div class='text-body flex flex-col items-center justify-center pt-5 pb-6'>
                     <p class='mb-2 text-sm'>
                         <span class='font-semibold'>Upload a File</span> or
