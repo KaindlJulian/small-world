@@ -1,21 +1,18 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { GraphControls } from '../components';
+import { useCardInfo } from '../hooks';
 
 const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = 'oklch(0.9 0.14 149.81)';
 const BASE_COLOR = 'oklch(70.4% 0.04 256.788)'; //slate-400
 
-export function ForceGraph({
-    nodes,
-    links,
-    setCardInfo,
-    highlightedCardSignal,
-}) {
+export function ForceGraph({ nodes, links }) {
     const svgRef = useRef(null);
     const zoomRef = useRef(null);
     const simulationRef = useRef(null);
     const isLockedRef = useRef(false);
+    const { cardSignal, setCardInfo } = useCardInfo();
 
     const handleHighlightNode = (nodeId) => {
         if (!svgRef.current) return;
@@ -66,11 +63,11 @@ export function ForceGraph({
     };
 
     useEffect(() => {
-        const highlightedCard = highlightedCardSignal.value;
+        const highlightedCard = cardSignal.value;
         if (highlightedCard) {
             handleHighlightNode(highlightedCard.id);
         }
-    }, [highlightedCardSignal.value]);
+    }, [cardSignal.value]);
 
     useEffect(() => {
         if (!svgRef.current) return;

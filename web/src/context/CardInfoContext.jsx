@@ -11,10 +11,10 @@ export function CardInfoProvider({ children }) {
     const value = {
         cardSignal,
         isOpenSignal,
-        openCard: () => {
+        openCardInfo: () => {
             isOpenSignal.value = true;
         },
-        closeCard: () => {
+        closeCardInfo: () => {
             isOpenSignal.value = false;
         },
         setIsAutoOpen: (value) => {

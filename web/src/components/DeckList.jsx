@@ -7,14 +7,16 @@ import {
 } from 'lucide-preact';
 import { useState } from 'preact/hooks';
 import levelIcon from '../assets/level_star.svg';
+import { useCardInfo } from '../hooks';
 
 const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     eager: true,
     import: 'default',
 });
 
-export function DeckList({ cards, setCardInfo }) {
+export function DeckList({ cards }) {
     const [isGridView, setIsGridView] = useState(true);
+    const { cardSignal, setCardInfo } = useCardInfo();
 
     if (!cards) return;
 
@@ -22,7 +24,20 @@ export function DeckList({ cards, setCardInfo }) {
 
     return (
         <>
-            <div class='sticky top-0 z-50 flex w-full justify-end gap-2 bg-slate-800 p-4'>
+            <div class='sticky top-0 z-50 flex w-full gap-2 bg-slate-800 p-4'>
+                <button
+                    class='cursor-pointer rounded-md bg-slate-700 px-3 py-1.5 hover:bg-slate-600 hover:shadow-lg'
+                    onClick={() => {}}
+                >
+                    Add Card
+                </button>
+                <button
+                    class='cursor-pointer rounded-md bg-slate-700 px-3 py-1.5 hover:bg-slate-600 hover:shadow-lg'
+                    onClick={() => {}}
+                >
+                    Remove Card
+                </button>
+                <div class='grow'></div>
                 <button
                     class='cursor-pointer rounded-md bg-slate-700 px-1.5 py-1.5 hover:bg-slate-600 hover:shadow-lg'
                     onClick={() => setIsGridView(!isGridView)}

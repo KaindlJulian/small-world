@@ -8,8 +8,7 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
 });
 
 export function CardInfo() {
-    let { cardSignal, isOpenSignal, openCard, closeCard, setIsAutoOpen } =
-        useCardInfo();
+    let { cardSignal, isOpenSignal, setIsAutoOpen } = useCardInfo();
 
     if (!cardSignal.value) {
         return null;
@@ -36,10 +35,10 @@ export function CardInfo() {
                     onClick={() => {
                         if (isOpen) {
                             setIsAutoOpen(false);
-                            closeCard();
+                            isOpenSignal.value = false;
                         } else {
                             setIsAutoOpen(true);
-                            openCard();
+                            isOpenSignal.value = true;
                         }
                     }}
                     class='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-all duration-250 hover:bg-slate-600 hover:shadow-lg'

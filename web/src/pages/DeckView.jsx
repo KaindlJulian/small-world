@@ -1,4 +1,3 @@
-import { useSignal } from '@preact/signals';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { fetchCards } from '../api/ygoprodeck.js';
@@ -15,8 +14,7 @@ import { useCardInfo, useGraphData, useSearcher } from '../hooks';
 export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
-    const { closeCard, setCardInfo } = useCardInfo();
-    const highlightedCardSignal = useSignal(null);
+    const { closeCardInfo, setCardInfo } = useCardInfo();
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckIds],
@@ -67,7 +65,7 @@ export function DeckView() {
         <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
             <div
-                onClick={closeCard}
+                onClick={closeCardInfo}
                 class='flex flex-col items-center justify-center'
             >
                 {deckIds === null && (
@@ -86,23 +84,10 @@ export function DeckView() {
                         </button>
                     </>
                 )}
-                {deckIds !== null && (
-                    <ForceGraph
-                        nodes={nodes}
-                        links={links}
-                        setCardInfo={setCardInfo}
-                        highlightedCardSignal={highlightedCardSignal}
-                    />
-                )}
+                {deckIds !== null && <ForceGraph nodes={nodes} links={links} />}
             </div>
             <Sidebar class='col-span-2 lg:col-span-1'>
-                <DeckList
-                    cards={cards}
-                    setCardInfo={(card) => {
-                        setCardInfo(card);
-                        highlightedCardSignal.value = card;
-                    }}
-                />
+                <DeckList cards={cards} />
             </Sidebar>
         </div>
     );
