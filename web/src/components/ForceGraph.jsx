@@ -14,6 +14,13 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
     const simulationRef = useRef(null);
     const isLockedRef = useRef(false);
 
+    const handleHighlightNode = (nodeId) => {
+        if (!svgRef.current) return;
+        const svg = d3.select(svgRef.current);
+        const node = svg.selectAll('.node').filter((d) => d.id === nodeId);
+        node.dispatch('click');
+    };
+
     const handleResetZoom = () => {
         if (svgRef.current && zoomRef.current) {
             const svg = d3.select(svgRef.current);
@@ -252,6 +259,7 @@ function createNodes(
         .data(nodes)
         .enter()
         .append('g')
+        .attr('class', 'node')
         .style('cursor', 'pointer')
         .call(
             d3

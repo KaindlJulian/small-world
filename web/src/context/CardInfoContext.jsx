@@ -6,6 +6,7 @@ export const CardInfoContext = createContext();
 export function CardInfoProvider({ children }) {
     const cardSignal = useSignal(null);
     const isOpenSignal = useSignal(false);
+    const isAutoOpen = useSignal(true);
 
     const value = {
         cardSignal,
@@ -16,9 +17,14 @@ export function CardInfoProvider({ children }) {
         closeCard: () => {
             isOpenSignal.value = false;
         },
+        setIsAutoOpen: (value) => {
+            isAutoOpen.value = value;
+        },
         setCardInfo: (cardInfo) => {
             cardSignal.value = cardInfo;
-            isOpenSignal.value = true;
+            if (isAutoOpen.value) {
+                isOpenSignal.value = true;
+            }
         },
     };
 

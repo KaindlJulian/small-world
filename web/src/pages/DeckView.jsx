@@ -1,3 +1,4 @@
+import { useSignal } from '@preact/signals';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { fetchCards } from '../api/ygoprodeck.js';
@@ -15,6 +16,7 @@ export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
     const { closeCard, setCardInfo } = useCardInfo();
+    const highlightedCardId = useSignal(null);
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckIds],
@@ -55,7 +57,7 @@ export function DeckView() {
     }
 
     // cards of the deck including small world connections
-    const cards = nodes;
+    const cards = deckQuery.data; //! probably change to cards = nodes
 
     if (cards && searcher) {
         const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
@@ -93,7 +95,13 @@ export function DeckView() {
                 )}
             </div>
             <Sidebar class='col-span-2 lg:col-span-1'>
-                <DeckList cards={cards} setCardInfo={setCardInfo} />
+                <DeckList
+                    cards={cards}
+                    setCardInfo={(card) => {
+                        setCardInfo(card);
+                        highlightedCardId.value = card.id;
+                    }}
+                />
             </Sidebar>
         </div>
     );

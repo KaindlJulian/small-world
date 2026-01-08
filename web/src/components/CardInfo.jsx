@@ -8,7 +8,8 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
 });
 
 export function CardInfo() {
-    let { cardSignal, isOpenSignal, openCard, closeCard } = useCardInfo();
+    let { cardSignal, isOpenSignal, openCard, closeCard, setIsAutoOpen } =
+        useCardInfo();
 
     if (!cardSignal.value) {
         return null;
@@ -32,7 +33,15 @@ export function CardInfo() {
                 } z-50 w-72`}
             >
                 <button
-                    onClick={() => (isOpen ? closeCard() : openCard())}
+                    onClick={() => {
+                        if (isOpen) {
+                            setIsAutoOpen(false);
+                            closeCard();
+                        } else {
+                            setIsAutoOpen(true);
+                            openCard();
+                        }
+                    }}
                     class='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-all duration-250 hover:bg-slate-600 hover:shadow-lg'
                 >
                     <ChevronLeft

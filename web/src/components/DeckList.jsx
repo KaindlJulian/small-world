@@ -132,4 +132,3 @@ export function DeckList({ cards, setCardInfo }) {
         </>
     );
 }
-// [text-shadow:-2px_1px_2px_rgba(0,0,0,0.8)]
