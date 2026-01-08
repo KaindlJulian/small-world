@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import { Maximize } from 'lucide-preact';
 import { useEffect, useRef } from 'react';
 import { GraphControls } from '../components';
 
@@ -106,23 +105,15 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
 
     return (
         <div class='relative flex h-full w-full touch-none flex-col items-center justify-center overflow-hidden select-none'>
-            <button
-                class='absolute top-4 right-4 cursor-pointer rounded-md bg-slate-700 px-1.5 py-1.5 hover:bg-slate-600 hover:shadow-lg'
-                onClick={handleResetZoom}
-            >
-                <Maximize />
-            </button>
             <svg
                 ref={svgRef}
                 class='block h-full w-full'
                 preserveAspectRatio='xMidYMid meet'
             ></svg>
             <GraphControls
-                showRemove={false}
                 onShowBridges={handleShowBridges}
-                onAddCard={() => {}}
-                onRemoveCard={() => {}}
                 onToggleLayout={handleToggleLayout}
+                onResetZoom={handleResetZoom}
             />
         </div>
     );
