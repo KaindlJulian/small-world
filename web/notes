@@ -6,7 +6,6 @@
     - deck view
         - import deck list ( plain text )
         - sidebar acts as decklist overview
-            - on hover highlight card in graph and the cards reached via bridges
             - also quick stats like
                 - cards without bridges
                 - most connected cards
