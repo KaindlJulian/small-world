@@ -12,14 +12,14 @@ import { Card } from '../core/Card.js';
 import { useCardInfo, useGraphData, useSearcher } from '../hooks';
 
 export function DeckView() {
-    const [deckIds, setDeckIds] = useState(null);
+    const [deckCodes, setDeckCodes] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
-    const { closeCardInfo, setCardInfo } = useCardInfo();
+    const { closeCardInfo } = useCardInfo();
 
     const deckQuery = useQuery({
-        queryKey: ['deck', deckIds],
-        queryFn: () => fetchCards(deckIds),
-        enabled: Array.isArray(deckIds),
+        queryKey: ['deck', deckCodes],
+        queryFn: () => fetchCards(deckCodes),
+        enabled: Array.isArray(deckCodes),
         select: (data) =>
             data
                 .filter((cardData) => cardData.type.includes('Monster'))
@@ -43,7 +43,7 @@ export function DeckView() {
     const { nodes, links } = useGraphData(deckQuery.data, searcher);
 
     const handleInput = (cardList) => {
-        setDeckIds(cardList);
+        setDeckCodes(cardList);
     };
 
     if (deckQuery.isLoading || isSearcherLoading) {
@@ -65,10 +65,10 @@ export function DeckView() {
         <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
             <div
-                onClick={closeCardInfo}
+                onClick={() => closeCardInfo()}
                 class='flex flex-col items-center justify-center'
             >
-                {deckIds === null && (
+                {deckCodes === null && (
                     <>
                         <DeckInput
                             onInput={(cardList) => handleInput(cardList)}
@@ -84,10 +84,21 @@ export function DeckView() {
                         </button>
                     </>
                 )}
-                {deckIds !== null && <ForceGraph nodes={nodes} links={links} />}
+                {deckCodes !== null && (
+                    <ForceGraph nodes={nodes} links={links} />
+                )}
             </div>
             <Sidebar class='col-span-2 lg:col-span-1'>
-                <DeckList cards={cards} />
+                <DeckList
+                    cards={cards}
+                    onRemoveCard={(card) => {
+                        setDeckCodes(
+                            deckCodes.filter(
+                                (passcode) => passcode !== card.passcode,
+                            ),
+                        );
+                    }}
+                />
             </Sidebar>
         </div>
     );

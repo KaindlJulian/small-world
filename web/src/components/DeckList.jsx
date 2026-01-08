@@ -4,6 +4,7 @@ import {
     List,
     Minus,
     SlidersHorizontal,
+    Trash2,
 } from 'lucide-preact';
 import { useState } from 'preact/hooks';
 import levelIcon from '../assets/level_star.svg';
@@ -14,9 +15,18 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     import: 'default',
 });
 
-export function DeckList({ cards }) {
+export function DeckList({ cards, onRemoveCard }) {
     const [isGridView, setIsGridView] = useState(true);
-    const { cardSignal, setCardInfo } = useCardInfo();
+    const [isRemovingCards, setIsRemovingCards] = useState(false);
+    const { setCardInfo } = useCardInfo();
+
+    const handleCardClick = (card) => {
+        if (isRemovingCards) {
+            onRemoveCard(card);
+        } else {
+            setCardInfo(card);
+        }
+    };
 
     if (!cards) return;
 
@@ -33,9 +43,9 @@ export function DeckList({ cards }) {
                 </button>
                 <button
                     class='cursor-pointer rounded-md bg-slate-700 px-3 py-1.5 hover:bg-slate-600 hover:shadow-lg'
-                    onClick={() => {}}
+                    onClick={() => setIsRemovingCards(!isRemovingCards)}
                 >
-                    Remove Card
+                    {isRemovingCards ? 'Cancel' : 'Remove Cards'}
                 </button>
                 <div class='grow'></div>
                 <button
@@ -54,14 +64,20 @@ export function DeckList({ cards }) {
                         list.map((card) => (
                             <div
                                 key={card.id}
-                                class='cursor-pointer transition-transform duration-200 hover:scale-120'
+                                class={`group cursor-pointer rounded transition-transform duration-200 ${!isRemovingCards && 'hover:scale-120'} ${isRemovingCards && 'animate-wiggle [animation-delay:-250ms] hover:bg-red-700'}`}
                             >
                                 <img
-                                    src='bg.jpg'
+                                    src='card.jpg'
                                     alt={card.name}
-                                    class='w-full rounded'
-                                    onClick={() => setCardInfo(card)}
+                                    class={`w-full rounded ${isRemovingCards && 'hover:opacity-60'}`}
+                                    onClick={() => handleCardClick(card)}
                                 />
+                                {isRemovingCards && (
+                                    <Trash2
+                                        size={48}
+                                        class='pointer-events-none invisible absolute top-1/2 left-1/2 -translate-1/2 text-white group-hover:visible'
+                                    />
+                                )}
                             </div>
                         ))}
                 </div>
@@ -73,7 +89,7 @@ export function DeckList({ cards }) {
                             <div
                                 key={card.id}
                                 class='grid cursor-pointer grid-cols-[4rem_1fr] grid-rows-[auto_auto_1fr] gap-2 truncate rounded bg-slate-700 p-2 hover:bg-slate-600 xl:grid-cols-[6rem_1fr]'
-                                onClick={() => setCardInfo(card)}
+                                onClick={() => handleCardClick(card)}
                             >
                                 <img
                                     src='bg.jpg'

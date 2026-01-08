@@ -9,3 +9,15 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 }
+
+@theme {
+    --animate-wiggle: wiggle 500ms ease-in-out infinite alternate;
+    @keyframes wiggle {
+        0% {
+            transform: rotate(-3deg);
+        }
+        100% {
+            transform: rotate(3deg);
+        }
+    }
+}
