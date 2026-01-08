@@ -83,6 +83,19 @@ pub fn parse_ydk(ydk: &str, ignore_extra: bool) -> Vec<u32> {
 }
 
 #[wasm_bindgen]
+/// Encode into a YDKE main deck string
+pub fn encode_ydke_main(ids: &[u32]) -> String {
+    let cards = BASE64_STANDARD
+        .encode(
+            ids.iter()
+                .flat_map(|id| id.to_le_bytes())
+                .collect::<Vec<u8>>(),
+        )
+        .to_string();
+    format!("ydke://{}!!!", cards)
+}
+
+#[wasm_bindgen]
 pub fn decode_ydke(ydke: &str, ignore_extra: bool) -> Vec<u32> {
     let parts: Vec<_> = ydke
         .trim_start_matches("ydke://")
@@ -128,19 +141,36 @@ mod tests {
     }
 
     #[test]
-    fn test_ydke_no_side() {
-        let ydke = "ydke://sjLMBbIyzAWyMswFKpVlASqVZQGIBQkFryPeAK8j3gCvI94AOLFjBDixYwT7i3AA+4twAPuLcADrvhQENQeDAjUHgwI1B4MCNHd4BDR3eAQ0d3gEUd0WAFHdFgBR3RYAcWg5BHFoOQT6v6YC1xqfAdcanwGD7KQCg+ykAvrjXQD6410A+uNdAN6l8AHepfAB3qXwAarhUgD3EysEYeHHBA==!l/nABIjmOgXbl9EAd56hAsRENATwchADwjdQAkZ1UwQgVDQExiYDAsYmAwLGJgMCswdbBVy/MQTKGr8B!!";
+    fn test_ydke_decode_no_side() {
+        let ydke = "ydke://R7x9AEe8fQBHvH0AMdwRATHcEQEx3BEBeA09AxNWxAMTVsQDE1bEA6OpVwWjqVcFryPeAK8j3gCvI94AOLFjBDixYwQ4sWME/omcBf6JnAWyMswFNQeDAjUHgwI1B4MCdDleA3Q5XgN0OV4DIfa7AYoMdAG1dg4BAa/JBAGvyQQBr8kEYmqzA6p4kwLpzMgF6czIBenMyAUiSJkAIkiZAA==!gZ1eA92drgDUc6AAgQqVAjXQkAM10JADNdCQA81CVwXjUkIBg/jHA8oavwGWunMBlrpzAQJcggICXIIC!!";
         let ids = decode_ydke(ydke, true);
+        println!("{:?}", ids);
         assert_eq!(ids.len(), 40);
-        assert_eq!(ids[0], 97268402);
+        assert_eq!(ids[0], 8240199);
     }
 
     #[test]
-    fn test_ydke() {
+    fn test_ydke_decode() {
         let ydke = "ydke://R7x9AEe8fQBHvH0AMdwRATHcEQEx3BEBeA09AxNWxAMTVsQDE1bEA6OpVwWjqVcFryPeAK8j3gCvI94AOLFjBDixYwQ4sWME/omcBf6JnAWyMswFNQeDAjUHgwI1B4MCdDleA3Q5XgN0OV4DIfa7AYoMdAG1dg4BAa/JBAGvyQQBr8kEYmqzA6p4kwLpzMgF6czIBenMyAUiSJkAIkiZAA==!gZ1eA92drgDUc6AAgQqVAjXQkAM10JADNdCQA81CVwXjUkIBg/jHA8oavwGWunMBlrpzAQJcggICXIIC!RK0EBUStBAXBcjEFwXIxBfm+vQCglAQCOfUdBK3iCgKt4goCreIKAtcanwHXGp8BYr4XBWK+FwVivhcF!";
         let ids = decode_ydke(ydke, true);
         assert_eq!(ids.len(), 55);
-        assert_eq!(ids[0], 08240199);
+        assert_eq!(ids[0], 8240199);
+    }
+
+    #[test]
+    fn test_ydke_encode() {
+        let ids = vec![
+            8240199, 8240199, 8240199, 17947697, 17947697, 17947697, 54332792, 63198739, 63198739,
+            63198739, 89631139, 89631139, 14558127, 14558127, 14558127, 73642296, 73642296,
+            73642296, 94145022, 94145022, 97268402, 42141493, 42141493, 42141493, 56506740,
+            56506740, 56506740, 29095457, 24382602, 17725109, 80326401, 80326401, 80326401,
+            62089826, 43219114, 97045737, 97045737, 97045737, 10045474, 10045474,
+        ];
+        let ydke = encode_ydke_main(&ids);
+        assert_eq!(
+            ydke,
+            "ydke://R7x9AEe8fQBHvH0AMdwRATHcEQEx3BEBeA09AxNWxAMTVsQDE1bEA6OpVwWjqVcFryPeAK8j3gCvI94AOLFjBDixYwQ4sWME/omcBf6JnAWyMswFNQeDAjUHgwI1B4MCdDleA3Q5XgN0OV4DIfa7AYoMdAG1dg4BAa/JBAGvyQQBr8kEYmqzA6p4kwLpzMgF6czIBenMyAUiSJkAIkiZAA==!!!"
+        );
     }
 
     #[test]
