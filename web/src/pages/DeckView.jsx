@@ -1,19 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { fetchCards } from '../api/ygoprodeck.js';
-import { CardInfo, DeckInput, ForceGraph, Sidebar } from '../components';
+import {
+    CardInfo,
+    DeckInput,
+    DeckList,
+    ForceGraph,
+    Sidebar,
+} from '../components';
 import { Card } from '../core/Card.js';
 import { useCardInfo, useGraphData, useSearcher } from '../hooks';
-import { decode_ydke, parse_ydk } from '../wasm';
-
-function readFileAsText(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsText(file);
-    });
-}
 
 export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
@@ -46,22 +42,8 @@ export function DeckView() {
 
     const { nodes, links } = useGraphData(deckQuery.data, searcher);
 
-    const handleInput = async (data) => {
-        try {
-            let cardList = [];
-            if (data instanceof File) {
-                const text = await readFileAsText(data);
-                cardList = parse_ydk(text, true);
-            } else if (typeof data === 'string') {
-                cardList = data.startsWith('ydke://')
-                    ? decode_ydke(data, true)
-                    : parse_ydk(data, true);
-            }
-            cardList = [...new Set(cardList)];
-            setDeckIds(cardList);
-        } catch (error) {
-            console.error('Error processing data:', error);
-        }
+    const handleInput = (cardList) => {
+        setDeckIds(cardList);
     };
 
     if (deckQuery.isLoading || isSearcherLoading) {
@@ -72,14 +54,15 @@ export function DeckView() {
         return <div>Error loading cards</div>;
     }
 
-    const cards = deckQuery.data;
+    // cards of the deck including small world connections
+    const cards = nodes;
 
     if (cards && searcher) {
         const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
     }
 
     return (
-        <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_350px] lg:divide-x xl:grid-cols-[1fr_650px]'>
+        <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
             <div
                 onClick={closeCard}
@@ -88,16 +71,13 @@ export function DeckView() {
                 {deckIds === null && (
                     <>
                         <DeckInput
-                            onFile={(file) => handleInput(file[0])}
-                            onText={(text) => handleInput(text)}
+                            onInput={(cardList) => handleInput(cardList)}
                         ></DeckInput>
                         <div class='my-4 flex w-full max-w-sm items-center justify-center gap-3 text-slate-400'>
                             <span class='text-xs tracking-wide'>OR</span>
                         </div>
                         <button
-                            onClick={() => {
-                                setDeckIds([]);
-                            }}
+                            onClick={() => handleInput([])}
                             class='cursor-pointer rounded bg-slate-700 px-4 py-2 font-bold hover:bg-slate-600'
                         >
                             Start with an Empty Deck
@@ -112,7 +92,9 @@ export function DeckView() {
                     />
                 )}
             </div>
-            <Sidebar class='col-span-2 lg:col-span-1' />
+            <Sidebar class='col-span-2 lg:col-span-1'>
+                <DeckList cards={cards} setCardInfo={setCardInfo} />
+            </Sidebar>
         </div>
     );
 }

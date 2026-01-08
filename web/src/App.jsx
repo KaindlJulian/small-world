@@ -23,7 +23,7 @@ export function App() {
         <React.StrictMode>
             <Providers>
                 <Header />
-                <main class='h-full'>
+                <main class='absolute top-12 h-[calc(100%-48px)] w-full'>
                     <Router>
                         <Route path='/' component={DeckView} />
                         <Route path='/deck' component={DeckView} />

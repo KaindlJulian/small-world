@@ -5,7 +5,7 @@ import { GraphControls } from '../components';
 
 const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = 'oklch(0.9 0.14 149.81)';
-const BASE_COLOR = '#99a1af';
+const BASE_COLOR = 'oklch(70.4% 0.04 256.788)'; //slate-400
 
 export function ForceGraph({ nodes, links, setCardInfo }) {
     console.log('render graph');
@@ -41,6 +41,11 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
     const handleShowBridges = () => {
         if (!svgRef.current) return;
         const svg = d3.select(svgRef.current);
+        svg.selectAll('.node-circle')
+            .transition()
+            .duration(200)
+            .attr('stroke', null);
+        svg.selectAll('.link').attr('stroke', BASE_COLOR);
         svg.selectAll('.link-label')
             .transition()
             .duration(200)
@@ -72,7 +77,7 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
         simulationRef.current = simulation;
 
         // Elements
-        const { link, linkLabel } = createLinks(global, links);
+        const { link, linkLabel } = createLinks(global, links, setCardInfo);
         const node = createNodes(
             global,
             nodes,
@@ -88,15 +93,7 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
 
         // Reset on background click
         svg.on('click', () => {
-            node.selectAll('circle')
-                .attr('stroke', null)
-                .attr('stroke-width', null);
-            link.transition().duration(200).attr('stroke', BASE_COLOR);
-            global
-                .selectAll('.link-label')
-                .transition()
-                .duration(200)
-                .style('opacity', 0);
+            resetHighlighted(node, link, global);
         });
 
         // Zooming and Panning
@@ -121,10 +118,10 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
                 preserveAspectRatio='xMidYMid meet'
             ></svg>
             <GraphControls
-                showRemove={false} // show button to remove selected card
-                onShowBridges={handleShowBridges} // show or hide all bridge icons
-                onAddCard={() => {}} // add a new card to the graph, dont implement for now
-                onRemoveCard={() => {}} // remove the selected card from the graph
+                showRemove={false}
+                onShowBridges={handleShowBridges}
+                onAddCard={() => {}}
+                onRemoveCard={() => {}}
                 onToggleLayout={handleToggleLayout}
             />
         </div>
@@ -154,7 +151,7 @@ function setupSimulation(nodes) {
         .force('collide', d3.forceCollide(15))
         .force('charge', d3.forceManyBody().strength(-300))
         .force('center', d3.forceCenter(0, 0))
-        .force('radial', d3.forceRadial(200, 0, 0).strength(0.5));
+        .force('radial', d3.forceRadial(180, 0, 0).strength(0.5));
 }
 
 function setupZoom(svg, global) {
@@ -190,7 +187,7 @@ function updatePositions(link, linkLabel, node) {
     node.attr('transform', (d) => `translate(${d.x}, ${d.y})`);
 }
 
-function createLinks(global, links) {
+function createLinks(global, links, setCardInfo) {
     const link = global
         .append('g')
         .attr('stroke', BASE_COLOR)
@@ -199,6 +196,7 @@ function createLinks(global, links) {
         .data(links)
         .enter()
         .append('line')
+        .attr('class', 'link')
         .attr('stroke-width', 1.3);
 
     const linkLabel = global
@@ -264,31 +262,6 @@ function createNodes(
         .enter()
         .append('g')
         .style('cursor', 'pointer')
-        .on('click', (event, d) => {
-            event.stopPropagation();
-            setCardInfo(d);
-            // highlight selected node and connected links
-            d3.select(event.currentTarget)
-                .select('circle')
-                .attr('stroke', PRIMARY_COLOR)
-                .attr('stroke-width', 0)
-                .transition()
-                .duration(200)
-                .attr('stroke-width', 4);
-            link.attr('stroke', (l) => {
-                return l.source === d || l.target === d
-                    ? PRIMARY_COLOR
-                    : BASE_COLOR;
-            });
-            global.selectAll('.bridge-circle').attr('fill', PRIMARY_COLOR);
-            global
-                .selectAll('.link-label')
-                .transition()
-                .duration(200)
-                .style('opacity', (l) => {
-                    return l.source === d || l.target === d ? 1 : 0;
-                });
-        })
         .call(
             d3
                 .drag()
@@ -317,7 +290,36 @@ function createNodes(
                 }),
         );
 
-    node.append('circle').attr('r', 10).attr('fill', 'white');
+    node.on('click', (event, d) => {
+        event.stopPropagation();
+        setCardInfo(d);
+        // highlight selected node and connected links
+        node.select('circle').attr('stroke', null).attr('stroke-width', null);
+        d3.select(event.currentTarget)
+            .select('circle')
+            .attr('stroke', PRIMARY_COLOR)
+            .transition()
+            .duration(200)
+            .attr('stroke-width', 4);
+        link.attr('stroke', (l) => {
+            return l.source === d || l.target === d
+                ? PRIMARY_COLOR
+                : BASE_COLOR;
+        });
+        global.selectAll('.bridge-circle').attr('fill', PRIMARY_COLOR);
+        global
+            .selectAll('.link-label')
+            .transition()
+            .duration(200)
+            .style('opacity', (l) => {
+                return l.source === d || l.target === d ? 1 : 0;
+            });
+    });
+
+    node.append('circle')
+        .attr('class', 'node-circle')
+        .attr('r', 10)
+        .attr('fill', 'white');
 
     node.append('image')
         .attr('href', 'bg.jpg')
@@ -329,4 +331,14 @@ function createNodes(
         .attr('clip-path', 'url(#circle-clip)');
 
     return node;
+}
+
+function resetHighlighted(node, link, global) {
+    node.selectAll('circle').attr('stroke', null).attr('stroke-width', null);
+    link.attr('stroke', BASE_COLOR);
+    global
+        .selectAll('.link-label')
+        .transition()
+        .duration(200)
+        .style('opacity', 0);
 }
