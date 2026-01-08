@@ -6,9 +6,12 @@ const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = 'oklch(0.9 0.14 149.81)';
 const BASE_COLOR = 'oklch(70.4% 0.04 256.788)'; //slate-400
 
-export function ForceGraph({ nodes, links, setCardInfo }) {
-    console.log('render graph');
-
+export function ForceGraph({
+    nodes,
+    links,
+    setCardInfo,
+    highlightedCardSignal,
+}) {
     const svgRef = useRef(null);
     const zoomRef = useRef(null);
     const simulationRef = useRef(null);
@@ -63,7 +66,15 @@ export function ForceGraph({ nodes, links, setCardInfo }) {
     };
 
     useEffect(() => {
+        const highlightedCard = highlightedCardSignal.value;
+        if (highlightedCard) {
+            handleHighlightNode(highlightedCard.id);
+        }
+    }, [highlightedCardSignal.value]);
+
+    useEffect(() => {
         if (!svgRef.current) return;
+        console.log('render graph');
 
         const { width, height } = svgRef.current.getBoundingClientRect();
         const w = width || 600;

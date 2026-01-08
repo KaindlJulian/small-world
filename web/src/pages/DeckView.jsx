@@ -16,7 +16,7 @@ export function DeckView() {
     const [deckIds, setDeckIds] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
     const { closeCard, setCardInfo } = useCardInfo();
-    const highlightedCardId = useSignal(null);
+    const highlightedCardSignal = useSignal(null);
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckIds],
@@ -91,6 +91,7 @@ export function DeckView() {
                         nodes={nodes}
                         links={links}
                         setCardInfo={setCardInfo}
+                        highlightedCardSignal={highlightedCardSignal}
                     />
                 )}
             </div>
@@ -99,7 +100,7 @@ export function DeckView() {
                     cards={cards}
                     setCardInfo={(card) => {
                         setCardInfo(card);
-                        highlightedCardId.value = card.id;
+                        highlightedCardSignal.value = card;
                     }}
                 />
             </Sidebar>
