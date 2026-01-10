@@ -1,8 +1,8 @@
+import { useCardInfo } from '@/hooks';
 import { useSignal } from '@preact/signals';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { GraphControls } from '../components';
-import { useCardInfo } from '../hooks';
+import { GraphControls } from './GraphControls.jsx';
 
 const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = '#14b8a6'; // teal-400
@@ -118,6 +118,7 @@ export function ForceGraph({ nodes, links }) {
 
         // Reset on background click
         svg.on('click', () => {
+            isShowingLabels.value = false;
             resetHighlighted(node, link, global);
         });
 

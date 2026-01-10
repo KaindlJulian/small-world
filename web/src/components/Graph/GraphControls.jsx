@@ -1,5 +1,5 @@
 import { Expand } from 'lucide-preact';
-import { Button } from '.';
+import { Button } from '../';
 
 export function GraphControls({
     isLocked,
