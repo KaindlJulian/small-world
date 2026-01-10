@@ -1,4 +1,5 @@
 import { ChevronLeft } from 'lucide-preact';
+import { Button } from '.';
 import levelIcon from '../assets/level_star.svg';
 import { useCardInfo } from '../hooks/useCardInfo';
 
@@ -31,7 +32,9 @@ export function CardInfo() {
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 } z-50 w-72`}
             >
-                <button
+                <Button
+                    size='icon'
+                    variant='ghost'
                     onClick={() => {
                         if (isOpen) {
                             setIsAutoOpen(false);
@@ -41,14 +44,14 @@ export function CardInfo() {
                             isOpenSignal.value = true;
                         }
                     }}
-                    class='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full transition-all duration-250 hover:bg-slate-600 hover:shadow-lg'
+                    className='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250'
                 >
                     <ChevronLeft
                         class={`transform transition-transform duration-250 ${
                             !isOpen && '-scale-x-100'
                         }`}
                     />
-                </button>
+                </Button>
 
                 <aside class='flex h-full flex-col pb-4'>
                     <div class='mb-2 bg-amber-700 py-2 text-center'>
