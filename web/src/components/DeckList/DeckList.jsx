@@ -15,12 +15,13 @@ const sortOptions = [
     { id: 'level', text: 'Level' },
     { id: 'atk', text: 'ATK' },
     { id: 'def', text: 'DEF' },
+    { id: 'links', text: 'Connections' },
 ];
 
 export function DeckList({ cards, onRemoveCard }) {
     const [isGridView, setIsGridView] = useState(true);
     const [isDescending, setIsDescending] = useState(true);
-    const [criteria, setCriteria] = useState('name');
+    const [criteria, setCriteria] = useState('links');
     const [isRemovingCards, setIsRemovingCards] = useState(false);
     const { setCardInfo } = useCardInfo();
 
@@ -40,6 +41,10 @@ export function DeckList({ cards, onRemoveCard }) {
                 } else {
                     return b.name.localeCompare(a.name);
                 }
+            } else if (criteria === 'links') {
+                return descending
+                    ? b.links.length - a.links.length
+                    : a.links.length - b.links.length;
             } else {
                 return descending
                     ? b[criteria] - a[criteria]
@@ -63,8 +68,6 @@ export function DeckList({ cards, onRemoveCard }) {
 
     if (!cards) return null;
 
-    sortCards(criteria, isDescending);
-
     return (
         <>
             <div class='sticky top-0 z-50 flex w-full gap-2 bg-slate-800 p-4'>
@@ -76,7 +79,7 @@ export function DeckList({ cards, onRemoveCard }) {
                 >
                     {isRemovingCards ? 'Cancel' : 'Remove'}
                 </Button>
-                <div class='grow' />
+
                 <Button
                     variant='secondary'
                     size='icon'
@@ -84,6 +87,7 @@ export function DeckList({ cards, onRemoveCard }) {
                 >
                     {isGridView ? <List /> : <LayoutGrid />}
                 </Button>
+                <div class='grow' />
                 <Combobox
                     items={sortOptions}
                     placeholder='Sort by...'
