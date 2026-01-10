@@ -1,6 +1,7 @@
 import { Upload } from 'lucide-preact';
 import { useEffect, useRef } from 'react';
 import { decode_ydke, parse_ydk } from '../wasm';
+import { Button } from '.';
 
 function readFileAsText(file) {
     return new Promise((resolve, reject) => {
@@ -68,37 +69,44 @@ export function DeckInput({ onInput }) {
     }, []);
 
     return (
-        <div class='flex items-center justify-center lg:w-lg'>
-            <label
-                htmlFor='dropzone-file'
-                tabIndex={0}
-                onDragOver={(e) => {
-                    e.preventDefault();
-                }}
-                onDrop={handleDrop}
-                class='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-600 hover:bg-slate-800'
-            >
-                <Upload class='h-8 w-8' />
-                <div class='text-body flex flex-col items-center justify-center px-5 pt-5 pb-6'>
-                    <p class='mb-2 text-sm'>
-                        <span class='font-semibold'>Upload</span> a File or
-                        <span class='font-semibold'> Paste </span> from
-                        Clipboard
-                    </p>
-                    <p class='text-xs'>
-                        Formats: YDK, YDKE, sensible plain text
-                    </p>
-                </div>
-                <input
-                    ref={inputRef}
-                    id='dropzone-file'
-                    type='file'
-                    accept='.ydk'
-                    multiple={false}
-                    class='hidden'
-                    onChange={(e) => handleFile(e.target.files[0])}
-                />
-            </label>
-        </div>
+        <>
+            <div class='flex items-center justify-center lg:w-lg'>
+                <label
+                    htmlFor='dropzone-file'
+                    tabIndex={0}
+                    onDragOver={(e) => {
+                        e.preventDefault();
+                    }}
+                    onDrop={handleDrop}
+                    class='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-600 hover:bg-slate-800 hover:shadow-xl'
+                >
+                    <Upload />
+                    <div class='text-body flex flex-col items-center justify-center px-5 pt-5 pb-6'>
+                        <p class='mb-2 text-sm'>
+                            <span class='font-semibold'>Upload</span> a File or
+                            <span class='font-semibold'> Paste </span> from
+                            Clipboard
+                        </p>
+                        <p class='text-xs'>
+                            Formats: YDK, YDKE, sensible plain text
+                        </p>
+                    </div>
+                    <input
+                        ref={inputRef}
+                        id='dropzone-file'
+                        type='file'
+                        accept='.ydk'
+                        multiple={false}
+                        class='hidden'
+                        onChange={(e) => handleFile(e.target.files[0])}
+                    />
+                </label>
+            </div>
+            <div class='my-4 flex w-full max-w-sm items-center justify-center gap-3 text-slate-400'>
+                <span class='text-xs tracking-wide'>OR</span>
+            </div>
+
+            <Button onClick={() => onInput([])}>Create a new Deck</Button>
+        </>
     );
 }

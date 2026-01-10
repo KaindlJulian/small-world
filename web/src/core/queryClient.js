@@ -1,9 +1,4 @@
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { QueryClient } from '@tanstack/react-query';
-
-export const asyncStoragePersister = createAsyncStoragePersister({
-    storage: window.localStorage,
-});
 
 export const queryClient = new QueryClient({
     defaultOptions: {
@@ -19,5 +14,6 @@ export const queryClient = new QueryClient({
     },
 });
 
-// devtools support
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+if (import.meta.env.DEV) {
+    window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}

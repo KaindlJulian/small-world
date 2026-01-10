@@ -73,15 +73,6 @@ export function DeckView() {
                         <DeckInput
                             onInput={(cardList) => handleInput(cardList)}
                         ></DeckInput>
-                        <div class='my-4 flex w-full max-w-sm items-center justify-center gap-3 text-slate-400'>
-                            <span class='text-xs tracking-wide'>OR</span>
-                        </div>
-                        <button
-                            onClick={() => handleInput([])}
-                            class='cursor-pointer rounded bg-slate-700 px-4 py-2 font-bold hover:bg-slate-600'
-                        >
-                            Start with an Empty Deck
-                        </button>
                     </>
                 )}
                 {deckCodes !== null && (

@@ -1,17 +1,19 @@
+import { useSignal } from '@preact/signals';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { GraphControls } from '../components';
 import { useCardInfo } from '../hooks';
 
 const INITIAL_SCALE = 1.5;
-const PRIMARY_COLOR = 'oklch(0.9 0.14 149.81)';
-const BASE_COLOR = 'oklch(70.4% 0.04 256.788)'; //slate-400
+const PRIMARY_COLOR = '#14b8a6'; // teal-400
+const BASE_COLOR = '#94a3b8'; // slate-400
 
 export function ForceGraph({ nodes, links }) {
     const svgRef = useRef(null);
     const zoomRef = useRef(null);
     const simulationRef = useRef(null);
-    const isLockedRef = useRef(false);
+    const isLocked = useSignal(false);
+    const isShowingLabels = useSignal(false);
     const { cardSignal, setCardInfo } = useCardInfo();
 
     const handleHighlightNode = (nodeId) => {
@@ -33,10 +35,9 @@ export function ForceGraph({ nodes, links }) {
         }
     };
 
-    const handleToggleLayout = (isLocked) => {
+    const handleToggleLayout = (locked) => {
         if (simulationRef.current) {
-            isLockedRef.current = !isLocked;
-            if (!isLocked) {
+            if (locked) {
                 simulationRef.current.stop();
             } else {
                 simulationRef.current.alpha(0.3).restart();
@@ -44,22 +45,32 @@ export function ForceGraph({ nodes, links }) {
         }
     };
 
-    const handleShowBridges = () => {
-        if (!svgRef.current) return;
-        const svg = d3.select(svgRef.current);
-        svg.selectAll('.node-circle')
-            .transition()
-            .duration(200)
-            .attr('stroke', null);
-        svg.selectAll('.link').attr('stroke', BASE_COLOR);
-        svg.selectAll('.link-label')
-            .transition()
-            .duration(200)
-            .style('opacity', 1);
-        svg.selectAll('.bridge-circle')
-            .transition()
-            .duration(200)
-            .attr('fill', BASE_COLOR);
+    const handleShowBridges = (show) => {
+        if (show) {
+            if (!svgRef.current) return;
+            const svg = d3.select(svgRef.current);
+            svg.selectAll('.node-circle')
+                .transition()
+                .duration(200)
+                .attr('stroke', null);
+            svg.selectAll('.link').attr('stroke', BASE_COLOR);
+            svg.selectAll('.link-label')
+                .transition()
+                .duration(200)
+                .style('opacity', 1);
+            svg.selectAll('.bridge-circle')
+                .transition()
+                .duration(200)
+                .attr('fill', BASE_COLOR);
+        } else {
+            if (!svgRef.current) return;
+            const svg = d3.select(svgRef.current);
+            resetHighlighted(
+                svg.selectAll('.node'),
+                svg.selectAll('.link'),
+                svg.selectAll('.global'),
+            );
+        }
     };
 
     useEffect(() => {
@@ -81,7 +92,7 @@ export function ForceGraph({ nodes, links }) {
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
         svg.attr('viewBox', [-w / 2, -h / 2, w, h]);
-        const global = svg.append('g');
+        const global = svg.append('g').attr('class', 'global');
 
         // Clip paths for images
         setupDefs(svg);
@@ -98,7 +109,7 @@ export function ForceGraph({ nodes, links }) {
             link,
             linkLabel,
             simulation,
-            isLockedRef,
+            isLocked,
             setCardInfo,
         );
 
@@ -126,6 +137,8 @@ export function ForceGraph({ nodes, links }) {
                 preserveAspectRatio='xMidYMid meet'
             ></svg>
             <GraphControls
+                isLocked={isLocked}
+                isShowingLabels={isShowingLabels}
                 onShowBridges={handleShowBridges}
                 onToggleLayout={handleToggleLayout}
                 onResetZoom={handleResetZoom}
@@ -258,7 +271,7 @@ function createNodes(
     link,
     linkLabel,
     simulation,
-    isLockedRef,
+    isLockedSignal,
     setCardInfo,
 ) {
     const node = global
@@ -273,7 +286,7 @@ function createNodes(
             d3
                 .drag()
                 .on('start', (event, d) => {
-                    if (!event.active && !isLockedRef.current) {
+                    if (!event.active && !isLockedSignal.value) {
                         simulation.alphaTarget(0.3).restart();
                     }
                     d.fx = d.x;
@@ -282,14 +295,14 @@ function createNodes(
                 .on('drag', (event, d) => {
                     d.fx = event.x;
                     d.fy = event.y;
-                    if (isLockedRef.current) {
+                    if (isLockedSignal.value) {
                         d.x = event.x;
                         d.y = event.y;
                         updatePositions(link, linkLabel, node);
                     }
                 })
                 .on('end', (event, d) => {
-                    if (!event.active && !isLockedRef.current) {
+                    if (!event.active && !isLockedSignal.value) {
                         simulation.alphaTarget(0);
                     }
                     d.fx = null;

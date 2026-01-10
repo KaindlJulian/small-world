@@ -1,32 +1,41 @@
-import { useState } from 'react';
+import { Expand } from 'lucide-preact';
+import { Button } from '.';
 
-export function GraphControls({ onShowBridges, onToggleLayout, onResetZoom }) {
-    const [isLocked, setIsLocked] = useState(true);
-
+export function GraphControls({
+    isLocked,
+    isShowingLabels,
+    onShowBridges,
+    onToggleLayout,
+    onResetZoom,
+}) {
     return (
         <div class='fixed bottom-4 flex'>
             <div class='flex space-x-3'>
-                <button
-                    class='flex cursor-pointer rounded-md bg-slate-700 px-3 py-2 tracking-wide hover:bg-slate-600 hover:shadow-lg'
-                    onClick={() => onShowBridges()}
-                >
-                    Show Bridges
-                </button>
-                <button
-                    class='flex cursor-pointer rounded-md bg-slate-700 px-3 py-2 tracking-wide hover:bg-slate-600 hover:shadow-lg'
+                <Button
+                    variant={isShowingLabels.value ? 'primary' : 'secondary'}
                     onClick={() => {
-                        onToggleLayout(!isLocked);
-                        setIsLocked(!isLocked);
+                        isShowingLabels.value = !isShowingLabels.value;
+                        onShowBridges(isShowingLabels.value);
                     }}
                 >
-                    {isLocked ? 'Lock' : 'Unlock'}
-                </button>
-                <button
-                    class='flex cursor-pointer rounded-md bg-slate-700 px-3 py-2 tracking-wide hover:bg-slate-600 hover:shadow-lg'
+                    {isShowingLabels.value ? 'Hide Labels' : 'Show Labels'}
+                </Button>
+                <Button
+                    variant={isLocked.value ? 'primary' : 'secondary'}
+                    onClick={() => {
+                        isLocked.value = !isLocked.value;
+                        onToggleLayout(isLocked.value);
+                    }}
+                >
+                    {isLocked.value ? 'Unlock' : 'Lock'}
+                </Button>
+                <Button
+                    variant='secondary'
+                    size='icon'
                     onClick={() => onResetZoom()}
                 >
-                    Reset Zoom
-                </button>
+                    <Expand />
+                </Button>
             </div>
         </div>
     );
