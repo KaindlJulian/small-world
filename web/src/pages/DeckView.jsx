@@ -57,10 +57,6 @@ export function DeckView() {
     // cards of the deck including small world connections
     const cards = deckQuery.data; //! probably change to cards = nodes
 
-    if (cards && searcher) {
-        const bridges = searcher.find_bridges_ids(cards.map((card) => card.id));
-    }
-
     return (
         <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
@@ -69,11 +65,7 @@ export function DeckView() {
                 class='flex flex-col items-center justify-center'
             >
                 {deckCodes === null && (
-                    <>
-                        <DeckInput
-                            onInput={(cardList) => handleInput(cardList)}
-                        ></DeckInput>
-                    </>
+                    <DeckInput onInput={(cardList) => handleInput(cardList)} />
                 )}
                 {deckCodes !== null && (
                     <ForceGraph nodes={nodes} links={links} />
@@ -88,6 +80,9 @@ export function DeckView() {
                                 (passcode) => passcode !== card.passcode,
                             ),
                         );
+                    }}
+                    onAddCard={(card) => {
+                        setDeckCodes([...deckCodes, card.passcode]);
                     }}
                 />
             </Sidebar>

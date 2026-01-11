@@ -33,7 +33,7 @@ export function Modal({ isOpen, onClose, title, children }) {
         <div class='fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out'>
             <div
                 class={cn(
-                    'fixed inset-0 bg-black/40 transition-opacity',
+                    'fixed inset-0 bg-black/60 transition-opacity',
                     isOpen ? 'opacity-100' : 'opacity-0',
                 )}
                 onClick={onClose}

@@ -6,7 +6,7 @@ import {
     List,
 } from 'lucide-preact';
 import { useEffect, useState } from 'preact/hooks';
-import { Button, Combobox } from '../';
+import { Button, Combobox, Modal } from '../';
 import { DeckDetailsView } from './DeckDetailsView';
 import { DeckGridView } from './DeckGridView';
 
@@ -23,6 +23,7 @@ export function DeckList({ cards, onRemoveCard }) {
     const [isDescending, setIsDescending] = useState(true);
     const [criteria, setCriteria] = useState('links');
     const [isRemovingCards, setIsRemovingCards] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { setCardInfo } = useCardInfo();
 
     const handleCardClick = (card, forceDelete = false) => {
@@ -70,8 +71,17 @@ export function DeckList({ cards, onRemoveCard }) {
 
     return (
         <>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title='Add Card'
+            >
+                <Button onClick={() => setIsModalOpen(false)}>
+                    Close Modal
+                </Button>
+            </Modal>
             <div class='sticky top-0 z-50 flex w-full gap-2 bg-slate-800 p-4'>
-                <Button onClick={() => {}}>Add</Button>
+                <Button onClick={() => setIsModalOpen(true)}>Add</Button>
                 <Button
                     class='remove-toggle-btn'
                     variant={isRemovingCards ? 'destructive' : 'secondary'}
