@@ -1,4 +1,4 @@
-import { cn } from '/utils';
+import { cn } from '@/utils';
 
 const VARIANTS = {
     primary: 'bg-teal-600 text-foreground hover:bg-teal-600/80',
