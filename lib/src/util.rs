@@ -149,6 +149,14 @@ mod tests {
         assert_eq!(ids[0], 8240199);
     }
 
+    //OfUdBKOpVwU1B4MCeA09A9canwGt4goCoJQEArIyzAU4sWME b69ADHcEQHBcjEFE1bEA/6JnAVHvH0ARK0EBa8j3gA=
+    #[test]
+    fn test_ydke_decodes_2() {
+        let ydke = "ydke://OfUdBKOpVwU1B4MCeA09A9canwGt4goCoJQEArIyzAU4sWME+b69ADHcEQHBcjEFE1bEA/6JnAVHvH0ARK0EBa8j3gA=!!!";
+        let ids = decode_ydke(ydke, true);
+        assert_eq!(ids.len(), 17);
+    }
+
     #[test]
     fn test_ydke_decode() {
         let ydke = "ydke://R7x9AEe8fQBHvH0AMdwRATHcEQEx3BEBeA09AxNWxAMTVsQDE1bEA6OpVwWjqVcFryPeAK8j3gCvI94AOLFjBDixYwQ4sWME/omcBf6JnAWyMswFNQeDAjUHgwI1B4MCdDleA3Q5XgN0OV4DIfa7AYoMdAG1dg4BAa/JBAGvyQQBr8kEYmqzA6p4kwLpzMgF6czIBenMyAUiSJkAIkiZAA==!gZ1eA92drgDUc6AAgQqVAjXQkAM10JADNdCQA81CVwXjUkIBg/jHA8oavwGWunMBlrpzAQJcggICXIIC!RK0EBUStBAXBcjEFwXIxBfm+vQCglAQCOfUdBK3iCgKt4goCreIKAtcanwHXGp8BYr4XBWK+FwVivhcF!";

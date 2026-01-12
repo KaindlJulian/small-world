@@ -45,9 +45,9 @@ export function DeckView() {
             )
                 .replace('ydke://', '')
                 .replace('!!!', '');
-
-            if (ydkeString !== ydkeUrl) {
-                route(`/deck?ydke=${ydkeString}`, true);
+            const encodedYdkeString = encodeURIComponent(ydkeString);
+            if (encodedYdkeString !== ydkeUrl) {
+                route(`/deck?ydke=${encodedYdkeString}`, true);
             }
         }
     }, [deckQuery.data, ydkeUrl, route]);
