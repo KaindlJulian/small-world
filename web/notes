@@ -3,11 +3,6 @@
 - bottom of main area has controls for filtering, adjusting graph layout and adding more nodes and links
 
 - different views
-    - deck view
-        - import deck list ( plain text )
-        - sidebar acts as decklist overview
-            - section for finding new bridges to add to deck
-                - output: list of best bridge cards to add to deck, each has card info + amount of new connections it would open up
     - bridge view (find best bridges)
         - sidebar acts query-like
             - top, input start card(s)
@@ -20,9 +15,6 @@
             - edges are the property that connects the cards, e.g. attribute, type, level, etc.
 
     - tutorial
-
-- can remove name from csv, maybe not if i wanna add input of plain text decklists with card names
-
-- encode ydke in /deck url params
-
-- make connection in detailed deck list more breadcrumb-like
+        - explain small world concept (for non-ygo players)
+        - explain how to use the app
+        - link to open a example deck

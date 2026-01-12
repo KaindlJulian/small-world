@@ -5,6 +5,7 @@ export function useGraphData(cards, searcher) {
         if (!cards || !searcher) {
             return { nodes: [], links: [] };
         }
+        console.log('calculating graph data');
 
         const nodes = cards;
 

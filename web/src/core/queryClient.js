@@ -6,6 +6,7 @@ export const queryClient = new QueryClient({
             refetchOnWindowFocus: false,
             staleTime: Infinity,
             gcTime: Infinity,
+            retry: 1,
         },
         dehydrateOptions: {
             shouldDehydrateQuery: (query) =>

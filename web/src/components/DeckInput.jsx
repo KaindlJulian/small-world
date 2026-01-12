@@ -1,7 +1,7 @@
 import { Upload } from 'lucide-preact';
 import { useEffect, useRef } from 'react';
-import { decode_ydke, parse_ydk } from '../wasm';
 import { Button } from '.';
+import { decode_ydke, parse_ydk } from '../wasm';
 
 function readFileAsText(file) {
     return new Promise((resolve, reject) => {
@@ -87,9 +87,7 @@ export function DeckInput({ onInput }) {
                             <span class='font-semibold'> Paste </span> from
                             Clipboard
                         </p>
-                        <p class='text-xs'>
-                            Formats: YDK, YDKE, sensible plain text
-                        </p>
+                        <p class='text-xs'>Formats: YDK, YDKE</p>
                     </div>
                     <input
                         ref={inputRef}

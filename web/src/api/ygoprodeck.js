@@ -1,5 +1,3 @@
-// https://ygoprodeck.com/api-guide/
-
 const url = 'https://db.ygoprodeck.com/api/v7/cardinfo.php';
 
 export async function fetchCards(passcodes) {
@@ -20,4 +18,20 @@ export async function fetchCards(passcodes) {
 
     const json = await response.json();
     return json.data;
+}
+
+// https://ygoprodeck.com/api-guide/#response-info
+export function mapToCard(d) {
+    return {
+        id: d.misc_info[0].konami_id,
+        passcode: d.id,
+        name: d.name,
+        attribute: d.attribute,
+        level: d.level,
+        properties: d.typeline,
+        text: d.desc,
+        atk: d.atk,
+        def: d.def,
+        frame: d.frameType,
+    };
 }
