@@ -24,16 +24,15 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
     return (
         <div
             class={cn(
-                'grid grow grid-cols-[8rem_1fr] grid-rows-[auto_auto_1fr] gap-2 truncate rounded bg-slate-800 p-2 xl:grid-cols-[10rem_1fr]',
-                isRemoving &&
-                    'opacity-75 outline-2 outline-red-400 outline-dashed',
+                'transition-translate grid grow grid-cols-[8rem_1fr] grid-rows-[auto_auto_1fr] gap-2 truncate rounded bg-slate-800 p-2 outline-2 outline-transparent duration-300 outline-dashed xl:grid-cols-[10rem_1fr]',
+                isRemoving && 'translate-x-12 opacity-75 outline-red-400',
             )}
-            onClick={() => onCardClick(card)}
         >
             <img
                 src='card.jpg'
                 alt={card.name}
                 class={`row-span-3 rounded xl:row-span-4 ${isRemoving ? 'grayscale' : 'cursor-pointer transition-transform hover:scale-105'}`}
+                onClick={() => onCardClick(card)}
             />
 
             <div class='text-lg'>{card.name}</div>
