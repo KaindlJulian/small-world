@@ -8,7 +8,7 @@ export function Combobox({ items, onSelect, placeholder }) {
     const [selectedItem, setSelectedItem] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
-    useOnClickOutside([ref], () => setIsOpen(false));
+    useOnClickOutside(() => setIsOpen(false), { refs: [ref] });
 
     const filtered = useMemo(() => {
         if (query === '') return items;

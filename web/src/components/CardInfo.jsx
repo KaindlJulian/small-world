@@ -12,7 +12,7 @@ const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
 export function CardInfo() {
     const { cardSignal, isOpenSignal, setIsAutoOpen } = useCardInfo();
     const ref = useRef(null);
-    useOnClickOutside([ref], () => (isOpenSignal.value = false));
+    useOnClickOutside(() => (isOpenSignal.value = false), { refs: [ref] });
 
     if (!cardSignal.value) {
         return null;

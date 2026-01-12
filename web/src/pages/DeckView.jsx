@@ -9,12 +9,11 @@ import {
     Sidebar,
 } from '../components';
 import { Card } from '../core/Card.js';
-import { useCardInfo, useGraphData, useSearcher } from '../hooks';
+import { useGraphData, useSearcher } from '../hooks';
 
 export function DeckView() {
     const [deckCodes, setDeckCodes] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
-    const { closeCardInfo } = useCardInfo();
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckCodes],

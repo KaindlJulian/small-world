@@ -9,7 +9,7 @@ const attributeIconsImport = import.meta.glob('../../assets/attributes/*.svg', {
 
 export function DeckDetailsView({ list, isRemovingCards, onCardClick }) {
     return (
-        <div class='deck-container flex flex-col gap-4 p-4'>
+        <div class='flex flex-col gap-4 p-4' data-ignore-outside-clicks='true'>
             {list.map((card) => (
                 <div key={card.id} class='flex'>
                     <div

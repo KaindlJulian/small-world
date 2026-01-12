@@ -1,11 +1,11 @@
-import { useCardInfo, useSearcher } from '@/hooks';
+import { useCardInfo, useOnClickOutside, useSearcher } from '@/hooks';
 import {
     ArrowDownNarrowWide,
     ArrowDownWideNarrow,
     LayoutGrid,
     List,
 } from 'lucide-preact';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Combobox, Modal } from '../';
 import { DeckDetailsView } from './DeckDetailsView';
 import { DeckGridView } from './DeckGridView';
@@ -28,6 +28,16 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
 
     const { setCardInfo } = useCardInfo();
     const { searcher, isSearcherLoading } = useSearcher();
+
+    useOnClickOutside(
+        () => {
+            if (view.removing) {
+                console.log('set remove false');
+                setView((prev) => ({ ...prev, removing: false }));
+            }
+        },
+        { ignoreAttribute: 'data-ignore-outside-clicks' },
+    );
 
     const handleCardClick = (card) => {
         if (view.removing) {
@@ -60,19 +70,6 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
             return desc ? -comparison : comparison;
         });
     }, [cards, sortConfig]);
-
-    useEffect(() => {
-        if (!view.removing) return;
-
-        const handleGlobalClick = (event) => {
-            if (event.target.closest('.deck-container')) return;
-            if (event.target.closest('.remove-toggle-btn')) return;
-            setView((prev) => ({ ...prev, removing: false }));
-        };
-
-        document.addEventListener('click', handleGlobalClick);
-        return () => document.removeEventListener('click', handleGlobalClick);
-    }, [view.removing]);
 
     if (!cards || isSearcherLoading) return null;
 
@@ -120,7 +117,6 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                     Add
                 </Button>
                 <Button
-                    class='remove-toggle-btn'
                     variant={view.removing ? 'destructive' : 'secondary'}
                     onClick={() =>
                         setView((prev) => ({
@@ -128,6 +124,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                             removing: !prev.removing,
                         }))
                     }
+                    data-ignore-outside-clicks='true'
                 >
                     {view.removing ? 'Cancel' : 'Remove'}
                 </Button>
@@ -138,9 +135,11 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                     onClick={() =>
                         setView((prev) => ({ ...prev, grid: !prev.grid }))
                     }
+                    data-ignore-outside-clicks='true'
                 >
                     {view.grid ? <List /> : <LayoutGrid />}
                 </Button>
+
                 <div class='grow' />
                 <Combobox
                     items={sortOptions}

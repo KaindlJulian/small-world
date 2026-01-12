@@ -2,7 +2,10 @@ import { Trash2 } from 'lucide-preact';
 
 export function DeckGridView({ list, isRemovingCards, onCardClick }) {
     return (
-        <div class='deck-container grid grid-cols-6 gap-4 p-4 lg:grid-cols-4 xl:grid-cols-5'>
+        <div
+            class='grid grid-cols-6 gap-4 p-4 lg:grid-cols-4 xl:grid-cols-5'
+            data-ignore-outside-clicks='true'
+        >
             {list.map((card) => (
                 <div
                     key={card.id}
