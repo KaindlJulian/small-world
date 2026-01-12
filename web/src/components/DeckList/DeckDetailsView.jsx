@@ -18,7 +18,7 @@ export function DeckDetailsView({ list, isRemovingCards, onCardClick }) {
                         <Button
                             variant='destructive'
                             size='icon'
-                            onClick={() => onCardClick(card, true)}
+                            onClick={() => onCardClick(card)}
                         >
                             <Minus />
                         </Button>

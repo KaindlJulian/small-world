@@ -29,8 +29,8 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
     const { setCardInfo } = useCardInfo();
     const { searcher, isSearcherLoading } = useSearcher();
 
-    const handleCardClick = (card, forceDelete = false) => {
-        if (view.removing || forceDelete) {
+    const handleCardClick = (card) => {
+        if (view.removing) {
             onRemoveCard(card);
         } else {
             setCardInfo(card);

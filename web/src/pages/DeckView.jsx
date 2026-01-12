@@ -60,10 +60,7 @@ export function DeckView() {
     return (
         <div class='grid h-full divide-slate-600 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
-            <div
-                onClick={() => closeCardInfo()}
-                class='flex flex-col items-center justify-center'
-            >
+            <div class='flex flex-col items-center justify-center'>
                 {deckCodes === null && (
                     <DeckInput onInput={(cardList) => handleInput(cardList)} />
                 )}
