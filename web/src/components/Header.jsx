@@ -16,7 +16,7 @@ export function Header() {
                     href='/bridge'
                     class={`p-3 no-underline ${url == '/bridge' && 'bg-slate-600'}`}
                 >
-                    Bridge Exploration
+                    Bridge Explorer
                 </a>
                 <a
                     href='/tutorial'

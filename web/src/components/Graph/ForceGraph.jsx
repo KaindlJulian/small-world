@@ -1,3 +1,4 @@
+import { highlightGraphLink } from '@/core/signals.js';
 import { useCardInfo } from '@/hooks';
 import { useSignal } from '@preact/signals';
 import * as d3 from 'd3';
@@ -79,6 +80,37 @@ export function ForceGraph({ nodes, links }) {
             handleHighlightNode(highlightedCard.id);
         }
     }, [cardSignal.value]);
+
+    useEffect(() => {
+        if (!highlightGraphLink.value || !svgRef.current) return;
+
+        const { source, target } = highlightGraphLink.value;
+        const svg = d3.select(svgRef.current);
+
+        resetHighlighted(
+            svg.selectAll('.node'),
+            svg.selectAll('.link'),
+            svg.selectAll('.global'),
+        );
+
+        svg.selectAll('.link')
+            .filter(
+                (d) =>
+                    (d.source.id === source.id && d.target.id === target.id) ||
+                    (d.source.id === target.id && d.target.id === source.id),
+            )
+            .attr('stroke', PRIMARY_COLOR);
+
+        svg.selectAll('.link-label')
+            .filter(
+                (d) =>
+                    (d.source.id === source.id && d.target.id === target.id) ||
+                    (d.source.id === target.id && d.target.id === source.id),
+            )
+            .transition()
+            .duration(200)
+            .style('opacity', 1);
+    }, [highlightGraphLink.value]);
 
     useEffect(() => {
         if (!svgRef.current) return;

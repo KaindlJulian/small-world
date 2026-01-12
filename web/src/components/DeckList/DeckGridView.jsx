@@ -1,6 +1,6 @@
 import { Trash2 } from 'lucide-preact';
 
-export function DeckGridView({ list, isRemovingCards, onCardClick }) {
+export function DeckGridView({ list, isRemoving, onCardClick }) {
     return (
         <div
             class='grid grid-cols-6 gap-4 p-4 lg:grid-cols-4 xl:grid-cols-5'
@@ -10,7 +10,7 @@ export function DeckGridView({ list, isRemovingCards, onCardClick }) {
                 <div
                     key={card.id}
                     class={`group relative cursor-pointer rounded transition-transform duration-200 hover:shadow-lg ${
-                        isRemovingCards
+                        isRemoving
                             ? 'outline-2 outline-red-400 outline-dashed'
                             : 'hover:scale-110'
                     }`}
@@ -18,10 +18,10 @@ export function DeckGridView({ list, isRemovingCards, onCardClick }) {
                     <img
                         src='card.jpg'
                         alt={card.name}
-                        class={`w-full rounded ${isRemovingCards && 'grayscale hover:opacity-50'}`}
+                        class={`w-full rounded ${isRemoving && 'grayscale hover:opacity-50'}`}
                         onClick={() => onCardClick(card)}
                     />
-                    {isRemovingCards && (
+                    {isRemoving && (
                         <Trash2
                             size={48}
                             strokeWidth={1.6}

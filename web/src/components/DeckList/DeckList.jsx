@@ -15,7 +15,7 @@ const sortOptions = [
     { id: 'level', text: 'Level' },
     { id: 'atk', text: 'ATK' },
     { id: 'def', text: 'DEF' },
-    { id: 'links', text: 'Connections' },
+    { id: 'links', text: 'Targets' },
 ];
 
 export function DeckList({ cards, onRemoveCard, onAddCard }) {
@@ -170,13 +170,13 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
             {view.grid ? (
                 <DeckGridView
                     list={sortedCards}
-                    isRemovingCards={view.removing}
+                    isRemoving={view.removing}
                     onCardClick={handleCardClick}
                 />
             ) : (
                 <DeckDetailsView
                     list={sortedCards}
-                    isRemovingCards={view.removing}
+                    isRemoving={view.removing}
                     onCardClick={handleCardClick}
                 />
             )}

@@ -7,9 +7,7 @@
         - import deck list ( plain text )
         - sidebar acts as decklist overview
             - section for finding new bridges to add to deck
-                - input: select cards from deck (multi select)
                 - output: list of best bridge cards to add to deck, each has card info + amount of new connections it would open up
-        - add and remove cards (probably via button in sidebar, that changes the decklist to a search form) -> update graph
     - bridge view (find best bridges)
         - sidebar acts query-like
             - top, input start card(s)
