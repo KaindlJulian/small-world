@@ -3,7 +3,7 @@ import { cn } from '@/utils';
 import { Check, ChevronsUpDown } from 'lucide-preact';
 import { useMemo, useRef, useState } from 'react';
 
-export function Combobox({ items, onSelect, placeholder }) {
+export function Combobox({ items, onSelect, placeholder, filterable = true }) {
     const [query, setQuery] = useState('');
     const [selectedItem, setSelectedItem] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -11,11 +11,11 @@ export function Combobox({ items, onSelect, placeholder }) {
     useOnClickOutside(() => setIsOpen(false), { refs: [ref] });
 
     const filtered = useMemo(() => {
-        if (query === '') return items;
+        if (query === '' || !filterable) return items;
         return items.filter((d) =>
             d.text.toLowerCase().includes(query.toLowerCase()),
         );
-    }, [query, items]);
+    }, [query, items, filterable]);
 
     const displayList = filtered.slice(0, 30);
 

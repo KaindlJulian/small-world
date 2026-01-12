@@ -144,6 +144,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                 <Combobox
                     items={sortOptions}
                     placeholder='Sort by...'
+                    filterable={false}
                     onSelect={(item) => {
                         setSortConfig((prev) => ({ ...prev, key: item.id }));
                     }}
