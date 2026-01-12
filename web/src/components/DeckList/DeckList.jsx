@@ -1,11 +1,11 @@
-import { useCardInfo } from '@/hooks';
+import { useCardInfo, useSearcher } from '@/hooks';
 import {
     ArrowDownNarrowWide,
     ArrowDownWideNarrow,
     LayoutGrid,
     List,
 } from 'lucide-preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Combobox, Modal } from '../';
 import { DeckDetailsView } from './DeckDetailsView';
 import { DeckGridView } from './DeckGridView';
@@ -18,103 +18,148 @@ const sortOptions = [
     { id: 'links', text: 'Connections' },
 ];
 
-export function DeckList({ cards, onRemoveCard }) {
-    const [isGridView, setIsGridView] = useState(true);
-    const [isDescending, setIsDescending] = useState(true);
-    const [criteria, setCriteria] = useState('links');
-    const [isRemovingCards, setIsRemovingCards] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+export function DeckList({ cards, onRemoveCard, onAddCard }) {
+    const [view, setView] = useState({
+        grid: true,
+        removing: false,
+        modal: false,
+    });
+    const [sortConfig, setSortConfig] = useState({ key: 'links', desc: true });
+
     const { setCardInfo } = useCardInfo();
+    const { searcher, isSearcherLoading } = useSearcher();
 
     const handleCardClick = (card, forceDelete = false) => {
-        if (isRemovingCards || forceDelete) {
+        if (view.removing || forceDelete) {
             onRemoveCard(card);
         } else {
             setCardInfo(card);
         }
     };
 
-    const sortCards = (criteria, descending) => {
-        cards.sort((a, b) => {
-            if (criteria === 'name') {
-                if (descending) {
-                    return a.name.localeCompare(b.name);
-                } else {
-                    return b.name.localeCompare(a.name);
-                }
-            } else if (criteria === 'links') {
-                return descending
-                    ? b.links.length - a.links.length
-                    : a.links.length - b.links.length;
-            } else {
-                return descending
-                    ? b[criteria] - a[criteria]
-                    : a[criteria] - b[criteria];
+    const sortedCards = useMemo(() => {
+        if (!cards) return [];
+
+        return [...cards].sort((cardA, cardB) => {
+            const { key, desc } = sortConfig;
+            let a = cardA[key];
+            let b = cardB[key];
+
+            if (key === 'links') {
+                a = cardA.links.length;
+                b = cardB.links.length;
             }
+
+            let comparison = 0;
+            if (typeof a === 'string') {
+                comparison = a.localeCompare(b);
+            } else {
+                comparison = a - b;
+            }
+
+            return desc ? -comparison : comparison;
         });
-    };
+    }, [cards, sortConfig]);
 
     useEffect(() => {
-        if (!isRemovingCards) return;
+        if (!view.removing) return;
 
         const handleGlobalClick = (event) => {
             if (event.target.closest('.deck-container')) return;
             if (event.target.closest('.remove-toggle-btn')) return;
-            setIsRemovingCards(false);
+            setView((prev) => ({ ...prev, removing: false }));
         };
 
         document.addEventListener('click', handleGlobalClick);
         return () => document.removeEventListener('click', handleGlobalClick);
-    }, [isRemovingCards]);
+    }, [view.removing]);
 
-    if (!cards) return null;
+    if (!cards || isSearcherLoading) return null;
+
+    const names = searcher
+        .get_all()
+        .map((m) => ({ id: m.id, text: m.name_wasm }))
+        .sort((a, b) => a.text.localeCompare(b.text));
 
     return (
         <>
             <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title='Add Card'
+                isOpen={view.modal}
+                onClose={() => setView((prev) => ({ ...prev, modal: false }))}
+                title='Search a Card'
+                className='flex h-85 flex-col'
             >
-                <Button onClick={() => setIsModalOpen(false)}>
-                    Close Modal
-                </Button>
+                <Combobox
+                    items={names}
+                    placeholder='Search a Card...'
+                    onSelect={(item) => {
+                        const card = searcher.get_by_id(item.id);
+                        onAddCard(card);
+                        setView((prev) => ({ ...prev, modal: false }));
+                    }}
+                ></Combobox>
+                <div class='grow'></div>
+                <div class='mt-4 flex justify-end gap-2'>
+                    <Button
+                        variant='secondary'
+                        onClick={() =>
+                            setView((prev) => ({ ...prev, modal: false }))
+                        }
+                    >
+                        Cancel
+                    </Button>
+                    <Button variant='primary'>Add Card</Button>
+                </div>
             </Modal>
             <div class='sticky top-0 z-50 flex w-full gap-2 bg-slate-800 p-4'>
-                <Button onClick={() => setIsModalOpen(true)}>Add</Button>
+                <Button
+                    onClick={() =>
+                        setView((prev) => ({ ...prev, modal: true }))
+                    }
+                >
+                    Add
+                </Button>
                 <Button
                     class='remove-toggle-btn'
-                    variant={isRemovingCards ? 'destructive' : 'secondary'}
-                    onClick={() => setIsRemovingCards(!isRemovingCards)}
+                    variant={view.removing ? 'destructive' : 'secondary'}
+                    onClick={() =>
+                        setView((prev) => ({
+                            ...prev,
+                            removing: !prev.removing,
+                        }))
+                    }
                 >
-                    {isRemovingCards ? 'Cancel' : 'Remove'}
+                    {view.removing ? 'Cancel' : 'Remove'}
                 </Button>
 
                 <Button
                     variant='secondary'
                     size='icon'
-                    onClick={() => setIsGridView(!isGridView)}
+                    onClick={() =>
+                        setView((prev) => ({ ...prev, grid: !prev.grid }))
+                    }
                 >
-                    {isGridView ? <List /> : <LayoutGrid />}
+                    {view.grid ? <List /> : <LayoutGrid />}
                 </Button>
                 <div class='grow' />
                 <Combobox
                     items={sortOptions}
                     placeholder='Sort by...'
                     onSelect={(item) => {
-                        setCriteria(item.id);
-                        sortCards(item.id, isDescending);
+                        setSortConfig((prev) => ({ ...prev, key: item.id }));
                     }}
                 ></Combobox>
                 <Button
                     variant='secondary'
                     size='icon'
                     onClick={() => {
-                        sortCards(criteria, !isDescending);
-                        setIsDescending(!isDescending);
+                        setSortConfig((prev) => ({
+                            ...prev,
+                            desc: !prev.desc,
+                        }));
                     }}
                 >
-                    {isDescending ? (
+                    {sortConfig.desc ? (
                         <ArrowDownWideNarrow />
                     ) : (
                         <ArrowDownNarrowWide />
@@ -122,16 +167,16 @@ export function DeckList({ cards, onRemoveCard }) {
                 </Button>
             </div>
 
-            {isGridView ? (
+            {view.grid ? (
                 <DeckGridView
-                    list={cards}
-                    isRemovingCards={isRemovingCards}
+                    list={sortedCards}
+                    isRemovingCards={view.removing}
                     onCardClick={handleCardClick}
                 />
             ) : (
                 <DeckDetailsView
-                    list={cards}
-                    isRemovingCards={isRemovingCards}
+                    list={sortedCards}
+                    isRemovingCards={view.removing}
                     onCardClick={handleCardClick}
                 />
             )}

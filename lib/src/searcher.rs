@@ -79,6 +79,22 @@ impl SmallWorldSearcher {
             .map(|bridges| bridges.into_iter().cloned().collect())
     }
 
+    pub fn get_by_passcode(&self, passcode: u32) -> Option<Monster> {
+        self.pass2index
+            .get(&passcode)
+            .map(|idx| self.monsters[*idx].clone())
+    }
+
+    pub fn get_by_id(&self, id: u32) -> Option<Monster> {
+        self.id2index
+            .get(&id)
+            .map(|idx| self.monsters[*idx].clone())
+    }
+
+    pub fn get_all(&self) -> Vec<Monster> {
+        self.monsters.iter().cloned().collect()
+    }
+
     /// For every monster in the pool, find to which other monsters from the pool it can link to, excluding self-links.
     pub fn compute_links_within(&self, pool_ids: &[u32]) -> Vec<Link> {
         let mut pool_mask = BitSet::new(self.monsters.len());

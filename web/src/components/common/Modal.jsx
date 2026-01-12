@@ -3,7 +3,7 @@ import { X } from 'lucide-preact';
 import { createPortal, useEffect, useState } from 'react';
 import { Button } from '..';
 
-export function Modal({ isOpen, onClose, title, children }) {
+export function Modal({ isOpen, onClose, title, children, className }) {
     const [isVisible, setIsVisible] = useState(false);
     const [animate, setAnimate] = useState(false);
 
@@ -52,7 +52,7 @@ export function Modal({ isOpen, onClose, title, children }) {
 
             <div
                 class={cn(
-                    'relative w-full max-w-md transform overflow-hidden rounded-lg bg-slate-700 p-8 shadow-xl transition-all duration-250 ease-in-out',
+                    'relative w-full max-w-md transform overflow-hidden rounded-lg bg-slate-800 p-8 shadow-xl transition-all duration-250 ease-in-out',
                     animate
                         ? 'translate-y-0 scale-100 opacity-100'
                         : 'translate-y-4 scale-95 opacity-0',
@@ -69,8 +69,7 @@ export function Modal({ isOpen, onClose, title, children }) {
                         <X></X>
                     </Button>
                 </div>
-
-                <div>{children}</div>
+                <div class={cn(className)}>{children}</div>
             </div>
         </div>,
         document.body,

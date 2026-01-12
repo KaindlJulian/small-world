@@ -30,7 +30,7 @@ export function CardInfo() {
             <div
                 class={`fixed left-0 flex h-[calc(100%-48px)] flex-col bg-slate-800 transition-transform duration-250 ease-in-out ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
-                } z-50 w-72`}
+                } z-99 w-72`}
             >
                 <Button
                     size='icon'
@@ -44,7 +44,7 @@ export function CardInfo() {
                             isOpenSignal.value = true;
                         }
                     }}
-                    className='absolute top-1/2 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250'
+                    className='absolute top-8 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250 sm:top-1/2'
                 >
                     <ChevronLeft
                         class={`transform transition-transform duration-250 ${

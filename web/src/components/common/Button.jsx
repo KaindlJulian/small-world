@@ -11,7 +11,7 @@ const VARIANTS = {
 const SIZES = {
     default: 'h-9 px-4 py-2',
     sm: 'h-8 px-3 text-xs',
-    icon: 'h-9 w-9',
+    icon: 'min-h-9 min-w-9',
 };
 
 export function Button({
