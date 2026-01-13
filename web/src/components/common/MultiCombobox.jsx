@@ -7,7 +7,7 @@ export function MultiCombobox({
     items,
     onSelect,
     placeholder,
-    filterable = true,
+    filter = () => true,
 }) {
     const [query, setQuery] = useState('');
     const [selectedItems, setSelectedItems] = useState([]);
@@ -19,14 +19,15 @@ export function MultiCombobox({
 
     const filtered = useMemo(() => {
         const availableItems = items.filter(
-            (item) => !selectedItems.some((s) => s.id === item.id),
+            (item) =>
+                !selectedItems.some((s) => s.id === item.id) && filter(item),
         );
 
-        if (query === '' || !filterable) return availableItems;
+        if (query === '') return availableItems;
         return availableItems.filter((d) =>
             d.text.toLowerCase().includes(query.toLowerCase()),
         );
-    }, [query, items, selectedItems, filterable]);
+    }, [query, items, selectedItems, filter]);
 
     const displayList = filtered.slice(0, 30);
 
@@ -76,6 +77,7 @@ export function MultiCombobox({
                     <input
                         ref={inputRef}
                         type='text'
+                        id={`multicombobox-${crypto.randomUUID()}`}
                         class='min-w-20 flex-1 bg-transparent px-1 py-0.5 outline-none placeholder:text-slate-400'
                         placeholder={
                             selectedItems.length === 0 ? placeholder : ''

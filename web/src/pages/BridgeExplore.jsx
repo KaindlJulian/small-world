@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import { CardInfo, MultiCombobox, Sidebar } from '../components';
@@ -11,14 +11,19 @@ export function BridgeExplore() {
     const [inHandList, setInHandList] = useState([]);
     const [targetList, setTargetList] = useState([]);
     const [resultCards, setResultCards] = useState([]);
-    const [isScrolling, setIsScrolling] = useState(false);
 
     useEffect(() => {
+        if (inHandList === 0 || targetList.length === 0) {
+            setResultCards([]);
+            return;
+        }
+
         if (searcher && inHandList.length > 0 && targetList.length > 0) {
             const commonBridges = searcher.find_common_bridges_ids(
                 inHandList.map((item) => item.id),
                 targetList.map((item) => item.id),
             );
+
             commonBridges.sort((a, b) =>
                 a.name_wasm.localeCompare(b.name_wasm),
             );
@@ -31,8 +36,8 @@ export function BridgeExplore() {
                 level: c.level,
                 properties: [c.type],
                 text: c.desc,
-                atk: c.atk ? c.atk : '?',
-                def: c.def ? c.def : '?',
+                atk: c.atk,
+                def: c.def,
                 frame: '',
             }));
 
@@ -44,35 +49,19 @@ export function BridgeExplore() {
         return <div>Loading…</div>;
     }
 
-    const {
-        data,
-        error,
-        fetchNextPage,
-        hasNextPage,
-        isFetching,
-        isFetchingNextPage,
-        status,
-    } = useInfiniteQuery({
-        queryKey: ['bridges', resultCards.map((c) => c.passcode)],
+    const bridgeQuery = useQuery({
+        queryKey: ['bridges-full', resultCards.map((c) => c.passcode)],
         enabled: Array.isArray(resultCards) && resultCards.length > 0,
-        initialPageParam: 0,
-        queryFn: async ({ pageParam = 0 }) => {
-            const pageSize = 50;
-            const chunk = resultCards.slice(pageParam, pageParam + pageSize);
-            const rawData = await fetchCards(chunk.map((c) => c.passcode));
-            return rawData.map(mapToCard);
-        },
-        getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
-            const prevParam = firstPageParam - 50;
-            return prevParam >= 0 ? prevParam : undefined;
-        },
-        getNextPageParam: (lastPage, allPages, lastPageParam) => {
-            const nextParam = lastPageParam + 50;
-            return nextParam < resultCards.length ? nextParam : undefined;
-        },
+        queryFn: () => fetchCards(resultCards.map((c) => c.passcode)),
+        retry: false,
     });
 
-    const allVisibleCards = data?.pages.flat() || [];
+    const apiMap = useMemo(() => {
+        if (!bridgeQuery.data) return new Map();
+        return new Map(
+            bridgeQuery.data.map((c) => [String(c.id), mapToCard(c)]),
+        );
+    }, [bridgeQuery.data]);
 
     const names = searcher
         .get_all()
@@ -91,15 +80,21 @@ export function BridgeExplore() {
                             items={names}
                             placeholder='Select in hand'
                             onSelect={(items) => {
-                                setInHandList([...inHandList, ...items]);
+                                setInHandList(items);
                             }}
+                            filter={(item) =>
+                                !targetList.some((t) => t.id === item.id)
+                            }
                         />
                         <MultiCombobox
                             items={names}
                             placeholder='Select targets'
                             onSelect={(items) => {
-                                setTargetList([...targetList, ...items]);
+                                setTargetList(items);
                             }}
+                            filter={(item) =>
+                                !inHandList.some((i) => i.id === item.id)
+                            }
                         />
                     </div>
                     <VirtuosoGrid
@@ -107,37 +102,29 @@ export function BridgeExplore() {
                         listClassName='grid grid-cols-6 gap-2 px-4 mt-4'
                         totalCount={resultCards.length}
                         data={resultCards}
-                        rangeChanged={(range) => {
-                            // Load more when two rows from the bottom
-                            if (range.endIndex > allVisibleCards.length - 12) {
-                                if (hasNextPage && !isFetchingNextPage)
-                                    fetchNextPage();
-                            }
-                        }}
-                        isScrolling={setIsScrolling}
-                        increaseViewportBy={400}
-                        context={{ isScrolling }}
-                        itemContent={(index, card, context) => {
-                            const cardData = allVisibleCards[index];
+                        itemContent={(index, wasmCard) => {
+                            const apiData = apiMap.get(
+                                String(wasmCard.passcode),
+                            );
 
-                            if (
-                                !cardData ||
-                                (context.isScrolling && !cardData)
-                            ) {
+                            if (!apiData) {
                                 return (
-                                    <div class='h-34 animate-pulse overflow-hidden rounded-md bg-slate-700 p-1'>
-                                        {card.name}
+                                    <div class='flex aspect-[1/1.45] w-full animate-pulse items-center justify-center overflow-hidden rounded-md border border-slate-700 bg-slate-800 p-2'>
+                                        <span class='text-center leading-tight font-medium text-slate-500 select-none'>
+                                            {wasmCard.name}
+                                        </span>
                                     </div>
                                 );
                             }
 
                             return (
-                                <div key={card.id} class=''>
+                                <div class=''>
                                     <img
-                                        class='h-34 cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
+                                        class='h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
                                         src={`bg.jpg`}
-                                        alt={card.name}
-                                        onClick={() => setCardInfo(cardData)}
+                                        alt={apiData.name}
+                                        onClick={() => setCardInfo(apiData)}
+                                        loading='lazy'
                                     />
                                 </div>
                             );

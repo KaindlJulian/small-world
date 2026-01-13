@@ -3,7 +3,6 @@
 - different views
     - bridge view (find best bridges)
         - sidebar acts query-like
-            - vritual scroll and batched loading
             - controls to filter search results by stats
         - graph shows
             - the start(left area) and end(right area) cards
@@ -15,3 +14,8 @@
         - explain small world concept (for non-ygo players)
         - explain how to use the app
         - link to open a example deck
+
+- just swap to passcodes?
+
+- images
+    - self host

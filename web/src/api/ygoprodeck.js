@@ -5,13 +5,9 @@ export async function fetchCards(passcodes) {
         return [];
     }
 
-    const request = new URL(url);
-    request.searchParams.set('id', passcodes.join(','));
-    request.searchParams.set('misc', 'yes');
+    console.log(`Fetching cards: ${passcodes.join(',')}`);
 
-    console.log(`Fetching cards: ${request.toString()}`);
-
-    const response = await fetch(request);
+    const response = await fetch(`${url}?id=${passcodes.join(',')}&misc=yes`);
 
     if (!response.ok) {
         throw new Error(`Failed to fetch cards (${response.status})`);
@@ -31,8 +27,8 @@ export function mapToCard(d) {
         level: d.level,
         properties: d.typeline,
         text: d.desc,
-        atk: d.atk,
-        def: d.def,
+        atk: d.atk === '-1' ? undefined : d.atk,
+        def: d.def === '-1' ? undefined : d.def,
         frame: d.frameType,
     };
 }
