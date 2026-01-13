@@ -29,7 +29,7 @@ export function BridgeExplore() {
                 name: c.name_wasm,
                 attribute: c.attribute,
                 level: c.level,
-                properties: c.type,
+                properties: [c.type],
                 text: c.desc,
                 atk: c.atk ? c.atk : '?',
                 def: c.def ? c.def : '?',
