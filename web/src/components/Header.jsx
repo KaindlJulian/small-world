@@ -8,7 +8,7 @@ export function Header() {
             <nav class='flex'>
                 <a
                     href='/deck'
-                    class={`p-3 no-underline ${(url == '/deck' || url == '/') && 'bg-slate-600'}`}
+                    class={`p-3 no-underline ${(url.startsWith('/deck') || url == '/') && 'bg-slate-600'}`}
                 >
                     Deck View
                 </a>

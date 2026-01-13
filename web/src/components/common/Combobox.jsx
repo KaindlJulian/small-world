@@ -43,7 +43,7 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                     onFocus={() => setIsOpen(true)}
                 />
 
-                <div class='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4'>
+                <div class='pointer-events-none absolute inset-y-0 right-0 ml-auto flex items-center pr-4 text-slate-400'>
                     <ChevronsUpDown size={16} />
                 </div>
 
@@ -51,7 +51,7 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                     <ul
                         class={cn(
                             'absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 p-1 text-sm shadow-lg ring-1 ring-slate-600 focus:outline-none',
-                            '[scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full',
+                            '[&::-webkit-scrollbar-track]:transparent [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500',
                         )}
                     >
                         {displayList.map((item) => (

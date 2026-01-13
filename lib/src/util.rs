@@ -137,7 +137,8 @@ mod tests {
 
     #[test]
     fn test_csv() {
-        let _monsters = parse_csv("../m.csv");
+        let _monsters = parse_csv(include_str!("../testing_data.csv"));
+        dbg!(&_monsters.len());
     }
 
     #[test]

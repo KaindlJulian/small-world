@@ -110,12 +110,12 @@ impl<'a> MonsterIndex<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::util::parse_csv;
+    use crate::util::parse_csv_file;
     use std::str::FromStr;
 
     #[test]
     fn test_example() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
         assert_eq!(
             index.by_attribute.get(&Attribute::WATER).unwrap().len(),
@@ -136,7 +136,7 @@ mod tests {
 
     #[test]
     fn test_fixed() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
         assert_eq!(index.by_attribute.len(), 7);
         assert_eq!(index.by_level.len(), 12);
@@ -145,7 +145,7 @@ mod tests {
 
     #[test]
     fn test_min_grouping() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
         assert_ne!(index.by_attribute.len(), monsters.len());
         assert_ne!(index.by_level.len(), monsters.len());

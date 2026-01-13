@@ -3,13 +3,13 @@ use crate::bridge::{find_neighborhood_bitset, search_bridge_bitset};
 use crate::index::BitSetIndex;
 use crate::monster::Monster;
 use std::collections::HashMap;
+use std::vec;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub struct SmallWorldSearcher {
     monsters: Vec<Monster>,
     id2index: HashMap<u32, usize>,
-    pass2index: HashMap<u32, usize>,
     index: BitSetIndex,
 }
 
@@ -23,11 +23,6 @@ impl SmallWorldSearcher {
                 .enumerate()
                 .map(|(i, m)| (m.id(), i))
                 .collect::<HashMap<u32, usize>>(),
-            pass2index: monsters
-                .iter()
-                .enumerate()
-                .map(|(i, m)| (m.passcode(), i))
-                .collect::<HashMap<u32, usize>>(),
             monsters,
         }
     }
@@ -38,7 +33,8 @@ impl SmallWorldSearcher {
         SmallWorldSearcher::new(monsters)
     }
 
-    fn find_bridges(&self, monsters: &[&Monster]) -> Option<Vec<&Monster>> {
+    /// Find all monsters that connect each monster in the input list with each other monster in the input list.
+    fn find_universal_bridges(&self, monsters: &[&Monster]) -> Option<Vec<&Monster>> {
         let bridges = search_bridge_bitset(&monsters, &self.index)?;
         let monsters = self.bitset_to_monsters(&bridges);
 
@@ -61,28 +57,43 @@ impl SmallWorldSearcher {
         monsters
     }
 
-    pub fn find_bridges_ids(&self, ids: &[u32]) -> Option<Vec<Monster>> {
-        let monsters = ids
-            .iter()
-            .map(|id| &self.monsters[self.id2index[id]])
-            .collect::<Vec<&Monster>>();
-        self.find_bridges(&monsters)
+    fn ids_to_monsters(&self, ids: &[u32]) -> Vec<&Monster> {
+        ids.iter()
+            .filter_map(|id| self.id2index.get(id).map(|&idx| &self.monsters[idx]))
+            .collect()
+    }
+
+    pub fn find_universal_bridges_ids(&self, ids: &[u32]) -> Option<Vec<Monster>> {
+        let monsters = self.ids_to_monsters(ids);
+        self.find_universal_bridges(&monsters)
             .map(|bridges| bridges.into_iter().cloned().collect())
     }
 
-    pub fn find_bridges_pass(&self, passcodes: &[u32]) -> Option<Vec<Monster>> {
-        let monsters = passcodes
-            .iter()
-            .map(|pass| &self.monsters[self.pass2index[pass]])
-            .collect::<Vec<&Monster>>();
-        self.find_bridges(&monsters)
-            .map(|bridges| bridges.into_iter().cloned().collect())
-    }
+    pub fn find_common_bridges_ids(&self, source: &[u32], target: &[u32]) -> Option<Vec<Monster>> {
+        let source_monsters = self.ids_to_monsters(source);
+        let target_monsters = self.ids_to_monsters(target);
 
-    pub fn get_by_passcode(&self, passcode: u32) -> Option<Monster> {
-        self.pass2index
-            .get(&passcode)
-            .map(|idx| self.monsters[*idx].clone())
+        let mut common_bridges: Option<BitSet> = None;
+        for source in &source_monsters {
+            for target in &target_monsters {
+                let bridges = search_bridge_bitset(&[source, target], &self.index)?;
+                common_bridges = match &common_bridges {
+                    Some(cb) => Some(cb.and(&bridges)),
+                    None => Some(bridges),
+                };
+            }
+        }
+
+        if let Some(cb) = common_bridges {
+            let monsters = self.bitset_to_monsters(&cb);
+            if monsters.is_empty() {
+                None
+            } else {
+                Some(monsters.into_iter().cloned().collect())
+            }
+        } else {
+            None
+        }
     }
 
     pub fn get_by_id(&self, id: u32) -> Option<Monster> {
@@ -172,8 +183,19 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_common_bridges() {
+        let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
+        let source = [6032, 5139];
+        let target = [6032, 4446];
+
+        let bridges = searcher.find_common_bridges_ids(&source, &target).unwrap();
+
+        assert_eq!(bridges.len(), 220);
+    }
+
+    #[test]
     fn test_compute_links_within() {
-        let searcher = SmallWorldSearcher::from_csv(include_str!("../m.csv"));
+        let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
         // Primite-Blue-Eyes.ydk
         let pool = [12950, 4007, 17762, 8933, 20602, 20603, 14741, 20754, 12292];
         let links = searcher.compute_links_within(&pool);

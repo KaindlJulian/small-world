@@ -1,13 +1,10 @@
 - sidebar can be grouped by property
 
-- bottom of main area has controls for filtering, adjusting graph layout and adding more nodes and links
-
 - different views
     - bridge view (find best bridges)
         - sidebar acts query-like
-            - top, input start card(s)
-            - middle, computed bridges
-            - bottom, input target card(s)
+            - vritual scroll and batched loading
+            - controls to filter search results by stats
         - graph shows
             - the start(left area) and end(right area) cards
             - the bridges between them in the middle area

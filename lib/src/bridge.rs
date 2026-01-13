@@ -128,11 +128,11 @@ fn find_neighborhood<'a>(monster: &Monster, index: &MonsterIndex<'a>) -> HashSet
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::util::parse_csv;
+    use crate::util::parse_csv_file;
 
     #[test]
     fn test_bridge_count() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
         let bs_index = BitSetIndex::new(&monsters);
 
@@ -152,7 +152,7 @@ mod tests {
 
     #[test]
     fn test_multi_intersection() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
         let bs_index = BitSetIndex::new(&monsters);
 
@@ -172,8 +172,9 @@ mod tests {
 
     #[test]
     fn test_unknown_atk_stat() {
-        let monsters = parse_csv("m.csv");
+        let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
+
         let result = search_bridges(
             &[
                 index.by_id.get(&19857_u32).unwrap(),

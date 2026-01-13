@@ -4,11 +4,12 @@ export async function fetchCards(passcodes) {
     if (passcodes.length === 0) {
         return [];
     }
-    console.log('actually fetching cards');
 
     const request = new URL(url);
     request.searchParams.set('id', passcodes.join(','));
     request.searchParams.set('misc', 'yes');
+
+    console.log(`Fetching cards: ${request.toString()}`);
 
     const response = await fetch(request);
 
