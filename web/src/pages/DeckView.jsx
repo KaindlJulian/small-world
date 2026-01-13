@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useLocation, useRoute } from 'preact-iso';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import {
     CardInfo,
@@ -9,28 +9,28 @@ import {
     ForceGraph,
     Sidebar,
 } from '../components';
+import { deckCodesSignal } from '../core/signals.js';
 import { useGraphData, useSearcher } from '../hooks';
 import { cn } from '../utils';
 import { decode_ydke, encode_ydke_main } from '../wasm';
 
 export function DeckView() {
-    const [deckCodes, setDeckCodes] = useState(null);
     const { searcher, isSearcherLoading } = useSearcher();
     const { route } = useLocation();
     const { query } = useRoute();
     const ydkeUrl = query.ydke;
 
     useEffect(() => {
-        if (ydkeUrl && deckCodes === null) {
+        if (ydkeUrl && deckCodesSignal.value === null) {
             const ids = decode_ydke(`ydke://${ydkeUrl}!!!`);
-            setDeckCodes(Array.from(ids));
+            deckCodesSignal.value = Array.from(ids);
         }
-    }, [ydkeUrl, deckCodes]);
+    }, [ydkeUrl, deckCodesSignal.value]);
 
     const deckQuery = useQuery({
-        queryKey: ['deck', deckCodes],
-        queryFn: () => fetchCards(deckCodes),
-        enabled: Array.isArray(deckCodes),
+        queryKey: ['deck', deckCodesSignal.value],
+        queryFn: () => fetchCards(deckCodesSignal.value),
+        enabled: Array.isArray(deckCodesSignal.value),
         select: (data) => {
             return data
                 .filter((cardData) => cardData.type.includes('Monster'))
@@ -53,7 +53,7 @@ export function DeckView() {
     }, [deckQuery.data, ydkeUrl, route]);
 
     const handleInput = (cardList) => {
-        setDeckCodes(cardList);
+        deckCodesSignal.value = cardList;
     };
 
     if (deckQuery.isLoading || isSearcherLoading) {
@@ -72,33 +72,35 @@ export function DeckView() {
         <div
             class={cn(
                 'h-full divide-slate-600',
-                deckCodes === null
+                deckCodesSignal.value === null
                     ? 'flex justify-center'
                     : 'grid lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]',
             )}
         >
             <CardInfo />
             <div class='flex flex-col items-center justify-center'>
-                {deckCodes === null && (
+                {deckCodesSignal.value === null && (
                     <DeckInput onInput={(cardList) => handleInput(cardList)} />
                 )}
-                {deckCodes !== null && (
+                {deckCodesSignal.value !== null && (
                     <ForceGraph nodes={nodes} links={links} />
                 )}
             </div>
-            {deckCodes !== null && (
+            {deckCodesSignal.value !== null && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
                     <DeckList
                         cards={cards}
                         onRemoveCard={(card) => {
-                            setDeckCodes(
-                                deckCodes.filter(
+                            deckCodesSignal.value =
+                                deckCodesSignal.value.filter(
                                     (passcode) => passcode !== card.passcode,
-                                ),
-                            );
+                                );
                         }}
                         onAddCard={(card) => {
-                            setDeckCodes([...deckCodes, card.passcode]);
+                            deckCodesSignal.value = [
+                                ...deckCodesSignal.value,
+                                card.passcode,
+                            ];
                         }}
                     />
                 </Sidebar>
