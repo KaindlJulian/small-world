@@ -10,6 +10,14 @@
     -webkit-text-size-adjust: 100%;
 }
 
+@utility number-input-no-spin {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
 @theme {
     --color-foreground: hsl(var(--foreground));
 

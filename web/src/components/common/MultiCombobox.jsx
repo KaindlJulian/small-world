@@ -8,6 +8,7 @@ export function MultiCombobox({
     onSelect,
     placeholder,
     filter = () => true,
+    dropDownAbove = false,
 }) {
     const [query, setQuery] = useState('');
     const [selectedItems, setSelectedItems] = useState([]);
@@ -36,7 +37,6 @@ export function MultiCombobox({
         setSelectedItems(updated);
         setQuery('');
         onSelect(updated);
-        inputRef.current?.focus();
         setIsOpen(false);
     };
 
@@ -51,7 +51,7 @@ export function MultiCombobox({
             <div class='group relative'>
                 <div
                     class={cn(
-                        'flex min-h-10 w-full flex-wrap gap-1 rounded-md border border-slate-600 bg-slate-700 p-1.5 text-sm shadow-sm transition-colors focus-within:ring-2',
+                        'relative flex min-h-10 w-full flex-wrap gap-1 rounded-md border border-slate-600 bg-slate-700 p-1.5 text-sm shadow-sm transition-colors focus-within:ring-2',
                         isOpen && 'ring-2',
                     )}
                     onClick={() => inputRef.current?.focus()}
@@ -101,7 +101,7 @@ export function MultiCombobox({
                         }}
                     />
 
-                    <div class='ml-auto flex items-center pr-2 text-slate-400'>
+                    <div class='absolute top-2.5 right-0 ml-auto flex items-center pr-2 text-slate-400'>
                         <ChevronsUpDown size={16} />
                     </div>
                 </div>
@@ -111,6 +111,7 @@ export function MultiCombobox({
                         class={cn(
                             'absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-slate-600 bg-slate-800 p-1 text-sm shadow-xl focus:outline-none',
                             '[&::-webkit-scrollbar-track]:transparent [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500',
+                            { 'bottom-11': dropDownAbove },
                         )}
                     >
                         {displayList.map((item) => (

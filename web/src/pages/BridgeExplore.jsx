@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
-import { CardInfo, MultiCombobox, Sidebar } from '../components';
+import { CardFilter, CardInfo, MultiCombobox, Sidebar } from '../components';
 import { useCardInfo, useSearcher } from '../hooks';
 
 export function BridgeExplore() {
@@ -11,9 +11,10 @@ export function BridgeExplore() {
     const [inHandList, setInHandList] = useState([]);
     const [targetList, setTargetList] = useState([]);
     const [resultCards, setResultCards] = useState([]);
+    const [activeFilter, setActiveFilter] = useState(null);
 
     useEffect(() => {
-        if (inHandList === 0 || targetList.length === 0) {
+        if (inHandList.length === 0 || targetList.length === 0) {
             setResultCards([]);
             return;
         }
@@ -58,10 +59,47 @@ export function BridgeExplore() {
 
     const apiMap = useMemo(() => {
         if (!bridgeQuery.data) return new Map();
-        return new Map(
-            bridgeQuery.data.map((c) => [String(c.id), mapToCard(c)]),
-        );
+        return new Map(bridgeQuery.data.map((c) => [c.id, mapToCard(c)]));
     }, [bridgeQuery.data]);
+
+    const filteredCards = useMemo(() => {
+        if (!activeFilter || !apiMap) return resultCards;
+
+        return resultCards.filter((wasmCard) => {
+            const card = apiMap.get(wasmCard.passcode);
+
+            if (activeFilter.attributes.length > 0) {
+                if (!activeFilter.attributes.includes(card.attribute)) {
+                    return false;
+                }
+            }
+
+            if (activeFilter.types.length > 0) {
+                if (
+                    !card.properties.some((prop) =>
+                        activeFilter.types.includes(prop),
+                    )
+                ) {
+                    return false;
+                }
+            }
+
+            if (activeFilter.levels.length > 0) {
+                if (!activeFilter.levels.includes(card.level)) return false;
+            }
+
+            if (activeFilter.minATK !== null && card.atk < activeFilter.minATK)
+                return false;
+            if (activeFilter.maxATK !== null && card.atk > activeFilter.maxATK)
+                return false;
+            if (activeFilter.minDEF !== null && card.def < activeFilter.minDEF)
+                return false;
+            if (activeFilter.maxDEF !== null && card.def > activeFilter.maxDEF)
+                return false;
+
+            return true;
+        });
+    }, [resultCards, activeFilter, apiMap]);
 
     const names = searcher
         .get_all()
@@ -100,12 +138,9 @@ export function BridgeExplore() {
                     <VirtuosoGrid
                         style={{ height: '100%' }}
                         listClassName='grid grid-cols-6 gap-2 px-4 mt-4'
-                        totalCount={resultCards.length}
-                        data={resultCards}
+                        data={filteredCards}
                         itemContent={(index, wasmCard) => {
-                            const apiData = apiMap.get(
-                                String(wasmCard.passcode),
-                            );
+                            const apiData = apiMap.get(wasmCard.passcode);
 
                             if (!apiData) {
                                 return (
@@ -130,9 +165,17 @@ export function BridgeExplore() {
                             );
                         }}
                     />
-                    <div class='h-24 bg-slate-800 p-4 shadow-md'>
-                        <div class='text-lg font-semibold'>
-                            Filter Cards, total {resultCards.length} cards
+                    <div class='bg-slate-800 p-4 shadow-md'>
+                        <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
+                            <span>Filter Cards</span>
+                            <span>{filteredCards.length} Bridges Found</span>
+                        </div>
+                        <div class='mt-2 flex flex-col gap-2'>
+                            <CardFilter
+                                onFilterChange={(filter) => {
+                                    setActiveFilter(filter);
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
