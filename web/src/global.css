@@ -21,7 +21,19 @@
 @theme {
     --color-foreground: hsl(var(--foreground));
 
-    --animate-fade-in: fade-in 250ms ease-in forwards;
+    --animate-slide-in-bottom: slide-in-bottom 250ms ease-out forwards;
+    @keyframes slide-in-bottom {
+        0% {
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    --animate-fade-in: fade-in 250ms ease-out forwards;
     @keyframes fade-in {
         0% {
             opacity: 0;
@@ -45,23 +57,6 @@
 }
 
 @layer base {
-    /*:root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 47.4% 11.2%;
-
-        --primary: 222.2 47.4% 11.2%;
-        --primary-foreground: 210 40% 98%;
-
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-    }*/
-
     :root {
         --foreground: 210 40% 98%;
     }

@@ -18,14 +18,14 @@ export function DeckView() {
     const { searcher, isSearcherLoading } = useSearcher();
     const { route } = useLocation();
     const { query } = useRoute();
-    const ydkeUrl = query.ydke;
+    const ydkeUrlParam = query.ydke;
 
     useEffect(() => {
-        if (ydkeUrl && deckCodesSignal.value === null) {
-            const ids = decode_ydke(`ydke://${ydkeUrl}!!!`);
+        if (ydkeUrlParam && deckCodesSignal.value === null) {
+            const ids = decode_ydke(`ydke://${ydkeUrlParam}!!!`);
             deckCodesSignal.value = Array.from(ids);
         }
-    }, [ydkeUrl, deckCodesSignal.value]);
+    }, [ydkeUrlParam, deckCodesSignal.value]);
 
     const deckQuery = useQuery({
         queryKey: ['deck', deckCodesSignal.value],
@@ -46,11 +46,11 @@ export function DeckView() {
                 .replace('ydke://', '')
                 .replace('!!!', '');
             const encodedYdkeString = encodeURIComponent(ydkeString);
-            if (encodedYdkeString !== ydkeUrl) {
+            if (encodedYdkeString !== ydkeUrlParam) {
                 route(`/deck?ydke=${encodedYdkeString}`, true);
             }
         }
-    }, [deckQuery.data, ydkeUrl, route]);
+    }, [deckQuery.data, ydkeUrlParam, route]);
 
     const handleInput = (cardList) => {
         deckCodesSignal.value = cardList;

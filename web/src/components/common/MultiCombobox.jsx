@@ -59,7 +59,7 @@ export function MultiCombobox({
                     {selectedItems.map((item) => (
                         <span
                             key={item.id}
-                            class='flex items-center gap-1 rounded-md bg-slate-600 py-0.5 pr-1 pl-2 text-xs text-white'
+                            class='text-foreground flex items-center gap-1 rounded-md bg-slate-600 py-0.5 pr-1 pl-2 text-xs'
                         >
                             {item.text}
                             <button

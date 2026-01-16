@@ -111,7 +111,7 @@ export function BridgeExplore() {
             <CardInfo />
             <div class='flex w-full flex-col'>aa</div>
             <Sidebar>
-                <div class='flex h-full flex-col'>
+                <div class='flex h-full flex-col overflow-hidden'>
                     <div class='sticky top-0 z-10 flex flex-col gap-4 bg-slate-800 p-4 shadow-md'>
                         <div class='text-lg font-semibold'>Find Bridges</div>
                         <MultiCombobox
@@ -165,19 +165,23 @@ export function BridgeExplore() {
                             );
                         }}
                     />
-                    <div class='bg-slate-800 p-4 shadow-md'>
-                        <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
-                            <span>Filter Cards</span>
-                            <span>{filteredCards.length} Bridges Found</span>
+                    {resultCards.length > 0 && (
+                        <div class='animate-slide-in-bottom bg-slate-800 p-4 shadow-md'>
+                            <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
+                                <span>Filter Cards</span>
+                                <span>
+                                    {filteredCards.length} Bridges Found
+                                </span>
+                            </div>
+                            <div class='mt-2 flex flex-col gap-2'>
+                                <CardFilter
+                                    onFilterChange={(filter) => {
+                                        setActiveFilter(filter);
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div class='mt-2 flex flex-col gap-2'>
-                            <CardFilter
-                                onFilterChange={(filter) => {
-                                    setActiveFilter(filter);
-                                }}
-                            />
-                        </div>
-                    </div>
+                    )}
                 </div>
             </Sidebar>
         </div>
