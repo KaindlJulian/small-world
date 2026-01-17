@@ -2,7 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
-import { CardFilter, CardInfo, MultiCombobox, Sidebar } from '../components';
+import {
+    BridgeForceGraph,
+    CardFilter,
+    CardInfo,
+    MultiCombobox,
+    Sidebar,
+} from '../components';
 import { useCardInfo, useSearcher } from '../hooks';
 
 export function BridgeExplore() {
@@ -109,7 +115,17 @@ export function BridgeExplore() {
     return (
         <div class='grid h-full divide-slate-700 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
-            <div class='flex w-full flex-col'>aa</div>
+            <div class='flex w-full flex-col'>
+                {bridgeQuery.data && bridgeQuery.isSuccess && (
+                    <BridgeForceGraph
+                        sources={inHandList}
+                        targets={targetList}
+                        bridges={filteredCards.map((wc) =>
+                            apiMap.get(wc.passcode),
+                        )}
+                    />
+                )}
+            </div>
             <Sidebar>
                 <div class='flex h-full flex-col overflow-hidden'>
                     <div class='sticky top-0 z-10 flex flex-col gap-4 bg-slate-800 p-4 shadow-md'>

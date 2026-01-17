@@ -1,11 +1,6 @@
-- sidebar can be grouped by property
-
 - different views
     - bridge view (find best bridges)
         - graph shows
-            - the start(left area) and end(right area) cards
-            - the bridges between them in the middle area
-            - this time no direct links for small world connections, but bridges as actual nodes in between, then connect them as 3 point connections
             - edges are the property that connects the cards, e.g. attribute, type, level, etc.
 
     - tutorial
@@ -17,3 +12,5 @@
 
 - images
     - self host
+
+- refactor graphs

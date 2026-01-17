@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import {
     CardInfo,
+    DeckForceGraph,
     DeckInput,
     DeckList,
-    ForceGraph,
     Sidebar,
 } from '../components';
 import { deckCodesSignal } from '../core/signals.js';
@@ -83,7 +83,7 @@ export function DeckView() {
                     <DeckInput onInput={(cardList) => handleInput(cardList)} />
                 )}
                 {deckCodesSignal.value !== null && (
-                    <ForceGraph nodes={nodes} links={links} />
+                    <DeckForceGraph nodes={nodes} links={links} />
                 )}
             </div>
             {deckCodesSignal.value !== null && (

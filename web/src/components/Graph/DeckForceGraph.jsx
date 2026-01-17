@@ -9,7 +9,7 @@ const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = '#14b8a6'; // teal-400
 const BASE_COLOR = '#94a3b8'; // slate-400
 
-export function ForceGraph({ nodes, links }) {
+export function DeckForceGraph({ nodes, links }) {
     const svgRef = useRef(null);
     const zoomRef = useRef(null);
     const simulationRef = useRef(null);
