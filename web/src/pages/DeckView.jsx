@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { CornerDownLeft } from 'lucide-preact';
 import { useLocation, useRoute } from 'preact-iso';
 import { useEffect } from 'react';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import {
+    Button,
     CardInfo,
     DeckForceGraph,
     DeckInput,
@@ -83,7 +85,20 @@ export function DeckView() {
                     <DeckInput onInput={(cardList) => handleInput(cardList)} />
                 )}
                 {deckCodesSignal.value !== null && (
-                    <DeckForceGraph nodes={nodes} links={links} />
+                    <>
+                        <DeckForceGraph nodes={nodes} links={links} />
+                        <Button
+                            className='absolute bottom-4 left-4'
+                            variant='ghost'
+                            onClick={() => {
+                                deckCodesSignal.value = null;
+                                route('/deck', true);
+                            }}
+                        >
+                            <CornerDownLeft className='mr-1' />
+                            Exit
+                        </Button>
+                    </>
                 )}
             </div>
             {deckCodesSignal.value !== null && (

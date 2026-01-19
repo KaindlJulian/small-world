@@ -58,11 +58,11 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                 <span class='grow rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200'>
                     [{card.properties[0]}]
                 </span>
-                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 max-xl:hidden'>
+                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
                     <span class='font-bold'>ATK</span>
                     <span>/ {card.atk === -1 ? '?' : card.atk}</span>
                 </div>
-                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 max-xl:hidden'>
+                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
                     <span class='font-bold'>DEF</span>
                     <span>/ {card.def === -1 ? '?' : card.def}</span>
                 </div>
