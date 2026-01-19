@@ -2,11 +2,6 @@ import { Minus } from 'lucide-preact';
 import { Button } from '../';
 import { CardListItem } from './CardListItem';
 
-const attributeIconsImport = import.meta.glob('../../assets/attributes/*.svg', {
-    eager: true,
-    import: 'default',
-});
-
 export function DeckDetailsView({ list, isRemoving, onCardClick }) {
     return (
         <div
