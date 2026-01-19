@@ -7,7 +7,7 @@ export { Modal } from './common/Modal.jsx';
 export { MultiCombobox } from './common/MultiCombobox.jsx';
 export { DeckInput } from './DeckInput.jsx';
 export { DeckList } from './DeckList/DeckList.jsx';
-export { BridgeForceGraph } from './Graph/BridgeForceGraph.jsx';
+export { BridgeGraph } from './Graph/BridgeGraph.jsx';
 export { DeckForceGraph } from './Graph/DeckForceGraph.jsx';
 export { Header } from './Header.jsx';
 export { Sidebar } from './Sidebar.jsx';

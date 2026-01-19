@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import {
-    BridgeForceGraph,
+    BridgeGraph,
     CardFilter,
     CardInfo,
     MultiCombobox,
@@ -26,7 +26,7 @@ export function BridgeExplore() {
         }
 
         if (searcher && inHandList.length > 0 && targetList.length > 0) {
-            const commonBridges = searcher.find_common_bridges_ids(
+            const commonBridges = searcher.find_common_bridges(
                 inHandList.map((item) => item.id),
                 targetList.map((item) => item.id),
             );
@@ -64,48 +64,66 @@ export function BridgeExplore() {
     });
 
     const apiMap = useMemo(() => {
-        if (!bridgeQuery.data) return new Map();
+        if (!bridgeQuery.data) return null;
         return new Map(bridgeQuery.data.map((c) => [c.id, mapToCard(c)]));
     }, [bridgeQuery.data]);
 
     const filteredCards = useMemo(() => {
-        if (!activeFilter || !apiMap) return resultCards;
+        if (!apiMap) {
+            return null;
+        }
 
-        return resultCards.filter((wasmCard) => {
-            const card = apiMap.get(wasmCard.passcode);
+        if (!activeFilter) {
+            return resultCards.map((wasmCard) => apiMap.get(wasmCard.passcode));
+        }
 
-            if (activeFilter.attributes.length > 0) {
-                if (!activeFilter.attributes.includes(card.attribute)) {
-                    return false;
+        return resultCards
+            .map((wasmCard) => apiMap.get(wasmCard.passcode))
+            .filter((card) => {
+                if (activeFilter.attributes.length > 0) {
+                    if (!activeFilter.attributes.includes(card.attribute)) {
+                        return false;
+                    }
                 }
-            }
 
-            if (activeFilter.types.length > 0) {
+                if (activeFilter.types.length > 0) {
+                    if (
+                        !card.properties.some((prop) =>
+                            activeFilter.types.includes(prop),
+                        )
+                    ) {
+                        return false;
+                    }
+                }
+
+                if (activeFilter.levels.length > 0) {
+                    if (!activeFilter.levels.includes(card.level)) return false;
+                }
+
                 if (
-                    !card.properties.some((prop) =>
-                        activeFilter.types.includes(prop),
-                    )
-                ) {
+                    activeFilter.minATK !== null &&
+                    card.atk < activeFilter.minATK
+                )
                     return false;
-                }
-            }
+                if (
+                    activeFilter.maxATK !== null &&
+                    card.atk > activeFilter.maxATK
+                )
+                    return false;
+                if (
+                    activeFilter.minDEF !== null &&
+                    card.def < activeFilter.minDEF
+                )
+                    return false;
+                if (
+                    activeFilter.maxDEF !== null &&
+                    card.def > activeFilter.maxDEF
+                )
+                    return false;
 
-            if (activeFilter.levels.length > 0) {
-                if (!activeFilter.levels.includes(card.level)) return false;
-            }
-
-            if (activeFilter.minATK !== null && card.atk < activeFilter.minATK)
-                return false;
-            if (activeFilter.maxATK !== null && card.atk > activeFilter.maxATK)
-                return false;
-            if (activeFilter.minDEF !== null && card.def < activeFilter.minDEF)
-                return false;
-            if (activeFilter.maxDEF !== null && card.def > activeFilter.maxDEF)
-                return false;
-
-            return true;
-        });
-    }, [resultCards, activeFilter, apiMap]);
+                return true;
+            });
+    }, [activeFilter, apiMap]);
 
     const names = searcher
         .get_all()
@@ -116,13 +134,11 @@ export function BridgeExplore() {
         <div class='grid h-full divide-slate-700 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
             <div class='flex w-full flex-col'>
-                {bridgeQuery.data && bridgeQuery.isSuccess && (
-                    <BridgeForceGraph
+                {filteredCards && (
+                    <BridgeGraph
                         sources={inHandList}
                         targets={targetList}
-                        bridges={filteredCards.map((wc) =>
-                            apiMap.get(wc.passcode),
-                        )}
+                        bridges={filteredCards}
                     />
                 )}
             </div>
@@ -151,37 +167,38 @@ export function BridgeExplore() {
                             }
                         />
                     </div>
-                    <VirtuosoGrid
-                        style={{ height: '100%' }}
-                        listClassName='grid grid-cols-6 gap-2 px-4 mt-4'
-                        data={filteredCards}
-                        itemContent={(index, wasmCard) => {
-                            const apiData = apiMap.get(wasmCard.passcode);
-
-                            if (!apiData) {
+                    {!filteredCards && !bridgeQuery.isEnabled && (
+                        <div class='m-auto text-slate-400'>
+                            Select cards in hand and target cards to find
+                            bridging cards.
+                        </div>
+                    )}
+                    {!filteredCards && bridgeQuery.isLoading && (
+                        <div class='m-auto text-slate-400'>
+                            Loading bridging cards...
+                        </div>
+                    )}
+                    {filteredCards && (
+                        <VirtuosoGrid
+                            style={{ height: '100%' }}
+                            listClassName='grid grid-cols-6 gap-2 px-4 mt-4'
+                            data={filteredCards}
+                            itemContent={(index, card) => {
                                 return (
-                                    <div class='flex aspect-[1/1.45] w-full animate-pulse items-center justify-center overflow-hidden rounded-md border border-slate-700 bg-slate-800 p-2'>
-                                        <span class='text-center leading-tight font-medium text-slate-500 select-none'>
-                                            {wasmCard.name}
-                                        </span>
+                                    <div class=''>
+                                        <img
+                                            class='h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
+                                            src={`bg.jpg`}
+                                            alt={card.name}
+                                            onClick={() => setCardInfo(card)}
+                                            loading='lazy'
+                                        />
                                     </div>
                                 );
-                            }
-
-                            return (
-                                <div class=''>
-                                    <img
-                                        class='h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
-                                        src={`bg.jpg`}
-                                        alt={apiData.name}
-                                        onClick={() => setCardInfo(apiData)}
-                                        loading='lazy'
-                                    />
-                                </div>
-                            );
-                        }}
-                    />
-                    {resultCards.length > 0 && (
+                            }}
+                        />
+                    )}
+                    {filteredCards && (
                         <div class='animate-slide-in-bottom bg-slate-800 p-4 shadow-md'>
                             <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
                                 <span>Filter Cards</span>

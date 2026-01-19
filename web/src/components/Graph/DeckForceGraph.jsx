@@ -170,9 +170,10 @@ export function DeckForceGraph({ nodes, links }) {
                 preserveAspectRatio='xMidYMid meet'
             ></svg>
             <GraphControls
+                isForceGraph={true}
                 isLocked={isLocked}
                 isShowingLabels={isShowingLabels}
-                onShowBridges={handleShowBridges}
+                onShowLabels={handleShowBridges}
                 onToggleLayout={handleToggleLayout}
                 onResetZoom={handleResetZoom}
             />

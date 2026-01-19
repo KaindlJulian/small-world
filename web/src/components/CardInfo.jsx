@@ -87,14 +87,14 @@ export function CardInfo() {
                             <span class='font-bold'>ATK</span>
                             <span>/</span>
                         </div>
-                        <span>{card.atk}</span>
+                        <span>{card.atk === -1 ? '?' : card.atk}</span>
                     </div>
                     <div class='flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
                         <div class='mr-2 h-6 w-8'>
                             <span class='font-bold'>DEF</span>
                             <span>/</span>
                         </div>
-                        <span>{card.def}</span>
+                        <span>{card.def === -1 ? '?' : card.def}</span>
                     </div>
                     <div class='col-span-2 flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
                         <span class='font-bold'>

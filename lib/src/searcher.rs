@@ -2,6 +2,7 @@ use crate::bitset::BitSet;
 use crate::bridge::{find_neighborhood_bitset, search_bridge_bitset};
 use crate::index::BitSetIndex;
 use crate::monster::Monster;
+use core::panic;
 use std::collections::HashMap;
 use std::vec;
 use wasm_bindgen::prelude::*;
@@ -33,18 +34,6 @@ impl SmallWorldSearcher {
         SmallWorldSearcher::new(monsters)
     }
 
-    /// Find all monsters that connect each monster in the input list with each other monster in the input list.
-    fn find_universal_bridges(&self, monsters: &[&Monster]) -> Option<Vec<&Monster>> {
-        let bridges = search_bridge_bitset(&monsters, &self.index)?;
-        let monsters = self.bitset_to_monsters(&bridges);
-
-        if monsters.is_empty() {
-            None
-        } else {
-            Some(monsters)
-        }
-    }
-
     fn bitset_to_monsters(&self, bitset: &BitSet) -> Vec<&Monster> {
         let mut monsters = vec![];
 
@@ -63,13 +52,22 @@ impl SmallWorldSearcher {
             .collect()
     }
 
-    pub fn find_universal_bridges_ids(&self, ids: &[u32]) -> Option<Vec<Monster>> {
+    // Find monsters that acts as bridge between all given monster.
+    pub fn find_universal_bridges(&self, ids: &[u32]) -> Option<Vec<Monster>> {
         let monsters = self.ids_to_monsters(ids);
-        self.find_universal_bridges(&monsters)
-            .map(|bridges| bridges.into_iter().cloned().collect())
+
+        let bridges = search_bridge_bitset(&monsters, &self.index)?;
+        let monsters = self.bitset_to_monsters(&bridges);
+
+        if monsters.is_empty() {
+            None
+        } else {
+            Some(monsters.into_iter().cloned().collect())
+        }
     }
 
-    pub fn find_common_bridges_ids(&self, source: &[u32], target: &[u32]) -> Option<Vec<Monster>> {
+    /// Find monsters that connect every source monster to every target monster.
+    pub fn find_common_bridges(&self, source: &[u32], target: &[u32]) -> Option<Vec<Monster>> {
         let source_monsters = self.ids_to_monsters(source);
         let target_monsters = self.ids_to_monsters(target);
 
@@ -149,6 +147,52 @@ impl SmallWorldSearcher {
 
         result
     }
+
+    /// Given two monsters m1 and m2, lookup the first property that connects them.
+    /// Returns a String or None if they are not connected.
+    pub fn compute_connecting_property(&self, m1: u32, m2: u32) -> Option<String> {
+        let index_1 = self.id2index.get(&m1).unwrap();
+        let index_2 = self.id2index.get(&m2).unwrap();
+
+        let monster_1 = &self.monsters[*index_1];
+        let monster_2 = &self.monsters[*index_2];
+
+        let sets_1 = [
+            self.index.by_attribute.get(&monster_1.attribute()).unwrap(),
+            self.index.by_level.get(&monster_1.level()).unwrap(),
+            self.index.by_type.get(&monster_1.r#type()).unwrap(),
+            self.index.by_atk.get(&monster_1.atk()).unwrap(),
+            self.index.by_def.get(&monster_1.def()).unwrap(),
+        ];
+        let sets_2 = [
+            self.index.by_attribute.get(&monster_2.attribute()).unwrap(),
+            self.index.by_level.get(&monster_2.level()).unwrap(),
+            self.index.by_type.get(&monster_2.r#type()).unwrap(),
+            self.index.by_atk.get(&monster_2.atk()).unwrap(),
+            self.index.by_def.get(&monster_2.def()).unwrap(),
+        ];
+
+        for (i, (s1, s2)) in sets_1.iter().zip(sets_2.iter()).enumerate() {
+            if s1.get(*index_2) && s2.get(*index_1) {
+                return match i {
+                    0 => Some(format!("Attribute: {:?}", monster_1.attribute())),
+                    1 => Some(format!("Level: {}", monster_1.level().value())),
+                    2 => Some(format!("Type: {:?}", monster_1.r#type())),
+                    3 => Some(format!(
+                        "ATK: {}",
+                        monster_1.atk().map_or("?".into(), |v| v.to_string())
+                    )),
+                    4 => Some(format!(
+                        "DEF: {}",
+                        monster_1.def().map_or("?".into(), |v| v.to_string())
+                    )),
+                    _ => panic!("unreachable"),
+                };
+            }
+        }
+
+        None
+    }
 }
 
 #[wasm_bindgen]
@@ -188,7 +232,7 @@ mod tests {
         let source = [6032, 5139];
         let target = [6032, 4446];
 
-        let bridges = searcher.find_common_bridges_ids(&source, &target).unwrap();
+        let bridges = searcher.find_common_bridges(&source, &target).unwrap();
 
         assert_eq!(bridges.len(), 220);
     }
@@ -207,5 +251,13 @@ mod tests {
                 link.target().name(),
             );
         }
+    }
+
+    #[test]
+    fn test_compute_connecting_property() {
+        let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
+        let m1 = 20477; // Surfacing Big Jaws
+        let m2 = 15005; // Buzzsaw Shark
+        searcher.compute_connecting_property(m1, m2);
     }
 }
