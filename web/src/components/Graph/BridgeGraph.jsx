@@ -104,9 +104,30 @@ export function BridgeGraph({ sources, bridges, targets }) {
 
         // Elements
         const link = createLinks(global, links);
-        createNodes(global, sources, link, setCardInfo, selectedNodeRef);
-        createNodes(global, bridges, link, setCardInfo, selectedNodeRef);
-        createNodes(global, targets, link, setCardInfo, selectedNodeRef);
+        createNodes(
+            global,
+            sources,
+            link,
+            setCardInfo,
+            selectedNodeRef,
+            isShowingLabels,
+        );
+        createNodes(
+            global,
+            bridges,
+            link,
+            setCardInfo,
+            selectedNodeRef,
+            isShowingLabels,
+        );
+        createNodes(
+            global,
+            targets,
+            link,
+            setCardInfo,
+            selectedNodeRef,
+            isShowingLabels,
+        );
 
         // Reset on background click
         svg.on('click', () => {
@@ -293,7 +314,14 @@ function createLinks(container, links) {
     return link;
 }
 
-function createNodes(global, nodes, link, setCardInfo, selectedNodeRef) {
+function createNodes(
+    global,
+    nodes,
+    link,
+    setCardInfo,
+    selectedNodeRef,
+    isShowingLabels,
+) {
     const node = global
         .append('g')
         .selectAll('g')
@@ -320,6 +348,10 @@ function createNodes(global, nodes, link, setCardInfo, selectedNodeRef) {
                 ? PRIMARY_COLOR
                 : BASE_COLOR;
         });
+        global.selectAll('.link-label').style('display', (l) => {
+            return l.source === d || l.target === d ? 'block' : 'none';
+        });
+        isShowingLabels.value = true;
     });
 
     node.append('circle')

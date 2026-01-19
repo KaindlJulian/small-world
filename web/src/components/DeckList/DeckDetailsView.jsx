@@ -14,9 +14,9 @@ export function DeckDetailsView({ list, isRemoving, onCardClick }) {
             data-ignore-outside-clicks='true'
         >
             {list.map((card) => (
-                <div key={card.id} class='flex'>
+                <div key={card.id} class='relative flex'>
                     <div
-                        class={`fixed w-12 overflow-hidden pr-2 transition-all duration-300 ease-in-out ${isRemoving ? 'opacity-100' : 'opacity-0'}`}
+                        class={`absolute w-12 overflow-hidden pr-2 transition-all duration-300 ease-in-out ${isRemoving ? 'opacity-100' : 'opacity-0'}`}
                     >
                         <Button
                             variant='destructive'
