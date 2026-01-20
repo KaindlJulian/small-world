@@ -84,6 +84,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                             )}
                             onClick={(e) => {
                                 e.stopPropagation();
+                                if (isRemoving) return;
                                 highlightGraphLink.value = {
                                     source: card,
                                     target,

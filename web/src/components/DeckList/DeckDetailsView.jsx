@@ -24,7 +24,11 @@ export function DeckDetailsView({ list, isRemoving, onCardClick }) {
                     <CardListItem
                         card={card}
                         isRemoving={isRemoving}
-                        onCardClick={onCardClick}
+                        onCardClick={() => {
+                            if (!isRemoving) {
+                                onCardClick(card);
+                            }
+                        }}
                     />
                 </div>
             ))}
