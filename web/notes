@@ -1,16 +1,7 @@
-- different views
-    - bridge view (find best bridges)
-        - graph shows
-            - edges are the property that connects the cards, e.g. attribute, type, level, etc.
-
-    - tutorial
-        - explain small world concept (for non-ygo players)
-        - explain how to use the app
-        - link to open a example deck
-
-- just swap to passcodes?
+- tutorial
+    - explain small world concept (for non-ygo players)
+    - explain how to use the app
+    - link to open a example deck
 
 - images
     - self host
-
-- refactor graphs
