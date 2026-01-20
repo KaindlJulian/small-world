@@ -6,7 +6,8 @@
         "build": "vite build",
         "preview": "vite preview",
         "build:wasm": "wasm-pack build ../lib --target web --out-dir ../web/src/wasm --out-name index",
-        "sync": "python ../scripts/sync_cards.py; gzip -k -f ../resources/m.csv ./public/m.gz"
+        "sync": "python ../scripts/sync_cards.py",
+        "compressCsv": "gzip -c ../resources/m.csv > ./public/m.gz"
     },
     "dependencies": {
         "@preact/signals": "^2.5.1",

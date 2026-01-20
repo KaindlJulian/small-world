@@ -27,7 +27,6 @@ export function useBridgeSearch() {
 
         const cards = commonBridges.map((c) => ({
             id: c.id,
-            passcode: c.passcode,
             name: c.name_wasm,
             attribute: c.attribute,
             level: c.level,
@@ -40,9 +39,9 @@ export function useBridgeSearch() {
     }, [searcher, inHandList, targetList]);
 
     const bridgeQuery = useQuery({
-        queryKey: ['bridges-full', resultCards.map((c) => c.passcode)],
+        queryKey: ['bridges-full', resultCards.map((c) => c.id)],
         enabled: resultCards.length > 0,
-        queryFn: () => fetchCards(resultCards.map((c) => c.passcode)),
+        queryFn: () => fetchCards(resultCards.map((c) => c.id)),
         retry: false,
     });
 
@@ -59,11 +58,11 @@ export function useBridgeSearch() {
         }
 
         if (!activeFilter) {
-            return resultCards.map((wasmCard) => apiMap.get(wasmCard.passcode));
+            return resultCards.map((wasmCard) => apiMap.get(wasmCard.id));
         }
 
         return resultCards
-            .map((wasmCard) => apiMap.get(wasmCard.passcode))
+            .map((wasmCard) => apiMap.get(wasmCard.id))
             .filter((card) => {
                 if (activeFilter.attributes.length > 0) {
                     if (!activeFilter.attributes.includes(card.attribute)) {

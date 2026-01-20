@@ -7,7 +7,7 @@ export async function fetchCards(passcodes) {
 
     console.log(`Fetching cards: ${passcodes.join(',')}`);
 
-    const response = await fetch(`${url}?id=${passcodes.join(',')}&misc=yes`);
+    const response = await fetch(`${url}?id=${passcodes.join(',')}`);
 
     if (!response.ok) {
         throw new Error(`Failed to fetch cards (${response.status})`);
@@ -20,8 +20,7 @@ export async function fetchCards(passcodes) {
 // https://ygoprodeck.com/api-guide/#response-info
 export function mapToCard(d) {
     return {
-        id: d.misc_info[0].konami_id,
-        passcode: d.id,
+        id: d.id,
         name: d.name,
         attribute: d.attribute,
         level: d.level,

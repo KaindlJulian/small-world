@@ -43,9 +43,7 @@ export function DeckView() {
 
     useEffect(() => {
         if (deckQuery.data && deckQuery.isSuccess) {
-            const ydkeString = encode_ydke_main(
-                deckQuery.data.map((c) => c.passcode),
-            )
+            const ydkeString = encode_ydke_main(deckQuery.data.map((c) => c.id))
                 .replace('ydke://', '')
                 .replace('!!!', '');
             const encodedYdkeString = encodeURIComponent(ydkeString);
@@ -113,13 +111,13 @@ export function DeckView() {
                         onRemoveCard={(card) => {
                             deckCodesSignal.value =
                                 deckCodesSignal.value.filter(
-                                    (passcode) => passcode !== card.passcode,
+                                    (id) => id !== card.id,
                                 );
                         }}
                         onAddCard={(card) => {
                             deckCodesSignal.value = [
                                 ...deckCodesSignal.value,
-                                card.passcode,
+                                card.id,
                             ];
                         }}
                     />

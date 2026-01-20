@@ -26,6 +26,9 @@ df = df[df['type'].str.contains("Monster")]
 main_deck_frames = ['effect', 'normal', 'ritual', 'effect_pendulum', 'normal_pendulum', 'ritual_pendulum']
 df = df[df['frameType'].isin(main_deck_frames)]
 
+# Filter 10000040,Holactie the Creator of Light,DIVINE,12,Creator God,-1,-1
+df = df[df['id'] != 10000040]
+
 def clean_stat(val):
     try:
         return int(val)
