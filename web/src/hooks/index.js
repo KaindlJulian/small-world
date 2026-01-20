@@ -1,3 +1,4 @@
+export { useBridgeSearch } from './useBridgeSearch';
 export { useCardInfo } from './useCardInfo';
 export { useGraphData } from './useGraphData';
 export { useOnClickOutside } from './useOnClickOutside';

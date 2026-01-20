@@ -1,3 +1,4 @@
+export { BridgeSearchSidebar } from './BridgeSearchSidebar.jsx';
 export { CardFilter } from './CardFilter.jsx';
 export { CardInfo } from './CardInfo.jsx';
 export { Button } from './common/Button.jsx';

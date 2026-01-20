@@ -20,7 +20,7 @@ export function SearcherProvider({ children }) {
         if (isSuccess && csvData && !searcherRef.current) {
             searcherRef.current = new SmallWorldSearcher(csvData);
             setIsReady(true);
-            console.log('created wasm searcher instance');
+            console.log('wasm: created SmallWorldSearcher instance');
         }
 
         return () => {
