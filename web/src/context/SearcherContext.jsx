@@ -18,9 +18,9 @@ export function SearcherProvider({ children }) {
 
     useEffect(() => {
         if (isSuccess && csvData && !searcherRef.current) {
-            console.log('creating wasm searcher instance');
             searcherRef.current = new SmallWorldSearcher(csvData);
             setIsReady(true);
+            console.log('created wasm searcher instance');
         }
 
         return () => {

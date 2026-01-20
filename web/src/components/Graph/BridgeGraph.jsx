@@ -32,7 +32,6 @@ export function BridgeGraph({ sources, bridges, targets }) {
         return <></>;
     }
 
-    /*
     if (bridges.length + sources.length + targets.length > 300) {
         return (
             <div class='flex h-full w-full items-center justify-center'>
@@ -44,7 +43,6 @@ export function BridgeGraph({ sources, bridges, targets }) {
             </div>
         );
     }
-    */
 
     const links = useMemo(() => {
         return sources.flatMap((s) => {

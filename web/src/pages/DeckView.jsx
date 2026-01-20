@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { CornerDownLeft } from 'lucide-preact';
+import { LogOut } from 'lucide-preact';
 import { useLocation, useRoute } from 'preact-iso';
 import { useEffect } from 'react';
 import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
@@ -9,6 +9,7 @@ import {
     DeckForceGraph,
     DeckInput,
     DeckList,
+    LoadingSpinner,
     Sidebar,
 } from '../components';
 import { deckCodesSignal } from '../core/signals.js';
@@ -59,7 +60,11 @@ export function DeckView() {
     };
 
     if (deckQuery.isLoading || isSearcherLoading) {
-        return <div>Loading…</div>;
+        return (
+            <div class='flex h-full items-center justify-center'>
+                <LoadingSpinner />
+            </div>
+        );
     }
 
     if (deckQuery.isError) {
@@ -95,7 +100,7 @@ export function DeckView() {
                                 route('/deck', true);
                             }}
                         >
-                            <CornerDownLeft className='mr-1' />
+                            <LogOut className='mr-1' />
                             Exit
                         </Button>
                     </>

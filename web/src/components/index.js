@@ -3,6 +3,7 @@ export { CardInfo } from './CardInfo.jsx';
 export { Button } from './common/Button.jsx';
 export { Combobox } from './common/Combobox.jsx';
 export { Input } from './common/Input.jsx';
+export { LoadingSpinner } from './common/LoadingSpinner.jsx';
 export { Modal } from './common/Modal.jsx';
 export { MultiCombobox } from './common/MultiCombobox.jsx';
 export { DeckInput } from './DeckInput.jsx';

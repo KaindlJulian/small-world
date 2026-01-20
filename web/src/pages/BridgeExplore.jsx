@@ -53,7 +53,7 @@ export function BridgeExplore() {
     }, [inHandList, targetList]);
 
     if (isSearcherLoading) {
-        return <div>Loading…</div>;
+        <LoadingSpinner text='Loading engine' />;
     }
 
     const bridgeQuery = useQuery({
@@ -174,9 +174,7 @@ export function BridgeExplore() {
                         </div>
                     )}
                     {!filteredCards && bridgeQuery.isLoading && (
-                        <div class='m-auto text-slate-400'>
-                            Loading bridging cards...
-                        </div>
+                        <LoadingSpinner text='Loading bridge cards' />
                     )}
                     {filteredCards && (
                         <VirtuosoGrid

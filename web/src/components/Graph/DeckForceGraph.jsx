@@ -17,6 +17,14 @@ export function DeckForceGraph({ nodes, links }) {
     const isShowingLabels = useSignal(false);
     const { cardSignal, setCardInfo } = useCardInfo();
 
+    if (nodes.length === 0) {
+        return (
+            <div class='flex h-full w-full items-center justify-center text-slate-400'>
+                Add cards to your deck to see small world connections.
+            </div>
+        );
+    }
+
     const handleHighlightNode = (nodeId) => {
         if (!svgRef.current) return;
         const svg = d3.select(svgRef.current);
