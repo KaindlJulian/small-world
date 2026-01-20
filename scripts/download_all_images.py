@@ -73,10 +73,6 @@ def get_card_info():
 
 
 def is_main_deck_monster(card):
-    """
-    Filters for Main Deck Monsters only.
-    Excludes Spells, Traps, and Extra Deck (Fusion, Synchro, XYZ, Link).
-    """
     t = card.get('type', '')
     frames = card.get('frameType', '')
     
