@@ -11,7 +11,6 @@ pub fn parse_csv_file<P: AsRef<Path>>(path: P) -> Vec<Monster> {
     for result in rdr.records() {
         let record = result.expect("Failed to read CSV record");
         let id: u32 = record[0].parse().expect("Invalid id");
-        let passcode: u32 = record[7].parse().expect("Invalid passcode");
         let name = &record[1];
         let attribute = record[2].parse().expect("Invalid attribute");
         let level = record[3].parse().expect("Invalid level");
@@ -24,9 +23,7 @@ pub fn parse_csv_file<P: AsRef<Path>>(path: P) -> Vec<Monster> {
             .parse()
             .map(|e: i32| if e == -1 { None } else { Some(e as u32) })
             .expect("Invalid def");
-        monsters.push(Monster::new(
-            id, passcode, name, attribute, level, r#type, atk, def,
-        ));
+        monsters.push(Monster::new(id, name, attribute, level, r#type, atk, def));
     }
 
     monsters
@@ -39,7 +36,6 @@ pub fn parse_csv(data: &str) -> Vec<Monster> {
     for result in rdr.records() {
         let record = result.expect("Failed to read CSV record");
         let id: u32 = record[0].parse().expect("Invalid id");
-        let passcode: u32 = record[7].parse().expect("Invalid passcode");
         let name = &record[1];
         let attribute = record[2].parse().expect("Invalid attribute");
         let level = record[3].parse().expect("Invalid level");
@@ -52,9 +48,7 @@ pub fn parse_csv(data: &str) -> Vec<Monster> {
             .parse()
             .map(|e: i32| if e == -1 { None } else { Some(e as u32) })
             .expect("Invalid def");
-        monsters.push(Monster::new(
-            id, passcode, name, attribute, level, r#type, atk, def,
-        ));
+        monsters.push(Monster::new(id, name, attribute, level, r#type, atk, def));
     }
 
     monsters

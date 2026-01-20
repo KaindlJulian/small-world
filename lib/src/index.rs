@@ -116,37 +116,47 @@ mod tests {
     #[test]
     fn test_example() {
         let monsters = parse_csv_file("testing_data.csv");
-        let index = MonsterIndex::new(&monsters);
+        let index = BitSetIndex::new(&monsters);
         assert_eq!(
-            index.by_attribute.get(&Attribute::WATER).unwrap().len(),
-            681
+            index
+                .by_attribute
+                .get(&Attribute::WATER)
+                .unwrap()
+                .count_ones(),
+            4
         );
         assert_eq!(
             index
                 .by_level
                 .get(&Level::from_str("4").unwrap())
                 .unwrap()
-                .len(),
-            2245
+                .count_ones(),
+            6
         );
-        assert_eq!(index.by_type.get(&Type::Fish).unwrap().len(), 120);
-        assert_eq!(index.by_atk.get(&Option::<u32>::None).unwrap().len(), 55);
-        assert_eq!(index.by_def.get(&Option::<u32>::None).unwrap().len(), 36);
+        assert_eq!(index.by_type.get(&Type::Fish).unwrap().count_ones(), 4);
+        assert_eq!(
+            index.by_atk.get(&Option::<u32>::None).unwrap().count_ones(),
+            2
+        );
+        assert_eq!(
+            index.by_def.get(&Option::<u32>::None).unwrap().count_ones(),
+            2
+        );
     }
 
     #[test]
     fn test_fixed() {
         let monsters = parse_csv_file("testing_data.csv");
-        let index = MonsterIndex::new(&monsters);
+        let index = BitSetIndex::new(&monsters);
         assert_eq!(index.by_attribute.len(), 7);
-        assert_eq!(index.by_level.len(), 12);
-        assert_eq!(index.by_type.len(), 25);
+        assert_eq!(index.by_level.len(), 9);
+        assert_eq!(index.by_type.len(), 10);
     }
 
     #[test]
     fn test_min_grouping() {
         let monsters = parse_csv_file("testing_data.csv");
-        let index = MonsterIndex::new(&monsters);
+        let index = BitSetIndex::new(&monsters);
         assert_ne!(index.by_attribute.len(), monsters.len());
         assert_ne!(index.by_level.len(), monsters.len());
         assert_ne!(index.by_type.len(), monsters.len());

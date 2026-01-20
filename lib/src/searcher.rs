@@ -229,19 +229,20 @@ mod tests {
     #[test]
     fn test_common_bridges() {
         let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
-        let source = [6032, 5139];
-        let target = [6032, 4446];
+        let source = [86988864];
+        let target = [23771716];
 
         let bridges = searcher.find_common_bridges(&source, &target).unwrap();
 
-        assert_eq!(bridges.len(), 220);
+        assert_eq!(bridges.len(), 1);
     }
 
     #[test]
     fn test_compute_links_within() {
         let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
-        // Primite-Blue-Eyes.ydk
-        let pool = [12950, 4007, 17762, 8933, 20602, 20603, 14741, 20754, 12292];
+        let pool = [
+            14558127, 89631139, 33854624, 97268402, 17947697, 54332792, 27204311, 63198739, 8240199,
+        ];
         let links = searcher.compute_links_within(&pool);
         for link in links {
             println!(
@@ -256,8 +257,9 @@ mod tests {
     #[test]
     fn test_compute_connecting_property() {
         let searcher = SmallWorldSearcher::from_csv(include_str!("../testing_data.csv"));
-        let m1 = 20477; // Surfacing Big Jaws
-        let m2 = 15005; // Buzzsaw Shark
-        searcher.compute_connecting_property(m1, m2);
+        let m1 = 55697723; // Surfacing Big Jaws
+        let m2 = 7150545; // Buzzsaw Shark
+        let property = searcher.compute_connecting_property(m1, m2);
+        assert_eq!(property, Some("Attribute: WATER".into()));
     }
 }

@@ -7,7 +7,6 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Monster {
     id: u32,
-    passcode: u32,
     name: String,
     attribute: Attribute,
     level: Level,
@@ -33,7 +32,6 @@ impl Monster {
     #[wasm_bindgen(constructor)]
     pub fn new(
         id: u32,
-        passcode: u32,
         name: &str,
         attribute: Attribute,
         level: Level,
@@ -43,7 +41,6 @@ impl Monster {
     ) -> Monster {
         Monster {
             id,
-            passcode,
             name: name.to_string(),
             attribute,
             level,
@@ -53,14 +50,10 @@ impl Monster {
         }
     }
 
+    /// The passcode of the monster
     #[wasm_bindgen(getter)]
     pub fn id(&self) -> u32 {
         self.id
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn passcode(&self) -> u32 {
-        self.passcode
     }
 
     #[wasm_bindgen(getter)]

@@ -136,27 +136,7 @@ mod tests {
         let index = MonsterIndex::new(&monsters);
         let bs_index = BitSetIndex::new(&monsters);
 
-        let query = [11927, 15004]
-            .iter()
-            .map(|&m| index.by_id[&m])
-            .collect::<Vec<&Monster>>();
-
-        assert_eq!(search_bridges(&query, &index).unwrap().len(), 21);
-        assert_eq!(
-            search_bridge_bitset(&query, &bs_index)
-                .unwrap()
-                .count_ones(),
-            21
-        );
-    }
-
-    #[test]
-    fn test_multi_intersection() {
-        let monsters = parse_csv_file("testing_data.csv");
-        let index = MonsterIndex::new(&monsters);
-        let bs_index = BitSetIndex::new(&monsters);
-
-        let query = [6032, 4446, 11642, 13863, 14618, 14813, 5421]
+        let query = [89631139, 14558127]
             .iter()
             .map(|&m| index.by_id[&m])
             .collect::<Vec<&Monster>>();
@@ -171,17 +151,38 @@ mod tests {
     }
 
     #[test]
+    fn test_multi_intersection() {
+        let monsters = parse_csv_file("testing_data.csv");
+        let index = MonsterIndex::new(&monsters);
+        let bs_index = BitSetIndex::new(&monsters);
+
+        let query = [86988864, 23771716, 60990740]
+            .iter()
+            .map(|&m| index.by_id[&m])
+            .collect::<Vec<&Monster>>();
+
+        assert_eq!(search_bridges(&query, &index).unwrap().len(), 1);
+        assert_eq!(
+            search_bridge_bitset(&query, &bs_index)
+                .unwrap()
+                .count_ones(),
+            1
+        );
+    }
+
+    #[test]
     fn test_unknown_atk_stat() {
         let monsters = parse_csv_file("testing_data.csv");
         let index = MonsterIndex::new(&monsters);
 
         let result = search_bridges(
             &[
-                index.by_id.get(&19857_u32).unwrap(),
-                index.by_id.get(&5834_u32).unwrap(),
+                index.by_id.get(&39931513_u32).unwrap(),
+                index.by_id.get(&36584821_u32).unwrap(), // Gren Maju Da Eiza (atk = None, def = None)
             ],
             &index,
         );
+
         dbg!(&result.unwrap());
     }
 }
