@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 CARD_INFO = "https://db.ygoprodeck.com/api/v7/cardinfo.php"
 RAW_FOLDER = "../resources/raw_images"
-REQUEST_RATE = 2  # requests per second
+REQUEST_RATE = 2  # max requests/second
 
 if not os.path.exists(RAW_FOLDER):
     os.makedirs(RAW_FOLDER)
@@ -50,7 +50,7 @@ def main():
                 else:
                     pbar.write(f"API error {response.status_code} for {card['name']}")
 
-                # we sent a request, wait to respect rate limit
+                # we sent a request, we wait to respect rate limit
                 time.sleep(1 / REQUEST_RATE) 
 
             except Exception as e:
