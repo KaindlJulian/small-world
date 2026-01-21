@@ -76,7 +76,7 @@ export function DeckView() {
     return (
         <div
             class={cn(
-                'h-full divide-slate-700',
+                'h-full divide-zinc-700',
                 deckCodesSignal.value === null
                     ? 'flex justify-center'
                     : 'grid lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]',

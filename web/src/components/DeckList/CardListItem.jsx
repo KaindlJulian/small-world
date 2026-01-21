@@ -24,7 +24,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
     return (
         <div
             class={cn(
-                'transition-translate grid grow grid-cols-[8rem_1fr] grid-rows-[auto_auto_1fr] gap-2 truncate rounded bg-slate-800 p-2 outline-2 outline-transparent duration-300 outline-dashed xl:grid-cols-[10rem_1fr]',
+                'transition-translate grid grow grid-cols-[8rem_1fr] grid-rows-[auto_auto_1fr] gap-2 truncate rounded bg-zinc-800 p-2 outline-2 outline-transparent duration-300 outline-dashed xl:grid-cols-[10rem_1fr]',
                 isRemoving && 'translate-x-12 opacity-75 outline-red-400',
             )}
         >
@@ -38,7 +38,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
             <div class='text-lg'>{card.name}</div>
 
             <div class='flex gap-2'>
-                <div class='min-h-6 min-w-6 rounded-md border border-slate-700/80 bg-slate-900/50 p-2'>
+                <div class='min-h-6 min-w-6 rounded-md border border-zinc-700/80 bg-zinc-900/50 p-2'>
                     <img
                         src={
                             attributeIconsImport[
@@ -49,26 +49,26 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                         class='h-6 w-6'
                     />
                 </div>
-                <div class='relative min-h-6 min-w-6 rounded-md border border-slate-700/80 bg-slate-900/50 p-2'>
+                <div class='relative min-h-6 min-w-6 rounded-md border border-zinc-700/80 bg-zinc-900/50 p-2'>
                     <img src={levelIcon} alt='Level' class='h-6 w-6' />
                     <span class='text-md absolute inset-2 right-2.5 text-center font-black text-gray-200 [text-shadow:1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]'>
                         {card.level}
                     </span>
                 </div>
-                <span class='grow rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200'>
+                <span class='grow rounded-md border border-zinc-700/80 bg-zinc-900/50 p-2 text-gray-200'>
                     [{card.properties[0]}]
                 </span>
-                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
+                <div class='rounded-md border border-zinc-700/80 bg-zinc-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
                     <span class='font-bold'>ATK</span>
                     <span>/ {card.atk === -1 ? '?' : card.atk}</span>
                 </div>
-                <div class='rounded-md border border-slate-700/80 bg-slate-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
+                <div class='rounded-md border border-zinc-700/80 bg-zinc-900/50 p-2 text-gray-200 lg:max-xl:hidden'>
                     <span class='font-bold'>DEF</span>
                     <span>/ {card.def === -1 ? '?' : card.def}</span>
                 </div>
             </div>
             <div class='flex flex-col gap-1'>
-                <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
+                <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-zinc-400 uppercase'>
                     <span>Connections</span>
                     <span>{card.links.length} Targets</span>
                 </div>
@@ -78,9 +78,9 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                         <div
                             key={`${card.id}-${target.id}`}
                             class={cn(
-                                'flex items-center gap-1 rounded-md border border-slate-700/80 bg-slate-900/50 px-3 py-1.5 text-xs transition-colors',
+                                'flex items-center gap-1 rounded-md border border-zinc-700/80 bg-zinc-900/50 px-3 py-1.5 text-xs transition-colors',
                                 !isRemoving &&
-                                    'cursor-pointer hover:border-slate-600 hover:bg-slate-700',
+                                    'cursor-pointer hover:border-zinc-600 hover:bg-zinc-700',
                             )}
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -102,7 +102,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
 
                             <ArrowRight
                                 size={12}
-                                class='ml-auto text-slate-500'
+                                class='ml-auto text-zinc-500'
                             />
 
                             <img
@@ -121,7 +121,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                             setIsExpanded(!isExpanded);
                         }}
                         variant='ghost'
-                        className='flex w-full items-center justify-center gap-1 rounded py-1 text-xs font-medium text-slate-400'
+                        className='flex w-full items-center justify-center gap-1 rounded py-1 text-xs font-medium text-zinc-400'
                     >
                         {isExpanded ? (
                             <>

@@ -7,7 +7,7 @@ import { GraphControls } from './GraphControls.jsx';
 
 const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = '#14b8a6'; // teal-400
-const BASE_COLOR = '#94a3b8'; // slate-400
+const BASE_COLOR = '#a1a1aa'; // zinc-400
 
 export function DeckForceGraph({ nodes, links }) {
     const svgRef = useRef(null);
@@ -19,7 +19,7 @@ export function DeckForceGraph({ nodes, links }) {
 
     if (nodes.length === 0) {
         return (
-            <div class='flex h-full w-full items-center justify-center text-slate-400'>
+            <div class='flex h-full w-full items-center justify-center text-zinc-400'>
                 Add cards to your deck to see small world connections.
             </div>
         );

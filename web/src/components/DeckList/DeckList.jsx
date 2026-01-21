@@ -108,7 +108,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                     <Button variant='primary'>Add Card</Button>
                 </div>
             </Modal>
-            <div class='sticky top-0 z-50 flex w-full gap-2 bg-slate-800 p-4'>
+            <div class='sticky top-0 z-50 flex w-full gap-2 bg-zinc-800 p-4'>
                 <Button
                     onClick={() =>
                         setView((prev) => ({ ...prev, modal: true }))

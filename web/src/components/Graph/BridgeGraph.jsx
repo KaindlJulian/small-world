@@ -12,7 +12,7 @@ const attributeIconsImport = import.meta.glob('../../assets/attributes/*.svg', {
 
 const INITIAL_SCALE = 1;
 const PRIMARY_COLOR = '#14b8a6'; // teal-400
-const BASE_COLOR = '#94a3b8'; // slate-400
+const BASE_COLOR = '#a1a1aa'; // zinc-400
 const VERTICAL_SPACING = 40;
 
 export function BridgeGraph({ sources, bridges, targets }) {
@@ -35,7 +35,7 @@ export function BridgeGraph({ sources, bridges, targets }) {
     if (bridges.length + sources.length + targets.length > 300) {
         return (
             <div class='flex h-full w-full items-center justify-center'>
-                <p class='text-center text-slate-400'>
+                <p class='text-center text-zinc-400'>
                     Graph too large to display (more than 300 cards).
                     <br />
                     Refine your search or filter the result.

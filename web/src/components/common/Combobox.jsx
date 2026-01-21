@@ -32,7 +32,7 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                 <input
                     id={`combobox-${crypto.randomUUID()}`}
                     type='text'
-                    class='ring-offset-background inline-flex w-full rounded-md border border-slate-600 bg-slate-700 px-4 py-2 text-sm font-medium shadow focus-visible:ring'
+                    class='ring-offset-background inline-flex w-full rounded-md border border-zinc-600 bg-zinc-700 px-4 py-2 text-sm font-medium shadow focus-visible:ring'
                     placeholder={placeholder}
                     value={query}
                     onInput={(e) => {
@@ -43,14 +43,14 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                     onFocus={() => setIsOpen(true)}
                 />
 
-                <div class='pointer-events-none absolute inset-y-0 right-0 ml-auto flex items-center pr-4 text-slate-400'>
+                <div class='pointer-events-none absolute inset-y-0 right-0 ml-auto flex items-center pr-4 text-zinc-400'>
                     <ChevronsUpDown size={16} />
                 </div>
 
                 {isOpen && displayList.length > 0 && (
                     <ul
                         class={cn(
-                            'absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 p-1 text-sm shadow-lg ring-1 ring-slate-600 focus:outline-none',
+                            'absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-zinc-700 p-1 text-sm shadow-lg ring-1 ring-slate-600 focus:outline-none',
                             '[&::-webkit-scrollbar-track]:transparent [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500',
                         )}
                     >
@@ -58,7 +58,7 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                             <li
                                 key={item.id}
                                 onClick={() => handleSelect(item)}
-                                class='relative cursor-default rounded-md px-4 py-2 select-none hover:bg-slate-600'
+                                class='relative cursor-default rounded-md px-4 py-2 select-none hover:bg-zinc-600'
                             >
                                 <span
                                     class={`block truncate ${selectedItem?.id === item.id ? 'font-semibold' : ''}`}

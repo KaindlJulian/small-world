@@ -31,7 +31,7 @@ export function CardInfo() {
     return (
         <div
             ref={ref}
-            class={`fixed left-0 flex h-[calc(100%-48px)] flex-col bg-slate-800 transition-transform duration-250 ease-in-out ${
+            class={`fixed left-0 flex h-[calc(100%-48px)] flex-col bg-zinc-800 transition-transform duration-250 ease-in-out ${
                 isOpen ? 'translate-x-0' : '-translate-x-full'
             } z-99 w-72`}
         >
@@ -66,7 +66,7 @@ export function CardInfo() {
                         alt='card'
                         class='col-span-2 rounded-sm'
                     />
-                    <div class='flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
+                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
                         <img
                             src={attributeIcons[card.attribute]}
                             alt={`Attribute ${card.attribute}`}
@@ -74,7 +74,7 @@ export function CardInfo() {
                         />
                         <span>{card.attribute}</span>
                     </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
+                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
                         <img
                             src={levelIcon}
                             alt='Level'
@@ -82,26 +82,26 @@ export function CardInfo() {
                         />
                         <span>{card.level}</span>
                     </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
+                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
                         <div class='mr-2 h-6 w-8'>
                             <span class='font-bold'>ATK</span>
                             <span>/</span>
                         </div>
                         <span>{card.atk === -1 ? '?' : card.atk}</span>
                     </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
+                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
                         <div class='mr-2 h-6 w-8'>
                             <span class='font-bold'>DEF</span>
                             <span>/</span>
                         </div>
                         <span>{card.def === -1 ? '?' : card.def}</span>
                     </div>
-                    <div class='col-span-2 flex cursor-pointer items-center rounded-sm bg-slate-700 px-2 py-2 hover:bg-slate-600'>
+                    <div class='col-span-2 flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
                         <span class='font-bold'>
                             [ {card.properties.join(' / ')} ]
                         </span>
                     </div>
-                    <div class='col-span-2 overflow-hidden rounded-sm bg-gray-900 px-2 [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full'>
+                    <div class='col-span-2 overflow-hidden rounded-sm bg-zinc-900 px-2 [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full'>
                         <span class='justify-text inline-block tracking-[0.1px] select-text'>
                             {card.text}
                         </span>

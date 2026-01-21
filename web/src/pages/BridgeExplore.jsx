@@ -14,7 +14,7 @@ export function BridgeExplore() {
     }
 
     return (
-        <div class='grid h-full divide-slate-700 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
+        <div class='grid h-full divide-zinc-700 lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]'>
             <CardInfo />
 
             <div class='flex w-full flex-col'>

@@ -17,7 +17,7 @@ export function BridgeSearchSidebar({
 
     return (
         <div class='flex h-full flex-col overflow-hidden'>
-            <div class='sticky top-0 z-10 flex flex-col gap-4 bg-slate-800 p-4 shadow-md'>
+            <div class='sticky top-0 z-10 flex flex-col gap-4 bg-zinc-800 p-4 shadow-md'>
                 <div class='text-lg font-semibold'>Find Bridges</div>
                 <MultiCombobox
                     items={searchOptions}
@@ -34,7 +34,7 @@ export function BridgeSearchSidebar({
             </div>
 
             {isIdle && (
-                <div class='m-auto text-slate-400'>
+                <div class='m-auto text-zinc-400'>
                     Select cards in hand and target cards to find bridging
                     cards.
                 </div>
@@ -62,8 +62,8 @@ export function BridgeSearchSidebar({
             )}
 
             {filteredCards && (
-                <div class='animate-slide-in-bottom bg-slate-800 p-4 shadow-md'>
-                    <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-slate-400 uppercase'>
+                <div class='animate-slide-in-bottom bg-zinc-800 p-4 shadow-md'>
+                    <div class='flex items-center justify-between text-xs font-semibold tracking-wider text-zinc-400 uppercase'>
                         <span>Filter Cards</span>
                         <span>{filteredCards.length} Bridges Found</span>
                     </div>

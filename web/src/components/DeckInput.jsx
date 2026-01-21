@@ -78,7 +78,7 @@ export function DeckInput({ onInput }) {
                         e.preventDefault();
                     }}
                     onDrop={handleDrop}
-                    class='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-600 hover:bg-slate-800 hover:shadow-xl'
+                    class='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-zinc-600 hover:bg-zinc-800 hover:shadow-xl'
                 >
                     <Upload />
                     <div class='text-body flex flex-col items-center justify-center px-5 pt-5 pb-6'>
@@ -100,7 +100,7 @@ export function DeckInput({ onInput }) {
                     />
                 </label>
             </div>
-            <div class='my-4 flex w-full max-w-sm items-center justify-center gap-3 text-slate-400'>
+            <div class='my-4 flex w-full max-w-sm items-center justify-center gap-3 text-zinc-400'>
                 <span class='text-xs tracking-wide'>OR</span>
             </div>
 

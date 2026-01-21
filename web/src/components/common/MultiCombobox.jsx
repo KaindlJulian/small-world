@@ -51,7 +51,7 @@ export function MultiCombobox({
             <div class='group relative'>
                 <div
                     class={cn(
-                        'relative flex min-h-10 w-full flex-wrap gap-1 rounded-md border border-slate-600 bg-slate-700 p-1.5 text-sm shadow-sm transition-colors focus-within:ring-2',
+                        'relative flex min-h-10 w-full flex-wrap gap-1 rounded-md border border-zinc-600 bg-zinc-700 p-1.5 text-sm shadow-sm transition-colors focus-within:ring-2',
                         isOpen && 'ring-2',
                     )}
                     onClick={() => inputRef.current?.focus()}
@@ -59,7 +59,7 @@ export function MultiCombobox({
                     {selectedItems.map((item) => (
                         <span
                             key={item.id}
-                            class='text-foreground flex items-center gap-1 rounded-md bg-slate-600 py-0.5 pr-1 pl-2 text-xs'
+                            class='text-foreground flex items-center gap-1 rounded-md bg-zinc-600 py-0.5 pr-1 pl-2 text-xs'
                         >
                             {item.text}
                             <button
@@ -67,7 +67,7 @@ export function MultiCombobox({
                                     e.stopPropagation();
                                     removeId(item.id);
                                 }}
-                                class='rounded-full p-0.5 transition-colors hover:bg-slate-500'
+                                class='rounded-full p-0.5 transition-colors hover:bg-zinc-500'
                             >
                                 <X size={12} />
                             </button>
@@ -78,7 +78,7 @@ export function MultiCombobox({
                         ref={inputRef}
                         type='text'
                         id={`multicombobox-${crypto.randomUUID()}`}
-                        class='min-w-20 flex-1 bg-transparent px-1 py-0.5 outline-none placeholder:text-slate-400'
+                        class='min-w-20 flex-1 bg-transparent px-1 py-0.5 outline-none placeholder:text-zinc-400'
                         placeholder={
                             selectedItems.length === 0 ? placeholder : ''
                         }
@@ -101,7 +101,7 @@ export function MultiCombobox({
                         }}
                     />
 
-                    <div class='absolute top-2.5 right-0 ml-auto flex items-center pr-2 text-slate-400'>
+                    <div class='absolute top-2.5 right-0 ml-auto flex items-center pr-2 text-zinc-400'>
                         <ChevronsUpDown size={16} />
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export function MultiCombobox({
                 {isOpen && displayList.length > 0 && (
                     <ul
                         class={cn(
-                            'absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-slate-600 bg-slate-800 p-1 text-sm shadow-xl focus:outline-none',
+                            'absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-zinc-600 bg-zinc-800 p-1 text-sm shadow-xl focus:outline-none',
                             '[&::-webkit-scrollbar-track]:transparent [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500',
                             { 'bottom-11': dropDownAbove },
                         )}
@@ -121,7 +121,7 @@ export function MultiCombobox({
                                     e.stopPropagation();
                                     handleSelect(item);
                                 }}
-                                class='relative cursor-pointer rounded-md px-4 py-2 transition-colors select-none hover:bg-slate-600'
+                                class='relative cursor-pointer rounded-md px-4 py-2 transition-colors select-none hover:bg-zinc-600'
                             >
                                 <span class='block truncate'>{item.text}</span>
                             </li>

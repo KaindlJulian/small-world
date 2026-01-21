@@ -2,10 +2,10 @@ import { cn } from '@/utils';
 
 const VARIANTS = {
     primary: 'bg-teal-600 text-foreground hover:bg-teal-600/80',
-    secondary: 'bg-slate-600 text-foreground hover:bg-slate-600/80',
+    secondary: 'bg-zinc-600 text-foreground hover:bg-zinc-600/80',
     destructive: 'bg-red-500 text-foreground hover:bg-red-500/80',
-    outline: 'border border-slate-400 bg-transparent hover:bg-slate-700',
-    ghost: 'bg-transparent text-foreground  hover:bg-slate-600',
+    outline: 'border border-zinc-400 bg-transparent hover:bg-zinc-700',
+    ghost: 'bg-transparent text-foreground  hover:bg-zinc-600',
 };
 
 const SIZES = {
