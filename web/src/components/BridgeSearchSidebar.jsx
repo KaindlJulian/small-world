@@ -1,6 +1,7 @@
 import { useCardInfo } from '@/hooks';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { CardFilter, LoadingSpinner, MultiCombobox } from '.';
+import { publicAssetUrl } from '../utils';
 
 export function BridgeSearchSidebar({
     searchOptions,
@@ -51,7 +52,7 @@ export function BridgeSearchSidebar({
                         <div class=''>
                             <img
                                 class='h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
-                                src={`bg.jpg`}
+                                src={`${publicAssetUrl}/full/${card.id}.webp`}
                                 alt={card.name}
                                 onClick={() => setCardInfo(card)}
                                 loading='lazy'

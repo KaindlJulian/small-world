@@ -1,4 +1,5 @@
 import { Trash2 } from 'lucide-preact';
+import { publicAssetUrl } from '@/utils';
 
 export function DeckGridView({ list, isRemoving, onCardClick }) {
     return (
@@ -16,7 +17,7 @@ export function DeckGridView({ list, isRemoving, onCardClick }) {
                     }`}
                 >
                     <img
-                        src='card.jpg'
+                        src={`${publicAssetUrl}/full/${card.id}.webp`}
                         alt={card.name}
                         class={`w-full rounded ${isRemoving && 'grayscale hover:opacity-50'}`}
                         onClick={() => onCardClick(card)}

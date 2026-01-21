@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-preact';
 import { useRef } from 'react';
 import { Button } from '.';
 import levelIcon from '../assets/level_star.svg';
+import { publicAssetUrl } from '../utils';
 
 const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     eager: true,
@@ -62,7 +63,7 @@ export function CardInfo() {
                 </div>
                 <div class='grid grid-cols-2 gap-2 overflow-hidden px-4'>
                     <img
-                        src='bg.jpg'
+                        src={`${publicAssetUrl}/full/${card.id}.webp`}
                         alt='card'
                         class='col-span-2 rounded-sm'
                     />

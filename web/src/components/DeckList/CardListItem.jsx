@@ -4,6 +4,7 @@ import { cn } from '@/utils';
 import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-preact';
 import { useState } from 'react';
 import { Button } from '..';
+import { publicAssetUrl } from '@/utils';
 
 const attributeIconsImport = import.meta.glob('../../assets/attributes/*.svg', {
     eager: true,
@@ -29,7 +30,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
             )}
         >
             <img
-                src='card.jpg'
+                src={`${publicAssetUrl}/full/${card.id}.webp`}
                 alt={card.name}
                 class={`row-span-3 rounded xl:row-span-4 ${isRemoving ? 'grayscale' : 'cursor-pointer transition-transform hover:scale-105'}`}
                 onClick={() => onCardClick(card)}
@@ -93,7 +94,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                         >
                             {bridges.map((bridge) => (
                                 <img
-                                    src='bg.jpg'
+                                    src={`${publicAssetUrl}/cropped/${bridge.id}.webp`}
                                     key={`${card.id}-${bridge.id}-${target.id}`}
                                     alt={bridge.name}
                                     class='h-6 w-6 rounded-full'
@@ -106,7 +107,7 @@ export function CardListItem({ card, onCardClick, isRemoving }) {
                             />
 
                             <img
-                                src='bg.jpg'
+                                src={`${publicAssetUrl}/cropped/${target.id}.webp`}
                                 alt={target.name}
                                 class='h-6 w-6 rounded-full'
                             />

@@ -1,5 +1,6 @@
 import { highlightGraphLink } from '@/core/signals.js';
 import { useCardInfo } from '@/hooks';
+import { publicAssetUrl } from '@/utils.js';
 import { useSignal } from '@preact/signals';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
@@ -296,7 +297,7 @@ function createLinks(global, links, setCardInfo) {
 
     bridgeNodes
         .append('image')
-        .attr('href', (d) => d.image || 'bg.jpg')
+        .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
         .attr('width', 12)
         .attr('height', 12)
         .attr('x', -6)
@@ -384,7 +385,7 @@ function createNodes(
         .attr('fill', 'white');
 
     node.append('image')
-        .attr('href', 'bg.jpg')
+        .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
         .attr('width', 20)
         .attr('height', 20)
         .attr('x', -10)

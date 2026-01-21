@@ -1,5 +1,6 @@
 import levelIcon from '@/assets/level_star.svg';
 import { useCardInfo, useSearcher } from '@/hooks';
+import { publicAssetUrl } from '@/utils.js';
 import { useSignal } from '@preact/signals';
 import * as d3 from 'd3';
 import { useEffect, useMemo, useRef } from 'react';
@@ -358,7 +359,7 @@ function createNodes(
         .attr('fill', 'white');
 
     node.append('image')
-        .attr('href', 'bg.jpg')
+        .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
         .attr('width', 20)
         .attr('height', 20)
         .attr('x', -10)
