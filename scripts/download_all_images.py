@@ -42,7 +42,7 @@ def main():
                         img_url = img['image_url']
                         break
 
-                response = requests.get(img_url, stream=True)
+                response = requests.get(img_url, stream=True, headers={'User-Agent': 'SmallWorldSearch-OneTimeFetcher/1.0'})
                 if response.status_code == 200:
                     with open(filename, 'wb') as f:
                         for chunk in response.iter_content(1024):
