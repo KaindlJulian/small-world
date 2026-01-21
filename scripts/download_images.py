@@ -30,28 +30,8 @@ def main():
 
             # Download the image
             try:
-                if 'card_images' not in card or not card['card_images']:
-                    pbar.write(f"Skipping {card['name']} (No image data)")
-                    pbar.update(1)
-                    continue
-
-                img_url = card['card_images'][0]['image_url']
-
-                for img in card['card_images']:
-                    if str(img['id']) == card_id:
-                        img_url = img['image_url']
-                        break
-
-                response = requests.get(img_url, stream=True, headers={'User-Agent': 'SmallWorldSearch-OneTimeFetcher/1.0'})
-                if response.status_code == 200:
-                    with open(filename, 'wb') as f:
-                        for chunk in response.iter_content(1024):
-                            f.write(chunk)
-                else:
-                    pbar.write(f"API error {response.status_code} for {card['name']}")
-
-                # we sent a request, we wait to respect rate limit
-                time.sleep(1 / REQUEST_RATE) 
+                download_card_image(card, filename)
+                time.sleep(1 / REQUEST_RATE)  # Rate limiting
 
             except Exception as e:
                 pbar.write(f"Exception for {card['name']}: {e}")
@@ -59,6 +39,28 @@ def main():
             pbar.update(1)
 
     print("\nDownload complete!")
+
+
+def download_card_image(card, filename):
+    if 'card_images' not in card or not card['card_images']:
+        print(f"Skipping {card['name']} (No image data)")
+        return
+
+    img_url = card['card_images'][0]['image_url']
+
+    for img in card['card_images']:
+        if str(img['id']) == str(card['id']):
+            img_url = img['image_url']
+            break
+
+    response = requests.get(img_url, stream=True, headers={'User-Agent': 'SmallWorldSearch-OneTimeFetcher/1.0'})
+    if response.status_code == 200:
+        with open(filename, 'wb') as f:
+            for chunk in response.iter_content(1024):
+                f.write(chunk)
+    else:
+        print(f"API error {response.status_code} for {card['name']}")
+
 
 
 def get_card_info():

@@ -6,7 +6,7 @@
         "build": "vite build",
         "preview": "vite preview",
         "build:wasm": "wasm-pack build ../lib --target web --out-dir ../web/src/wasm --out-name index",
-        "sync": "python ../scripts/sync_cards.py",
+        "sync": "python ../scripts/sync.py",
         "compressCsv": "gzip -c ../resources/m.csv > ./public/m.gz"
     },
     "dependencies": {
