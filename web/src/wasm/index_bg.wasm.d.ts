@@ -1,0 +1,36 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const __wbg_link_free: (a: number, b: number) => void;
+export const __wbg_smallworldsearcher_free: (a: number, b: number) => void;
+export const link_bridge: (a: number) => number;
+export const link_start: (a: number) => number;
+export const link_target: (a: number) => number;
+export const smallworldsearcher_compute_connecting_property: (a: number, b: number, c: number) => [number, number];
+export const smallworldsearcher_compute_links_within: (a: number, b: number, c: number) => [number, number];
+export const smallworldsearcher_find_common_bridges: (a: number, b: number, c: number, d: number, e: number) => [number, number];
+export const smallworldsearcher_find_universal_bridges: (a: number, b: number, c: number) => [number, number];
+export const smallworldsearcher_from_csv: (a: number, b: number) => number;
+export const smallworldsearcher_get_all: (a: number) => [number, number];
+export const smallworldsearcher_get_by_id: (a: number, b: number) => number;
+export const decode_ydke: (a: number, b: number, c: number) => [number, number];
+export const encode_ydke_main: (a: number, b: number) => [number, number];
+export const parse_ydk: (a: number, b: number, c: number) => [number, number];
+export const __wbg_level_free: (a: number, b: number) => void;
+export const __wbg_monster_free: (a: number, b: number) => void;
+export const level_new: (a: number) => number;
+export const level_value: (a: number) => number;
+export const monster_atk: (a: number) => number;
+export const monster_attribute: (a: number) => number;
+export const monster_def: (a: number) => number;
+export const monster_id: (a: number) => number;
+export const monster_level: (a: number) => number;
+export const monster_name_wasm: (a: number) => [number, number];
+export const monster_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
+export const monster_type: (a: number) => number;
+export const __wbindgen_externrefs: WebAssembly.Table;
+export const __wbindgen_malloc: (a: number, b: number) => number;
+export const __externref_drop_slice: (a: number, b: number) => void;
+export const __wbindgen_free: (a: number, b: number, c: number) => void;
+export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_start: () => void;
