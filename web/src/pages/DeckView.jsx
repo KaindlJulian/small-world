@@ -30,7 +30,7 @@ export function DeckView() {
     }, []);
 
     useEffect(() => {
-        if (deckCodesSignal.value.length > 0) {
+        if (deckCodesSignal.value && deckCodesSignal.value.length > 0) {
             const ydkeString = encode_ydke_main(deckCodesSignal.value)
                 .replace('ydke://', '')
                 .replace('!!!', '');
