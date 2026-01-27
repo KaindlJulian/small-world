@@ -1,9 +1,11 @@
 import { useCardInfo, useOnClickOutside } from '@/hooks';
+import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft } from 'lucide-preact';
 import { useRef } from 'react';
 import { Button } from '.';
+import { fetchCards, mapToCard } from '../api/ygoprodeck';
 import levelIcon from '../assets/level_star.svg';
-import { publicAssetUrl } from '../utils';
+import { cn, publicAssetUrl } from '../utils';
 
 const attributeIconsImport = import.meta.glob('../assets/attributes/*.svg', {
     eager: true,
@@ -15,26 +17,32 @@ export function CardInfo() {
     const ref = useRef(null);
     useOnClickOutside(() => (isOpenSignal.value = false), { refs: [ref] });
 
-    if (!cardSignal.value) {
-        return null;
-    }
-
-    const card = cardSignal.value;
+    const cardInMemory = cardSignal.value;
     const isOpen = isOpenSignal.value;
 
-    const attributeIcons = Object.fromEntries(
-        Object.entries(attributeIconsImport).map(([path, mod]) => {
-            const name = path.split('/').pop()?.replace('.svg', '');
-            return [name, mod];
-        }),
-    );
+    if (!cardInMemory) return null;
+
+    const { data: card, isLoading } = useQuery({
+        queryKey: ['card', cardInMemory.id],
+        queryFn: () => fetchCards([cardInMemory.id]),
+        enabled: !!cardInMemory.id,
+        placeholderData: cardInMemory,
+        select: (data) => (data && data.length > 0 ? mapToCard(data[0]) : null),
+    });
+
+    const frameStyles = {
+        normal: 'bg-amber-100 text-black',
+        effect: 'bg-orange-500 text-white',
+        ritual: 'bg-blue-800 text-white',
+    };
 
     return (
         <div
             ref={ref}
-            class={`fixed left-0 flex h-[calc(100%-48px)] flex-col bg-zinc-800 transition-transform duration-250 ease-in-out ${
-                isOpen ? 'translate-x-0' : '-translate-x-full'
-            } z-99 w-72`}
+            class={cn(
+                'fixed left-0 z-99 flex h-[calc(100%-48px)] w-72 flex-col bg-zinc-800 transition-transform duration-250 ease-in-out',
+                isOpen ? 'translate-x-0' : '-translate-x-full',
+            )}
         >
             <Button
                 size='icon'
@@ -51,64 +59,109 @@ export function CardInfo() {
                 className='absolute top-8 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250 sm:top-1/2'
             >
                 <ChevronLeft
-                    class={`transform transition-transform duration-250 ${
-                        !isOpen && '-scale-x-100'
-                    }`}
+                    className={cn(
+                        'transform transition-transform duration-250',
+                        !isOpen && '-scale-x-100',
+                    )}
                 />
             </Button>
 
             <aside class='flex h-full flex-col pb-4'>
-                <div class='mb-2 bg-amber-700 py-2 text-center'>
-                    <h2 class='px-4 text-lg'>{card.name}</h2>
+                <div
+                    class={cn(
+                        'mb-2 py-2 text-center transition-colors duration-500',
+                        isLoading
+                            ? 'animate-pulse bg-zinc-600'
+                            : frameStyles[card?.frame || ''] || 'bg-amber-700',
+                    )}
+                >
+                    <h2 class='min-h-7 px-4 text-lg font-bold'>
+                        {isLoading ? '' : card?.name || cardInMemory.name}
+                    </h2>
                 </div>
+
                 <div class='grid grid-cols-2 gap-2 overflow-hidden px-4'>
                     <img
-                        src={`${publicAssetUrl}/full/${card.id}.webp`}
-                        alt='card'
+                        src={`${publicAssetUrl}/full/${cardInMemory.id}.webp`}
+                        alt={cardInMemory.name}
                         class='col-span-2 rounded-sm'
                     />
-                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
+
+                    <InfoBox>
                         <img
-                            src={attributeIcons[card.attribute]}
-                            alt={`Attribute ${card.attribute}`}
-                            class='mr-4 inline h-6 w-6'
+                            src={
+                                attributeIconsImport[
+                                    `../assets/attributes/${card.attribute}.svg`
+                                ]
+                            }
+                            class='mr-4 h-6 w-6'
                         />
-                        <span>{card.attribute}</span>
-                    </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
-                        <img
-                            src={levelIcon}
-                            alt='Level'
-                            class='mr-4 inline h-6 w-6'
-                        />
-                        <span>{card.level}</span>
-                    </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
-                        <div class='mr-2 h-6 w-8'>
-                            <span class='font-bold'>ATK</span>
-                            <span>/</span>
-                        </div>
-                        <span>{card.atk === -1 ? '?' : card.atk}</span>
-                    </div>
-                    <div class='flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
-                        <div class='mr-2 h-6 w-8'>
-                            <span class='font-bold'>DEF</span>
-                            <span>/</span>
-                        </div>
-                        <span>{card.def === -1 ? '?' : card.def}</span>
-                    </div>
-                    <div class='col-span-2 flex cursor-pointer items-center rounded-sm bg-zinc-700 px-2 py-2 hover:bg-zinc-600'>
-                        <span class='font-bold'>
-                            [ {card.properties.join(' / ')} ]
+                        <span>{cardInMemory.attribute}</span>
+                    </InfoBox>
+
+                    <InfoBox>
+                        <img src={levelIcon} class='mr-4 h-6 w-6' />
+                        <span>{cardInMemory.level}</span>
+                    </InfoBox>
+
+                    <InfoBox>
+                        <span class='mr-2 font-bold'>ATK/</span>
+                        <span>
+                            {cardInMemory.atk === -1 ? '?' : cardInMemory.atk}
+                        </span>
+                    </InfoBox>
+
+                    <InfoBox>
+                        <span class='mr-2 font-bold'>DEF/</span>
+                        <span>
+                            {cardInMemory.def === -1 ? '?' : cardInMemory.def}
+                        </span>
+                    </InfoBox>
+
+                    <div class='col-span-2 flex items-center rounded-sm bg-zinc-700 px-2 py-2'>
+                        <span
+                            class={cn(
+                                'font-bold',
+                                isLoading && 'animate-pulse text-zinc-500',
+                            )}
+                        >
+                            [{' '}
+                            {isLoading
+                                ? 'Loading...'
+                                : card?.properties?.join(' / ') ||
+                                  cardInMemory.properties.join(' / ')}{' '}
+                            ]
                         </span>
                     </div>
-                    <div class='col-span-2 overflow-hidden rounded-sm bg-zinc-900 px-2 [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full'>
-                        <span class='justify-text inline-block tracking-[0.1px] select-text'>
-                            {card.text}
-                        </span>
+
+                    <div class='col-span-2 h-44 overflow-hidden rounded-sm bg-zinc-900 px-3 py-2 [scrollbar-gutter:stable] hover:overflow-y-scroll'>
+                        {isLoading ? (
+                            <div class='space-y-2 pt-1'>
+                                <div class='h-3 w-full animate-pulse rounded bg-zinc-700' />
+                                <div class='h-3 w-5/6 animate-pulse rounded bg-zinc-700' />
+                                <div class='h-3 w-4/6 animate-pulse rounded bg-zinc-700' />
+                            </div>
+                        ) : (
+                            <p class='text-sm leading-relaxed tracking-wide select-text'>
+                                {card?.text}
+                            </p>
+                        )}
                     </div>
                 </div>
             </aside>
+        </div>
+    );
+}
+
+function InfoBox({ children, className }) {
+    return (
+        <div
+            className={cn(
+                'flex items-center rounded-sm bg-zinc-700 px-2 py-2',
+                className,
+            )}
+        >
+            {children}
         </div>
     );
 }
