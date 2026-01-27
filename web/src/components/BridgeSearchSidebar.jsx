@@ -53,9 +53,9 @@ export function BridgeSearchSidebar({
                             return <div class='aspect-[1/1.45] w-full' />;
 
                         return (
-                            <div class=''>
+                            <div class='rounded-md bg-zinc-500'>
                                 <img
-                                    class='aspect-[1/1.45] h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-110'
+                                    class='aspect-[1/1.45] h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-115'
                                     src={`${publicAssetUrl}/full/${card.id}.webp`}
                                     alt={card.name || 'Card'}
                                     onClick={() => setCardInfo(card)}

@@ -75,7 +75,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
 
     const names = searcher
         .get_all()
-        .map((m) => ({ id: m.id, text: m.name_wasm }))
+        .map((m) => ({ id: m.id, text: m.name_js }))
         .sort((a, b) => a.text.localeCompare(b.text));
 
     return (

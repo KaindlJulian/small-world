@@ -1,3 +1,4 @@
+use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::num::ParseIntError;
 use std::str::FromStr;
@@ -6,10 +7,10 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Monster {
-    id: u32,
+    id: u32, // the passcode
     name: String,
     attribute: Attribute,
-    level: Level,
+    level: u32,
     r#type: Type,
     atk: Option<u32>,
     def: Option<u32>,
@@ -22,19 +23,11 @@ impl Hash for Monster {
 }
 
 impl Monster {
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-}
-
-#[wasm_bindgen]
-impl Monster {
-    #[wasm_bindgen(constructor)]
     pub fn new(
         id: u32,
         name: &str,
         attribute: Attribute,
-        level: Level,
+        level: u32,
         r#type: Type,
         atk: Option<u32>,
         def: Option<u32>,
@@ -50,30 +43,29 @@ impl Monster {
         }
     }
 
-    /// The passcode of the monster
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn attribute(&self) -> Attribute {
+        self.attribute
+    }
+
+    pub fn r#type(&self) -> Type {
+        self.r#type
+    }
+}
+
+#[wasm_bindgen]
+impl Monster {
     #[wasm_bindgen(getter)]
     pub fn id(&self) -> u32 {
         self.id
     }
 
     #[wasm_bindgen(getter)]
-    pub fn name_wasm(&self) -> String {
-        self.name.clone()
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn attribute(&self) -> Attribute {
-        self.attribute
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn level(&self) -> Level {
+    pub fn level(&self) -> u32 {
         self.level
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn r#type(&self) -> Type {
-        self.r#type
     }
 
     #[wasm_bindgen(getter)]
@@ -85,9 +77,23 @@ impl Monster {
     pub fn def(&self) -> Option<u32> {
         self.def
     }
+
+    #[wasm_bindgen(getter)]
+    pub fn name_js(&self) -> String {
+        self.name.clone()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn attribute_js(&self) -> String {
+        self.attribute.to_string()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn type_js(&self) -> String {
+        self.r#type.to_string()
+    }
 }
 
-#[wasm_bindgen]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum Attribute {
     DARK,
@@ -97,6 +103,21 @@ pub enum Attribute {
     LIGHT,
     WATER,
     WIND,
+}
+
+impl fmt::Display for Attribute {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let s = match self {
+            Attribute::DARK => "DARK",
+            Attribute::DIVINE => "DIVINE",
+            Attribute::EARTH => "EARTH",
+            Attribute::FIRE => "FIRE",
+            Attribute::LIGHT => "LIGHT",
+            Attribute::WATER => "WATER",
+            Attribute::WIND => "WIND",
+        };
+        write!(f, "{}", s)
+    }
 }
 
 impl FromStr for Attribute {
@@ -116,7 +137,6 @@ impl FromStr for Attribute {
     }
 }
 
-#[wasm_bindgen]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum Type {
     Aqua,
@@ -144,6 +164,39 @@ pub enum Type {
     WingedBeast,
     Wyrm,
     Zombie,
+}
+
+impl fmt::Display for Type {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let s = match self {
+            Type::Aqua => "Aqua",
+            Type::Beast => "Beast",
+            Type::BeastWarrior => "Beast-Warrior",
+            Type::Cyberse => "Cyberse",
+            Type::Dinosaur => "Dinosaur",
+            Type::DivineBeast => "Divine-Beast",
+            Type::Dragon => "Dragon",
+            Type::Fairy => "Fairy",
+            Type::Fiend => "Fiend",
+            Type::Fish => "Fish",
+            Type::Insect => "Insect",
+            Type::Illusion => "Illusion",
+            Type::Machine => "Machine",
+            Type::Plant => "Plant",
+            Type::Psychic => "Psychic",
+            Type::Pyro => "Pyro",
+            Type::Reptile => "Reptile",
+            Type::Rock => "Rock",
+            Type::SeaSerpent => "Sea Serpent",
+            Type::Spellcaster => "Spellcaster",
+            Type::Thunder => "Thunder",
+            Type::Warrior => "Warrior",
+            Type::WingedBeast => "Winged Beast",
+            Type::Wyrm => "Wyrm",
+            Type::Zombie => "Zombie",
+        };
+        write!(f, "{}", s)
+    }
 }
 
 impl FromStr for Type {
@@ -178,28 +231,5 @@ impl FromStr for Type {
             "Zombie" => Type::Zombie,
             _ => return Err(()),
         })
-    }
-}
-
-#[wasm_bindgen]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub struct Level(u32);
-
-impl FromStr for Level {
-    type Err = ParseIntError;
-
-    fn from_str(string: &str) -> Result<Level, Self::Err> {
-        let a: u32 = string.parse()?;
-        Ok(Level(a))
-    }
-}
-
-#[wasm_bindgen]
-impl Level {
-    pub fn new(value: u32) -> Level {
-        Level(value)
-    }
-    pub fn value(&self) -> u32 {
-        self.0
     }
 }

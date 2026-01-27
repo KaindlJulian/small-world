@@ -35,8 +35,6 @@ export function BridgeExplore() {
                     targetList={bridgeSearch.targetList}
                     setTargetList={bridgeSearch.setTargetList}
                     filteredCards={bridgeSearch.filteredCards}
-                    isLoading={bridgeSearch.isDataLoading}
-                    isIdle={bridgeSearch.isIdle}
                     onFilterChange={bridgeSearch.setActiveFilter}
                 />
             </Sidebar>

@@ -1,12 +1,12 @@
 use crate::bitset::BitSet;
-use crate::monster::{Attribute, Level, Monster, Type};
+use crate::monster::{Attribute, Monster, Type};
 use std::collections::{HashMap, HashSet};
 
 /// A bitset based index
 pub struct BitSetIndex {
     len: usize,
     pub by_attribute: HashMap<Attribute, BitSet>,
-    pub by_level: HashMap<Level, BitSet>,
+    pub by_level: HashMap<u32, BitSet>,
     pub by_type: HashMap<Type, BitSet>,
     pub by_atk: HashMap<Option<u32>, BitSet>,
     pub by_def: HashMap<Option<u32>, BitSet>,
@@ -16,7 +16,7 @@ impl BitSetIndex {
     pub fn new(monsters: &Vec<Monster>) -> BitSetIndex {
         let len = monsters.len();
         let mut by_attribute: HashMap<Attribute, BitSet> = HashMap::new();
-        let mut by_level: HashMap<Level, BitSet> = HashMap::new();
+        let mut by_level: HashMap<u32, BitSet> = HashMap::new();
         let mut by_type: HashMap<Type, BitSet> = HashMap::new();
         let mut by_atk: HashMap<Option<u32>, BitSet> = HashMap::new();
         let mut by_def: HashMap<Option<u32>, BitSet> = HashMap::new();
@@ -63,7 +63,7 @@ impl BitSetIndex {
 pub struct MonsterIndex<'a> {
     pub by_id: HashMap<u32, &'a Monster>,
     pub by_attribute: HashMap<Attribute, HashSet<&'a Monster>>,
-    pub by_level: HashMap<Level, HashSet<&'a Monster>>,
+    pub by_level: HashMap<u32, HashSet<&'a Monster>>,
     pub by_type: HashMap<Type, HashSet<&'a Monster>>,
     pub by_atk: HashMap<Option<u32>, HashSet<&'a Monster>>,
     pub by_def: HashMap<Option<u32>, HashSet<&'a Monster>>,
@@ -73,7 +73,7 @@ impl<'a> MonsterIndex<'a> {
     pub fn new(monsters: &'a Vec<Monster>) -> MonsterIndex<'a> {
         let mut by_id: HashMap<u32, &Monster> = HashMap::new();
         let mut by_attribute: HashMap<Attribute, HashSet<&Monster>> = HashMap::new();
-        let mut by_level: HashMap<Level, HashSet<&Monster>> = HashMap::new();
+        let mut by_level: HashMap<u32, HashSet<&Monster>> = HashMap::new();
         let mut by_type: HashMap<Type, HashSet<&Monster>> = HashMap::new();
         let mut by_atk: HashMap<Option<u32>, HashSet<&Monster>> = HashMap::new();
         let mut by_def: HashMap<Option<u32>, HashSet<&Monster>> = HashMap::new();
@@ -111,7 +111,6 @@ impl<'a> MonsterIndex<'a> {
 mod tests {
     use super::*;
     use crate::util::parse_csv_file;
-    use std::str::FromStr;
 
     #[test]
     fn test_example() {
@@ -125,14 +124,7 @@ mod tests {
                 .count_ones(),
             4
         );
-        assert_eq!(
-            index
-                .by_level
-                .get(&Level::from_str("4").unwrap())
-                .unwrap()
-                .count_ones(),
-            6
-        );
+        assert_eq!(index.by_level.get(&4).unwrap().count_ones(), 6);
         assert_eq!(index.by_type.get(&Type::Fish).unwrap().count_ones(), 4);
         assert_eq!(
             index.by_atk.get(&Option::<u32>::None).unwrap().count_ones(),

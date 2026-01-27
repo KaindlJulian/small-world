@@ -39,7 +39,7 @@ export function BridgeGraph({ sources, bridges, targets }) {
                 <p class='text-center text-zinc-400'>
                     Graph too large to display (more than 300 cards).
                     <br />
-                    Refine your search or filter the result.
+                    Refine your search or filter the results.
                 </p>
             </div>
         );

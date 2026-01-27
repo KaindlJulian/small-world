@@ -1,24 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum Attribute {
-  DARK = 0,
-  DIVINE = 1,
-  EARTH = 2,
-  FIRE = 3,
-  LIGHT = 4,
-  WATER = 5,
-  WIND = 6,
-}
-
-export class Level {
-  private constructor();
-  free(): void;
-  [Symbol.dispose](): void;
-  static new(value: number): Level;
-  value(): number;
-}
-
 export class Link {
   private constructor();
   free(): void;
@@ -29,19 +11,16 @@ export class Link {
 }
 
 export class Monster {
+  private constructor();
   free(): void;
   [Symbol.dispose](): void;
-  constructor(id: number, name: string, attribute: Attribute, level: Level, type: Type, atk?: number | null, def?: number | null);
-  /**
-   * The passcode of the monster
-   */
+  readonly attribute_js: string;
   readonly id: number;
   readonly atk: number | undefined;
   readonly def: number | undefined;
-  readonly type: Type;
-  readonly level: Level;
-  readonly attribute: Attribute;
-  readonly name_wasm: string;
+  readonly level: number;
+  readonly name_js: string;
+  readonly type_js: string;
 }
 
 export class SmallWorldSearcher {
@@ -64,34 +43,6 @@ export class SmallWorldSearcher {
   get_all(): Monster[];
   constructor(data: string);
   get_by_id(id: number): Monster | undefined;
-}
-
-export enum Type {
-  Aqua = 0,
-  Beast = 1,
-  BeastWarrior = 2,
-  Cyberse = 3,
-  Dinosaur = 4,
-  DivineBeast = 5,
-  Dragon = 6,
-  Fairy = 7,
-  Fiend = 8,
-  Fish = 9,
-  Insect = 10,
-  Illusion = 11,
-  Machine = 12,
-  Plant = 13,
-  Psychic = 14,
-  Pyro = 15,
-  Reptile = 16,
-  Rock = 17,
-  SeaSerpent = 18,
-  Spellcaster = 19,
-  Thunder = 20,
-  Warrior = 21,
-  WingedBeast = 22,
-  Wyrm = 23,
-  Zombie = 24,
 }
 
 export function decode_ydke(ydke: string, ignore_extra: boolean): Uint32Array;
@@ -122,18 +73,14 @@ export interface InitOutput {
   readonly decode_ydke: (a: number, b: number, c: number) => [number, number];
   readonly encode_ydke_main: (a: number, b: number) => [number, number];
   readonly parse_ydk: (a: number, b: number, c: number) => [number, number];
-  readonly __wbg_level_free: (a: number, b: number) => void;
   readonly __wbg_monster_free: (a: number, b: number) => void;
-  readonly level_new: (a: number) => number;
-  readonly level_value: (a: number) => number;
   readonly monster_atk: (a: number) => number;
-  readonly monster_attribute: (a: number) => number;
+  readonly monster_attribute_js: (a: number) => [number, number];
   readonly monster_def: (a: number) => number;
   readonly monster_id: (a: number) => number;
   readonly monster_level: (a: number) => number;
-  readonly monster_name_wasm: (a: number) => [number, number];
-  readonly monster_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => number;
-  readonly monster_type: (a: number) => number;
+  readonly monster_name_js: (a: number) => [number, number];
+  readonly monster_type_js: (a: number) => [number, number];
   readonly __wbindgen_externrefs: WebAssembly.Table;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __externref_drop_slice: (a: number, b: number) => void;

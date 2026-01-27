@@ -1,11 +1,5 @@
 let wasm;
 
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
-    }
-}
-
 function getArrayJsValueFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     const mem = getDataViewMemory0();
@@ -49,10 +43,6 @@ function getUint8ArrayMemory0() {
         cachedUint8ArrayMemory0 = new Uint8Array(wasm.memory.buffer);
     }
     return cachedUint8ArrayMemory0;
-}
-
-function isLikeNone(x) {
-    return x === undefined || x === null;
 }
 
 function passArray32ToWasm0(arg, malloc) {
@@ -128,10 +118,6 @@ if (!('encodeInto' in cachedTextEncoder)) {
 
 let WASM_VECTOR_LEN = 0;
 
-const LevelFinalization = (typeof FinalizationRegistry === 'undefined')
-    ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_level_free(ptr >>> 0, 1));
-
 const LinkFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_link_free(ptr >>> 0, 1));
@@ -143,55 +129,6 @@ const MonsterFinalization = (typeof FinalizationRegistry === 'undefined')
 const SmallWorldSearcherFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_smallworldsearcher_free(ptr >>> 0, 1));
-
-/**
- * @enum {0 | 1 | 2 | 3 | 4 | 5 | 6}
- */
-export const Attribute = Object.freeze({
-    DARK: 0, "0": "DARK",
-    DIVINE: 1, "1": "DIVINE",
-    EARTH: 2, "2": "EARTH",
-    FIRE: 3, "3": "FIRE",
-    LIGHT: 4, "4": "LIGHT",
-    WATER: 5, "5": "WATER",
-    WIND: 6, "6": "WIND",
-});
-
-export class Level {
-    static __wrap(ptr) {
-        ptr = ptr >>> 0;
-        const obj = Object.create(Level.prototype);
-        obj.__wbg_ptr = ptr;
-        LevelFinalization.register(obj, obj.__wbg_ptr, obj);
-        return obj;
-    }
-    __destroy_into_raw() {
-        const ptr = this.__wbg_ptr;
-        this.__wbg_ptr = 0;
-        LevelFinalization.unregister(this);
-        return ptr;
-    }
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_level_free(ptr, 0);
-    }
-    /**
-     * @param {number} value
-     * @returns {Level}
-     */
-    static new(value) {
-        const ret = wasm.level_new(value);
-        return Level.__wrap(ret);
-    }
-    /**
-     * @returns {number}
-     */
-    value() {
-        const ret = wasm.level_value(this.__wbg_ptr);
-        return ret >>> 0;
-    }
-}
-if (Symbol.dispose) Level.prototype[Symbol.dispose] = Level.prototype.free;
 
 export class Link {
     static __wrap(ptr) {
@@ -254,7 +191,21 @@ export class Monster {
         wasm.__wbg_monster_free(ptr, 0);
     }
     /**
-     * The passcode of the monster
+     * @returns {string}
+     */
+    get attribute_js() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.monster_attribute_js(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
      * @returns {number}
      */
     get id() {
@@ -276,53 +227,35 @@ export class Monster {
         return ret === 0x100000001 ? undefined : ret;
     }
     /**
-     * @param {number} id
-     * @param {string} name
-     * @param {Attribute} attribute
-     * @param {Level} level
-     * @param {Type} type
-     * @param {number | null} [atk]
-     * @param {number | null} [def]
-     */
-    constructor(id, name, attribute, level, type, atk, def) {
-        const ptr0 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        const len0 = WASM_VECTOR_LEN;
-        _assertClass(level, Level);
-        var ptr1 = level.__destroy_into_raw();
-        const ret = wasm.monster_new(id, ptr0, len0, attribute, ptr1, type, isLikeNone(atk) ? 0x100000001 : (atk) >>> 0, isLikeNone(def) ? 0x100000001 : (def) >>> 0);
-        this.__wbg_ptr = ret >>> 0;
-        MonsterFinalization.register(this, this.__wbg_ptr, this);
-        return this;
-    }
-    /**
-     * @returns {Type}
-     */
-    get type() {
-        const ret = wasm.monster_type(this.__wbg_ptr);
-        return ret;
-    }
-    /**
-     * @returns {Level}
+     * @returns {number}
      */
     get level() {
         const ret = wasm.monster_level(this.__wbg_ptr);
-        return Level.__wrap(ret);
-    }
-    /**
-     * @returns {Attribute}
-     */
-    get attribute() {
-        const ret = wasm.monster_attribute(this.__wbg_ptr);
-        return ret;
+        return ret >>> 0;
     }
     /**
      * @returns {string}
      */
-    get name_wasm() {
+    get name_js() {
         let deferred1_0;
         let deferred1_1;
         try {
-            const ret = wasm.monster_name_wasm(this.__wbg_ptr);
+            const ret = wasm.monster_name_js(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
+     * @returns {string}
+     */
+    get type_js() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.monster_type_js(this.__wbg_ptr);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
             return getStringFromWasm0(ret[0], ret[1]);
@@ -437,37 +370,6 @@ export class SmallWorldSearcher {
     }
 }
 if (Symbol.dispose) SmallWorldSearcher.prototype[Symbol.dispose] = SmallWorldSearcher.prototype.free;
-
-/**
- * @enum {0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24}
- */
-export const Type = Object.freeze({
-    Aqua: 0, "0": "Aqua",
-    Beast: 1, "1": "Beast",
-    BeastWarrior: 2, "2": "BeastWarrior",
-    Cyberse: 3, "3": "Cyberse",
-    Dinosaur: 4, "4": "Dinosaur",
-    DivineBeast: 5, "5": "DivineBeast",
-    Dragon: 6, "6": "Dragon",
-    Fairy: 7, "7": "Fairy",
-    Fiend: 8, "8": "Fiend",
-    Fish: 9, "9": "Fish",
-    Insect: 10, "10": "Insect",
-    Illusion: 11, "11": "Illusion",
-    Machine: 12, "12": "Machine",
-    Plant: 13, "13": "Plant",
-    Psychic: 14, "14": "Psychic",
-    Pyro: 15, "15": "Pyro",
-    Reptile: 16, "16": "Reptile",
-    Rock: 17, "17": "Rock",
-    SeaSerpent: 18, "18": "SeaSerpent",
-    Spellcaster: 19, "19": "Spellcaster",
-    Thunder: 20, "20": "Thunder",
-    Warrior: 21, "21": "Warrior",
-    WingedBeast: 22, "22": "WingedBeast",
-    Wyrm: 23, "23": "Wyrm",
-    Zombie: 24, "24": "Zombie",
-});
 
 /**
  * @param {string} ydke

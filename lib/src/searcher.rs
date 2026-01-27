@@ -176,7 +176,7 @@ impl SmallWorldSearcher {
             if s1.get(*index_2) && s2.get(*index_1) {
                 return match i {
                     0 => Some(format!("Attribute: {:?}", monster_1.attribute())),
-                    1 => Some(format!("Level: {}", monster_1.level().value())),
+                    1 => Some(format!("Level: {}", monster_1.level())),
                     2 => Some(format!("Type: {:?}", monster_1.r#type())),
                     3 => Some(format!(
                         "ATK: {}",
