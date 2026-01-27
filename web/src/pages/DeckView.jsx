@@ -26,23 +26,23 @@ export function DeckView() {
 
     useEffect(() => {
         if (ydkeUrlParam && deckCodesSignal.value === null) {
-            console.log('set code because of param change');
             const ids = decode_ydke(`ydke://${ydkeUrlParam}!!!`);
             deckCodesSignal.value = Array.from(ids);
         }
-    }, [ydkeUrlParam]);
+    }, []);
 
-    const { data, isLoading, isError, isSuccess } = useQuery({
+    const { data, isLoading, isError, isSuccess, isFetching } = useQuery({
         queryKey: ['deck', codes],
         queryFn: () => fetchCards(codes),
         select: (data) => data.map(mapToCard),
-        //placeholderData: (previousData) => previousData,
+        placeholderData: (previousData) => previousData,
         enabled: codes.length > 0,
     });
 
     useEffect(() => {
-        if (data && isSuccess) {
-            console.log('set new url param');
+        console.log('set url param');
+
+        if (data && isSuccess && codes.length > 0) {
             const ydkeString = encode_ydke_main(data.map((c) => c.id))
                 .replace('ydke://', '')
                 .replace('!!!', '');
@@ -62,7 +62,11 @@ export function DeckView() {
     }
 
     if (isError) {
-        return <div>Error loading cards</div>;
+        return (
+            <div class='flex h-full items-center justify-center text-red-400'>
+                Error loading cards
+            </div>
+        );
     }
 
     const displayData = data?.filter((card) => codes.includes(card.id)) || [];
@@ -71,22 +75,36 @@ export function DeckView() {
     return (
         <div
             class={cn(
-                'h-full divide-zinc-700',
+                'h-full divide-zinc-700 transition-all',
                 deckCodesSignal.value === null
                     ? 'flex justify-center'
                     : 'grid lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]',
             )}
         >
             <CardInfo />
-            <div class='flex flex-col items-center justify-center'>
-                {deckCodesSignal.value === null && (
+
+            <div class='relative flex flex-col items-center justify-center overflow-hidden'>
+                {deckCodesSignal.value === null ? (
                     <DeckInput
                         onInput={(list) => (deckCodesSignal.value = list)}
                     />
-                )}
-                {deckCodesSignal.value !== null && (
+                ) : (
                     <>
-                        <DeckForceGraph nodes={nodes} links={links} />
+                        <div
+                            class={cn(
+                                'relative h-full w-full',
+                                isFetching ? 'hidden' : 'block',
+                            )}
+                        >
+                            <DeckForceGraph nodes={nodes} links={links} />
+                        </div>
+
+                        {isFetching && (
+                            <div class='absolute inset-0 z-10 flex items-center justify-center'>
+                                <LoadingSpinner />
+                            </div>
+                        )}
+
                         <Button
                             className='absolute bottom-4 left-4'
                             variant='ghost'
@@ -101,19 +119,27 @@ export function DeckView() {
                     </>
                 )}
             </div>
+
             {deckCodesSignal.value !== null && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
-                    <DeckList
-                        cards={displayData}
-                        onRemoveCard={(card) => {
-                            deckCodesSignal.value = codes.filter(
-                                (id) => id !== card.id,
-                            );
-                        }}
-                        onAddCard={(card) => {
-                            deckCodesSignal.value = [...codes, card.id];
-                        }}
-                    />
+                    <div
+                        class={cn(
+                            'h-full transition-opacity',
+                            isFetching && 'opacity-50',
+                        )}
+                    >
+                        <DeckList
+                            cards={displayData}
+                            onRemoveCard={(card) => {
+                                deckCodesSignal.value = codes.filter(
+                                    (id) => id !== card.id,
+                                );
+                            }}
+                            onAddCard={(card) => {
+                                deckCodesSignal.value = [...codes, card.id];
+                            }}
+                        />
+                    </div>
                 </Sidebar>
             )}
         </div>
