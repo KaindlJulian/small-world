@@ -185,7 +185,7 @@ function setupDefs(svg) {
     defs.append('clipPath')
         .attr('id', 'link-clip')
         .append('circle')
-        .attr('r', 4)
+        .attr('r', 5)
         .attr('cx', 0)
         .attr('cy', 0);
     return defs;
@@ -269,7 +269,7 @@ function createLinks(container, links) {
         .append('circle')
         .attr('class', 'bridge-circle')
         .attr('r', 5)
-        .attr('fill', BASE_COLOR);
+        .attr('stroke', BASE_COLOR);
 
     linkLabel
         .filter(
@@ -288,10 +288,10 @@ function createLinks(container, links) {
                 return levelIcon;
             }
         })
-        .attr('width', 12)
-        .attr('height', 12)
-        .attr('x', -6)
-        .attr('y', -6)
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('x', -5)
+        .attr('y', -5)
         .attr('preserveAspectRatio', 'xMidYMid slice')
         .attr('clip-path', 'url(#link-clip)');
 
