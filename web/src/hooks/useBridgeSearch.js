@@ -64,6 +64,8 @@ export function useBridgeSearch() {
         return resultCards
             .map((wasmCard) => apiMap.get(wasmCard.id))
             .filter((card) => {
+                if (!card) return false;
+
                 if (activeFilter.attributes.length > 0) {
                     if (!activeFilter.attributes.includes(card.attribute)) {
                         return false;

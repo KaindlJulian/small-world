@@ -48,17 +48,21 @@ export function BridgeSearchSidebar({
                     style={{ height: '100%' }}
                     listClassName='grid grid-cols-6 gap-2 px-4 mt-4'
                     data={filteredCards}
-                    itemContent={(index, card) => (
-                        <div class=''>
-                            <img
-                                class='h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-120'
-                                src={`${publicAssetUrl}/full/${card.id}.webp`}
-                                alt={card.name}
-                                onClick={() => setCardInfo(card)}
-                                loading='lazy'
-                            />
-                        </div>
-                    )}
+                    itemContent={(index, card) => {
+                        if (!card)
+                            return <div class='aspect-[1/1.45] w-full' />;
+
+                        return (
+                            <div class=''>
+                                <img
+                                    class='aspect-[1/1.45] h-full w-full cursor-pointer rounded-md transition-transform hover:z-10 hover:scale-110'
+                                    src={`${publicAssetUrl}/full/${card.id}.webp`}
+                                    alt={card.name || 'Card'}
+                                    onClick={() => setCardInfo(card)}
+                                />
+                            </div>
+                        );
+                    }}
                 />
             )}
 
