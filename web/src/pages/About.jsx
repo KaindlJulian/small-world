@@ -308,7 +308,7 @@ export function AboutPage() {
                     </div>
                     <div class='border-t border-zinc-100 p-6 dark:border-zinc-700'>
                         <a
-                            href='http://localhost:5173/deck?ydke=E1bEA6OpVwUx3BEBeA09A0e8fQA%3D'
+                            href='https://small-world-search.vercel.app/deck?ydke=E1bEA6OpVwUx3BEBeA09A0e8fQA%3D'
                             class='group flex items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 p-4 transition-colors hover:bg-white dark:border-zinc-700 dark:bg-zinc-900/50 dark:hover:bg-zinc-800'
                         >
                             <div class='flex items-center gap-4'>
@@ -326,6 +326,70 @@ export function AboutPage() {
                                 </div>
                             </div>
                         </a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class='flex flex-col justify-between bg-white p-6 shadow-lg sm:rounded-lg dark:bg-zinc-800'>
+                        <div>
+                            <h2
+                                class='mb-4 text-lg font-medium text-gray-900 dark:text-white'
+                                id='credits'
+                            >
+                                Credits
+                            </h2>
+                            <ul class='space-y-3 text-sm text-gray-600 dark:text-gray-400'>
+                                <li class='flex items-start gap-2'>
+                                    <span class='text-teal-500'>•</span>
+                                    <span>
+                                        Attribute Icons & Level Stars by{' '}
+                                        <a
+                                            href='https://yugipedia.com/wiki/User:Falzar_FZ'
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            class='font-medium text-gray-900 hover:underline dark:text-white'
+                                        >
+                                            Falzar FZ
+                                        </a>{' '}
+                                        on Yugipedia{' '}
+                                        <span class='opacity-75'>
+                                            (CC BY-SA 3.0)
+                                        </span>
+                                        .
+                                    </span>
+                                </li>
+                                <li class='flex items-start gap-2'>
+                                    <span class='text-teal-500'>•</span>
+                                    <span>
+                                        Card Data & Images provided by the{' '}
+                                        <a
+                                            href='https://ygoprodeck.com/'
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            class='font-medium text-gray-900 hover:underline dark:text-white'
+                                        >
+                                            YGOPRODeck
+                                        </a>{' '}
+                                        API.
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='relative py-52'>
+                    <div
+                        class='absolute inset-0 flex items-center'
+                        aria-hidden='true'
+                    >
+                        <div class='w-full border-t border-zinc-200 dark:border-zinc-700'></div>
+                    </div>
+                    <div class='relative flex justify-center'>
+                        <span class='bg-zinc-50 px-4 text-sm font-medium text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400'>
+                            Some more backstory and implementation details if
+                            you're interested
+                        </span>
                     </div>
                 </div>
 
@@ -396,8 +460,7 @@ export function AboutPage() {
                             After compiling the data for this challenge, I
                             wanted to do something more with it, leading to the
                             development of this
-                            <strong> Small World Searcher Tool</strong> to find
-                            bridge cards.
+                            <strong> Small World Searcher Tool</strong>.
                         </p>
                     </div>
                 </div>
@@ -532,54 +595,23 @@ export function AboutPage() {
                             process to efficient bitwise operations and lookups.
                         </p>
                     </div>
-                </div>
 
-                <div>
-                    <div class='flex flex-col justify-between bg-white p-6 shadow-lg sm:rounded-lg dark:bg-zinc-800'>
-                        <div>
-                            <h3
-                                class='mb-4 text-lg font-medium text-gray-900 dark:text-white'
-                                id='credits'
-                            >
-                                Credits
-                            </h3>
-                            <ul class='space-y-3 text-sm text-gray-600 dark:text-gray-400'>
-                                <li class='flex items-start gap-2'>
-                                    <span class='text-teal-500'>•</span>
-                                    <span>
-                                        Attribute Icons & Level Stars by{' '}
-                                        <a
-                                            href='https://yugipedia.com/wiki/User:Falzar_FZ'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            class='font-medium text-gray-900 hover:underline dark:text-white'
-                                        >
-                                            Falzar FZ
-                                        </a>{' '}
-                                        on Yugipedia{' '}
-                                        <span class='opacity-75'>
-                                            (CC BY-SA 3.0)
-                                        </span>
-                                        .
-                                    </span>
-                                </li>
-                                <li class='flex items-start gap-2'>
-                                    <span class='text-teal-500'>•</span>
-                                    <span>
-                                        Card Data & Images provided by the{' '}
-                                        <a
-                                            href='https://ygoprodeck.com/'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            class='font-medium text-gray-900 hover:underline dark:text-white'
-                                        >
-                                            YGOPRODeck
-                                        </a>{' '}
-                                        API.
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class='border-t border-zinc-100 p-6 dark:border-zinc-700'>
+                        <a
+                            href='https://github.com/KaindlJulian/small-world'
+                            class='group flex items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 p-4 transition-colors hover:bg-white dark:border-zinc-700 dark:bg-zinc-900/50 dark:hover:bg-zinc-800'
+                        >
+                            <div class='flex items-center gap-4'>
+                                <div class='flex size-10 items-center justify-center rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'>
+                                    <Link />
+                                </div>
+                                <div>
+                                    <h4 class='font-bold text-gray-900 dark:text-white'>
+                                        Check out the source code on GitHub
+                                    </h4>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

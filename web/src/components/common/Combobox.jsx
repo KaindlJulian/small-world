@@ -50,7 +50,7 @@ export function Combobox({ items, onSelect, placeholder, filterable = true }) {
                 {isOpen && displayList.length > 0 && (
                     <ul
                         class={cn(
-                            'absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-zinc-700 p-1 text-sm shadow-lg ring-1 ring-slate-600 focus:outline-none',
+                            'absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-zinc-800 p-1 text-sm shadow-lg ring-1 ring-zinc-600 focus:outline-none',
                             '[&::-webkit-scrollbar-track]:transparent [scrollbar-gutter:stable] hover:overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-500',
                         )}
                     >
