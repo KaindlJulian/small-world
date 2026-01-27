@@ -4,7 +4,7 @@ export function Header() {
     const { url } = useLocation();
 
     return (
-        <header class='flex justify-start bg-zinc-700'>
+        <header class='flex w-full justify-start bg-zinc-700'>
             <nav class='flex'>
                 <a
                     href='/deck'
@@ -19,10 +19,10 @@ export function Header() {
                     Bridge Explorer
                 </a>
                 <a
-                    href='/tutorial'
-                    class={`p-3 no-underline ${url == '/tutorial' && 'bg-zinc-600'}`}
+                    href='/about'
+                    class={`p-3 no-underline ${url == '/about' && 'bg-zinc-600'}`}
                 >
-                    Tutorial
+                    About
                 </a>
             </nav>
         </header>

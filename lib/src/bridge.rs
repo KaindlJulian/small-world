@@ -19,10 +19,10 @@ use std::collections::HashSet;
 ///     | Index[DEF][0]
 ///
 /// // monsters with >= 2 matching properties
-/// exclude = Index[Attribute][DARK] & Index[Level][4] ... Index[ATK][1700] | Index[DEF][0] // 5*4/2 = 10 combinations
+/// exclude = (Index[Attribute][DARK] & Index[Level][4]) | ... | (Index[ATK][1700] & Index[DEF][0]) // 5*4/2 = 10 combinations
 ///
 /// // exactly 1 matching property
-/// neighborhood = candidate & ~exclude
+/// neighborhood = candidate & !exclude
 ///
 /// // intersection of neighborhoods are bridges
 /// bridges = neighborhood(m1) & neighborhood(m2)

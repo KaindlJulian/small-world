@@ -2,9 +2,10 @@ import { Route, Router, hydrate, prerender as ssr } from 'preact-iso';
 import React, { useEffect, useState } from 'react';
 import { Header } from './components';
 import { Providers } from './core/Providers.jsx';
+import { NotFound } from './pages/_404.jsx';
+import { AboutPage } from './pages/About.jsx';
 import { BridgeExplore } from './pages/BridgeExplore.jsx';
 import { DeckView } from './pages/DeckView.jsx';
-import { NotFound } from './pages/_404.jsx';
 import init from './wasm';
 
 export function App() {
@@ -29,6 +30,7 @@ export function App() {
                         <Route path='/' component={DeckView} />
                         <Route path='/deck' component={DeckView} />
                         <Route path='/bridge' component={BridgeExplore} />
+                        <Route path='/about' component={AboutPage} />
                         <Route default component={NotFound} />
                     </Router>
                 </main>
