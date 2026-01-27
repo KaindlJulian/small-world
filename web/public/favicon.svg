@@ -1,20 +1,18 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_9_2)">
-<line x1="10.4086" y1="36.1936" x2="25.4086" y2="25.1936" stroke="#A9A9A9" stroke-width="2"/>
 <g filter="url(#filter0_d_9_2)">
-<line x1="37.2652" y1="39.6783" x2="25.2652" y2="26.6783" stroke="#A9A9A9" stroke-width="2"/>
+<line x1="34.1425" y1="39.5145" x2="16.1425" y2="9.51449" stroke="#9F9FA9" stroke-width="2"/>
 </g>
-<line x1="25.1162" y1="26.4679" x2="16.1162" y2="9.46789" stroke="#A9A9A9" stroke-width="2"/>
-<line x1="37.0136" y1="38.8356" x2="40.0136" y2="20.8356" stroke="#A9A9A9" stroke-width="2"/>
-<line x1="40.493" y1="21.8619" x2="23.493" y2="11.8619" stroke="#A9A9A9" stroke-width="2"/>
-<circle cx="26" cy="26" r="4" fill="#548965"/>
-<circle cx="10.5" cy="36.5" r="9.5" fill="#C7E636"/>
-<circle cx="41" cy="21" r="6" fill="#73B164"/>
-<circle cx="17" cy="9" r="8" fill="#F584B6"/>
-<circle cx="37.5" cy="38.5" r="4.5" fill="#D07FC7"/>
+<line x1="10.0222" y1="36.7905" x2="16.0222" y2="8.79047" stroke="#9F9FA9" stroke-width="2"/>
+<line x1="34.0513" y1="38.6838" x2="40.0513" y2="20.6838" stroke="#9F9FA9" stroke-width="2"/>
+<line x1="40.5528" y1="21.8944" x2="16.5528" y2="9.89443" stroke="#9F9FA9" stroke-width="2"/>
+<circle cx="8.5" cy="36.5" r="8.5" fill="#FF8904"/>
+<circle cx="41" cy="21" r="7" fill="#FF8904"/>
+<circle cx="17" cy="9" r="8" fill="#00D5BE"/>
+<circle cx="33.5" cy="37.5" r="6.5" fill="#00D5BE"/>
 </g>
 <defs>
-<filter id="filter0_d_9_2" x="20.5304" y="26" width="21.4696" height="22.3566" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_9_2" x="11.285" y="9" width="27.715" height="39.029" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="4"/>
