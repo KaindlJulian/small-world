@@ -22,28 +22,28 @@ export function DeckView() {
     const { route } = useLocation();
     const { query } = useRoute();
     const ydkeUrlParam = query.ydke;
+    const codes = deckCodesSignal.value || [];
 
     useEffect(() => {
         if (ydkeUrlParam && deckCodesSignal.value === null) {
+            console.log('set code because of param change');
             const ids = decode_ydke(`ydke://${ydkeUrlParam}!!!`);
             deckCodesSignal.value = Array.from(ids);
         }
-    }, [ydkeUrlParam, deckCodesSignal.value]);
+    }, [ydkeUrlParam]);
 
-    const deckQuery = useQuery({
-        queryKey: ['deck', deckCodesSignal.value],
-        queryFn: () => fetchCards(deckCodesSignal.value),
-        enabled: Array.isArray(deckCodesSignal.value),
-        select: (data) => {
-            return data
-                .filter((cardData) => cardData.type.includes('Monster'))
-                .map(mapToCard);
-        },
+    const { data, isLoading, isError, isSuccess } = useQuery({
+        queryKey: ['deck', codes],
+        queryFn: () => fetchCards(codes),
+        select: (data) => data.map(mapToCard),
+        //placeholderData: (previousData) => previousData,
+        enabled: codes.length > 0,
     });
 
     useEffect(() => {
-        if (deckQuery.data && deckQuery.isSuccess) {
-            const ydkeString = encode_ydke_main(deckQuery.data.map((c) => c.id))
+        if (data && isSuccess) {
+            console.log('set new url param');
+            const ydkeString = encode_ydke_main(data.map((c) => c.id))
                 .replace('ydke://', '')
                 .replace('!!!', '');
             const encodedYdkeString = encodeURIComponent(ydkeString);
@@ -51,13 +51,9 @@ export function DeckView() {
                 route(`/deck?ydke=${encodedYdkeString}`, true);
             }
         }
-    }, [deckQuery.data, ydkeUrlParam, route]);
+    }, [deckCodesSignal.value]);
 
-    const handleInput = (cardList) => {
-        deckCodesSignal.value = cardList;
-    };
-
-    if (deckQuery.isLoading || isSearcherLoading) {
+    if ((isLoading && !data) || isSearcherLoading) {
         return (
             <div class='flex h-full items-center justify-center'>
                 <LoadingSpinner />
@@ -65,13 +61,12 @@ export function DeckView() {
         );
     }
 
-    if (deckQuery.isError) {
+    if (isError) {
         return <div>Error loading cards</div>;
     }
 
-    const { nodes, links } = useGraphData(deckQuery.data, searcher);
-
-    const cards = nodes;
+    const displayData = data?.filter((card) => codes.includes(card.id)) || [];
+    const { nodes, links } = useGraphData(displayData, searcher);
 
     return (
         <div
@@ -85,7 +80,9 @@ export function DeckView() {
             <CardInfo />
             <div class='flex flex-col items-center justify-center'>
                 {deckCodesSignal.value === null && (
-                    <DeckInput onInput={(cardList) => handleInput(cardList)} />
+                    <DeckInput
+                        onInput={(list) => (deckCodesSignal.value = list)}
+                    />
                 )}
                 {deckCodesSignal.value !== null && (
                     <>
@@ -107,18 +104,14 @@ export function DeckView() {
             {deckCodesSignal.value !== null && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
                     <DeckList
-                        cards={cards}
+                        cards={displayData}
                         onRemoveCard={(card) => {
-                            deckCodesSignal.value =
-                                deckCodesSignal.value.filter(
-                                    (id) => id !== card.id,
-                                );
+                            deckCodesSignal.value = codes.filter(
+                                (id) => id !== card.id,
+                            );
                         }}
                         onAddCard={(card) => {
-                            deckCodesSignal.value = [
-                                ...deckCodesSignal.value,
-                                card.id,
-                            ];
+                            deckCodesSignal.value = [...codes, card.id];
                         }}
                     />
                 </Sidebar>
