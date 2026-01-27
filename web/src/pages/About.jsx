@@ -122,7 +122,10 @@ export function AboutPage() {
 
                 <div class='overflow-hidden bg-white shadow-lg sm:rounded-xl dark:bg-zinc-800'>
                     <div class='border-b border-zinc-100 px-6 py-4 dark:border-zinc-700'>
-                        <h2 class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'>
+                        <h2
+                            class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'
+                            id='the-mechanic'
+                        >
                             <span class='text-teal-500'>◆</span> The Mechanic:
                             How "Small World" Works
                         </h2>
@@ -261,9 +264,11 @@ export function AboutPage() {
 
                 <div class='overflow-hidden bg-white shadow-lg sm:rounded-xl dark:bg-zinc-800'>
                     <div class='border-b border-zinc-100 px-6 py-4 dark:border-zinc-700'>
-                        <h2 class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'>
-                            <span class='text-blue-500'>◆</span> How to use this
-                            Tool
+                        <h2
+                            class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'
+                            id='how-to-use'
+                        >
+                            <span class='text-blue-500'>◆</span> How to use
                         </h2>
                     </div>
                     <div class='grid grid-cols-1 divide-y md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-zinc-700'>
@@ -326,7 +331,10 @@ export function AboutPage() {
 
                 <div class='overflow-hidden bg-white shadow-lg sm:rounded-xl dark:bg-zinc-800'>
                     <div class='border-b border-zinc-100 px-6 py-4 dark:border-zinc-700'>
-                        <h2 class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'>
+                        <h2
+                            class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'
+                            id='backstory'
+                        >
                             <span class='text-teal-500'>◆</span> Backstory: The
                             "Triple Tactics" Challenge
                         </h2>
@@ -396,7 +404,10 @@ export function AboutPage() {
 
                 <div class='overflow-hidden bg-white shadow-lg sm:rounded-xl dark:bg-zinc-800'>
                     <div class='border-b border-zinc-100 px-6 py-4 dark:border-zinc-700'>
-                        <h2 class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'>
+                        <h2
+                            class='flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white'
+                            id='search-implementation'
+                        >
                             <span class='text-orange-400'>◆</span> Rust &
                             BitSets (Just Because)
                         </h2>
@@ -502,7 +513,7 @@ export function AboutPage() {
                                     neighborhood = candidates & (!exclude);
                                 </div>
 
-                                <div class='border-t border-zinc-700/50 pt-2'>
+                                <div>
                                     <span class='text-gray-500'>
                                         // 4. Find Bridges
                                     </span>
@@ -526,7 +537,10 @@ export function AboutPage() {
                 <div>
                     <div class='flex flex-col justify-between bg-white p-6 shadow-lg sm:rounded-lg dark:bg-zinc-800'>
                         <div>
-                            <h3 class='mb-4 text-lg font-medium text-gray-900 dark:text-white'>
+                            <h3
+                                class='mb-4 text-lg font-medium text-gray-900 dark:text-white'
+                                id='credits'
+                            >
                                 Credits
                             </h3>
                             <ul class='space-y-3 text-sm text-gray-600 dark:text-gray-400'>
