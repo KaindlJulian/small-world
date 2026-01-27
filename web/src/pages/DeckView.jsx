@@ -1,8 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { LogOut } from 'lucide-preact';
 import { useLocation, useRoute } from 'preact-iso';
 import { useEffect } from 'react';
-import { fetchCards, mapToCard } from '../api/ygoprodeck.js';
 import {
     Button,
     CardInfo,
@@ -31,19 +29,9 @@ export function DeckView() {
         }
     }, []);
 
-    const { data, isLoading, isError, isSuccess, isFetching } = useQuery({
-        queryKey: ['deck', codes],
-        queryFn: () => fetchCards(codes),
-        select: (data) => data.map(mapToCard),
-        placeholderData: (previousData) => previousData,
-        enabled: codes.length > 0,
-    });
-
     useEffect(() => {
-        console.log('set url param');
-
-        if (data && isSuccess && codes.length > 0) {
-            const ydkeString = encode_ydke_main(data.map((c) => c.id))
+        if (deckCodesSignal.value.length > 0) {
+            const ydkeString = encode_ydke_main(deckCodesSignal.value)
                 .replace('ydke://', '')
                 .replace('!!!', '');
             const encodedYdkeString = encodeURIComponent(ydkeString);
@@ -53,7 +41,7 @@ export function DeckView() {
         }
     }, [deckCodesSignal.value]);
 
-    if ((isLoading && !data) || isSearcherLoading) {
+    if (isSearcherLoading) {
         return (
             <div class='flex h-full items-center justify-center'>
                 <LoadingSpinner />
@@ -61,16 +49,22 @@ export function DeckView() {
         );
     }
 
-    if (isError) {
-        return (
-            <div class='flex h-full items-center justify-center text-red-400'>
-                Error loading cards
-            </div>
-        );
-    }
+    const displayData = codes.map((id) => {
+        const c = searcher.get_by_id(id);
+        return {
+            id: c.id,
+            name: c.name_js,
+            attribute: c.attribute_js,
+            level: c.level,
+            properties: [c.type_js],
+            atk: c.atk,
+            def: c.def,
+        };
+    });
 
-    const displayData = data?.filter((card) => codes.includes(card.id)) || [];
     const { nodes, links } = useGraphData(displayData, searcher);
+
+    console.log(displayData);
 
     return (
         <div
@@ -90,20 +84,9 @@ export function DeckView() {
                     />
                 ) : (
                     <>
-                        <div
-                            class={cn(
-                                'relative h-full w-full',
-                                isFetching ? 'hidden' : 'block',
-                            )}
-                        >
+                        <div class='relative h-full w-full'>
                             <DeckForceGraph nodes={nodes} links={links} />
                         </div>
-
-                        {isFetching && (
-                            <div class='absolute inset-0 z-10 flex items-center justify-center'>
-                                <LoadingSpinner />
-                            </div>
-                        )}
 
                         <Button
                             className='absolute bottom-4 left-4'
@@ -122,12 +105,7 @@ export function DeckView() {
 
             {deckCodesSignal.value !== null && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
-                    <div
-                        class={cn(
-                            'h-full transition-opacity',
-                            isFetching && 'opacity-50',
-                        )}
-                    >
+                    <div class='h-full transition-opacity'>
                         <DeckList
                             cards={displayData}
                             onRemoveCard={(card) => {
