@@ -1,3 +1,4 @@
 .env
 .venv
 cardinfo_full.json
+__pycache__

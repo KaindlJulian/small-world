@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import cv2
 import requests
@@ -15,6 +16,12 @@ CSV_PATH = "../resources/m.csv"
 RAW_FOLDER = "../resources/raw_images"
 PROCESSED_FOLDER = "../resources/processed_images"
 CROPPED_FOLDER = "../resources/cropped_images"
+
+def confirm_action(message):
+    choice = input(f"\n{message} (Y/N/Enter to continue): ").strip().lower()
+    if choice == 'n':
+        print("Operation cancelled by user.")
+        sys.exit(0)
 
 def main():
     print(f"Fetching fresh card list from ygoprodeck...")
@@ -39,7 +46,7 @@ def main():
             return int(val)
         except (ValueError, TypeError):
             return -1
-        
+
     df['atk'] = df['atk'].apply(clean_stat)
     df['def'] = df['def'].apply(clean_stat)
     df['level'] = df['level'].apply(clean_stat)
@@ -62,7 +69,10 @@ def main():
         print("Nothing to sync.")
         exit(1)
 
-    print(f"Found {len(new_monsters)} new monsters.")
+    print(f"Found {len(new_monsters)} new monsters:")
+    print(new_monsters[['id', 'name', 'attribute', 'level', 'type', 'atk', 'def']].to_string(index=False))
+
+    confirm_action(f"Ready to append {len(new_monsters)} monsters to {CSV_PATH}. Proceed?")
 
     with open(CSV_PATH, "a", encoding="utf-8") as f:
         target_cols = ['id', 'name', 'attribute', 'level', 'type', 'atk', 'def']
@@ -70,6 +80,7 @@ def main():
         csv_data.to_csv(f, header=False, index=False)
 
     print(f"Appended {len(new_monsters)} new monsters to {CSV_PATH}")
+    confirm_action(f"Ready to start image processing and upload for {len(new_monsters)} cards. Proceed?")
     print("\nStarting sync...")
 
     cards_to_process = new_monsters.to_dict(orient='records')
