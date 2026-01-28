@@ -74,7 +74,7 @@ def main():
 
     confirm_action(f"Ready to append {len(new_monsters)} monsters to {CSV_PATH}. Proceed?")
 
-    with open(CSV_PATH, "a", encoding="utf-8") as f:
+    with open(CSV_PATH, "a", encoding="utf-8", newline='') as f:
         target_cols = ['id', 'name', 'attribute', 'level', 'type', 'atk', 'def']
         csv_data = new_monsters[target_cols]
         csv_data.to_csv(f, header=False, index=False)
