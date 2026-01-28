@@ -123,7 +123,7 @@ export function DeckForceGraph({ nodes, links }) {
 
     useEffect(() => {
         if (!svgRef.current) return;
-        console.log('render graph');
+        console.log('d3: render graph');
 
         const { width, height } = svgRef.current.getBoundingClientRect();
         const w = width || 600;

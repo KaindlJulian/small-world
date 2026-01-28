@@ -45,8 +45,6 @@ export function DeckInput({ onInput }) {
                 await handleFile(item.getAsFile());
             } else if (item.kind === 'string' && item.type === 'text/plain') {
                 const text = e.clipboardData.getData('text');
-                console.log(text);
-
                 const cards = text.startsWith('ydke://')
                     ? decode_ydke(text, true)
                     : text.startsWith('#main')

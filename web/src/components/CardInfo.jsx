@@ -20,8 +20,6 @@ export function CardInfo() {
     const cardInMemory = cardSignal.value;
     const isOpen = isOpenSignal.value;
 
-    console.log(cardInMemory);
-
     if (!cardInMemory) return null;
 
     const { data: card, isLoading } = useQuery({

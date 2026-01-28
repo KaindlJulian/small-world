@@ -32,7 +32,6 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
     useOnClickOutside(
         () => {
             if (view.removing) {
-                console.log('set remove false');
                 setView((prev) => ({ ...prev, removing: false }));
             }
         },

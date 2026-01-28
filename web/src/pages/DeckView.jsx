@@ -64,8 +64,6 @@ export function DeckView() {
 
     const { nodes, links } = useGraphData(displayData, searcher);
 
-    console.log(displayData);
-
     return (
         <div
             class={cn(
