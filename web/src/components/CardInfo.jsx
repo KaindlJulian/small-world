@@ -20,12 +20,13 @@ export function CardInfo() {
     const cardInMemory = cardSignal.value;
     const isOpen = isOpenSignal.value;
 
+    console.log(cardInMemory);
+
     if (!cardInMemory) return null;
 
     const { data: card, isLoading } = useQuery({
         queryKey: ['card', cardInMemory.id],
         queryFn: () => fetchCards([cardInMemory.id]),
-        enabled: !!cardInMemory.id,
         placeholderData: cardInMemory,
         select: (data) => (data && data.length > 0 ? mapToCard(data[0]) : null),
     });
@@ -91,7 +92,7 @@ export function CardInfo() {
                         <img
                             src={
                                 attributeIconsImport[
-                                    `../assets/attributes/${card.attribute}.svg`
+                                    `../assets/attributes/${cardInMemory.attribute}.svg`
                                 ]
                             }
                             class='mr-4 h-6 w-6'
@@ -134,7 +135,7 @@ export function CardInfo() {
                         </span>
                     </div>
 
-                    <div class='col-span-2 h-44 overflow-hidden rounded-sm bg-zinc-900 px-3 py-2 [scrollbar-gutter:stable] hover:overflow-y-scroll'>
+                    <div class='col-span-2 overflow-hidden rounded-sm bg-zinc-900 px-3 py-2 [scrollbar-gutter:stable] hover:overflow-y-scroll'>
                         {isLoading ? (
                             <div class='space-y-2 pt-1'>
                                 <div class='h-3 w-full animate-pulse rounded bg-zinc-700' />
