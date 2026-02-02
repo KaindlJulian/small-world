@@ -135,6 +135,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                         setView((prev) => ({ ...prev, grid: !prev.grid }))
                     }
                     data-ignore-outside-clicks='true'
+                    className='hidden lg:flex'
                 >
                     {view.grid ? <List /> : <LayoutGrid />}
                 </Button>

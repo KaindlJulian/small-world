@@ -18,12 +18,24 @@ export function BridgeExplore() {
             <CardInfo />
 
             <div class='flex w-full flex-col'>
-                {bridgeSearch.filteredCards && (
+                {bridgeSearch.filteredCards.length > 0 ? (
                     <BridgeGraph
                         sources={bridgeSearch.inHandList}
                         targets={bridgeSearch.targetList}
                         bridges={bridgeSearch.filteredCards}
                     />
+                ) : (
+                    <>
+                        <div class='m-auto flex flex-col items-center gap-4 text-center'>
+                            <h2 class='text-2xl font-bold'>
+                                Start Exploring Bridges
+                            </h2>
+                            <p class='max-w-md text-zinc-400'>
+                                Use the sidebar to filter and search for bridge
+                                cards based on your in-hand and target cards.
+                            </p>
+                        </div>
+                    </>
                 )}
             </div>
 

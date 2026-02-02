@@ -113,7 +113,7 @@ export function AboutPage() {
 
     return (
         <div class='min-h-screen bg-zinc-50 px-4 py-12 font-sans sm:px-6 lg:px-8 dark:bg-zinc-900'>
-            <div class='mx-auto max-w-4xl space-y-12'>
+            <div class='mx-auto max-w-4xl space-y-12 pb-12'>
                 <div class='space-y-4 text-center'>
                     <h1 class='text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white'>
                         About this Small World Searcher
@@ -166,9 +166,9 @@ export function AboutPage() {
                                 <p class='text-sm leading-relaxed text-gray-600 dark:text-gray-300'>
                                     Small World is a card that allows a player
                                     to swap a monster in their hand for any
-                                    specific monster in their deck. It
-                                    essentially lets you trade a card you{' '}
-                                    <em>have</em> for a card you <em>need</em>.
+                                    specific monster in their deck. However, the
+                                    two monsters must be connected through a
+                                    third &quot;bridge&quot; monster.
                                 </p>
                             </div>
 
@@ -177,8 +177,7 @@ export function AboutPage() {
                                     The Constraint
                                 </h3>
                                 <p class='text-sm leading-relaxed text-gray-600 dark:text-gray-300'>
-                                    This trade cannot happen directly. It
-                                    requires a chain of three cards. For the
+                                    This bridge cannot be any monster. For the
                                     chain to be valid, each step must share{' '}
                                     <strong>exactly one</strong> property
                                     (Level, Type, Attribute, ATK, or DEF). If
@@ -410,7 +409,7 @@ export function AboutPage() {
                             <strong>"Triple Tactics Talent"</strong> challenge
                             in Master Duel. The goal was to collect points by
                             matching randomly selected monsters as closely as
-                            possible across five criteria:
+                            possible across multiple criteria:
                             <strong>
                                 {' '}
                                 Frame, Attribute, Level, Type, ATK, and DEF
@@ -439,8 +438,7 @@ export function AboutPage() {
                                 <strong>Zero Gardna</strong>,{' '}
                                 <strong>Gimmick Puppet Little Soldiers</strong>,
                                 and <strong>Goblin Decoy Squad</strong> had the
-                                highest theoretical connectivity scores based on
-                                common properties.
+                                highest scores based on common stats.
                             </p>
                         </div>
 
@@ -501,7 +499,7 @@ export function AboutPage() {
                             <div class='space-y-5'>
                                 <div>
                                     <span class='text-gray-500'>
-                                        // 1. Find Candidates (Match ≥ 1
+                                        // 1. Find Candidates (Match &ge; 1
                                         property)
                                     </span>
                                     <br />
@@ -528,7 +526,7 @@ export function AboutPage() {
 
                                 <div>
                                     <span class='text-gray-500'>
-                                        // 2. Find Exclusions (Match ≥ 2
+                                        // 2. Find Exclusions (Match &ge; 2
                                         properties)
                                     </span>
                                     <br />

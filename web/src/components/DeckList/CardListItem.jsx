@@ -1,10 +1,9 @@
 import levelIcon from '@/assets/level_star.svg';
 import { highlightGraphLink } from '@/core/signals';
-import { cn } from '@/utils';
+import { cn, publicAssetUrl } from '@/utils';
 import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-preact';
 import { useState } from 'react';
 import { Button } from '..';
-import { publicAssetUrl } from '@/utils';
 
 const attributeIconsImport = import.meta.glob('../../assets/attributes/*.svg', {
     eager: true,

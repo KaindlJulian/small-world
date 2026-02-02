@@ -55,7 +55,7 @@ export function CardInfo() {
                         isOpenSignal.value = true;
                     }
                 }}
-                className='absolute top-8 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250 sm:top-1/2'
+                className='absolute top-8 -right-12 flex h-10 w-10 -translate-y-1/2 rounded-full transition-all duration-250 lg:top-1/2'
             >
                 <ChevronLeft
                     className={cn(

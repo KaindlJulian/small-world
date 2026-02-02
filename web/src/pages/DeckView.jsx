@@ -87,7 +87,7 @@ export function DeckView() {
                         </div>
 
                         <Button
-                            className='absolute bottom-4 left-4'
+                            className='fixed bottom-4 left-4'
                             variant='ghost'
                             onClick={() => {
                                 deckCodesSignal.value = null;
