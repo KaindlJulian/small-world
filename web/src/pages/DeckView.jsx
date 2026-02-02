@@ -49,18 +49,24 @@ export function DeckView() {
         );
     }
 
-    const displayData = codes.map((id) => {
-        const c = searcher.get_by_id(id);
-        return {
-            id: c.id,
-            name: c.name_js,
-            attribute: c.attribute_js,
-            level: c.level,
-            properties: [c.type_js],
-            atk: c.atk,
-            def: c.def,
-        };
-    });
+    const displayData = codes
+        .map((id) => {
+            const c = searcher.get_by_id(id);
+
+            // filter out Spell/Trap cards and unrecognized IDs
+            if (!c) return null;
+
+            return {
+                id: c.id,
+                name: c.name_js,
+                attribute: c.attribute_js,
+                level: c.level,
+                properties: [c.type_js],
+                atk: c.atk,
+                def: c.def,
+            };
+        })
+        .filter((c) => c !== null);
 
     const { nodes, links } = useGraphData(displayData, searcher);
 
@@ -68,7 +74,7 @@ export function DeckView() {
         <div
             class={cn(
                 'h-full divide-zinc-700 transition-all',
-                deckCodesSignal.value === null
+                displayData.length === 0
                     ? 'flex justify-center'
                     : 'grid lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]',
             )}
@@ -76,7 +82,7 @@ export function DeckView() {
             <CardInfo />
 
             <div class='relative flex flex-col items-center justify-center overflow-hidden'>
-                {deckCodesSignal.value === null ? (
+                {displayData.length === 0 ? (
                     <DeckInput
                         onInput={(list) => (deckCodesSignal.value = list)}
                     />
@@ -101,7 +107,7 @@ export function DeckView() {
                 )}
             </div>
 
-            {deckCodesSignal.value !== null && (
+            {displayData.length > 0 && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
                     <div class='h-full transition-opacity'>
                         <DeckList
