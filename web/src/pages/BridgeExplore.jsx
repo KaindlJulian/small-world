@@ -39,7 +39,7 @@ export function BridgeExplore() {
                 )}
             </div>
 
-            <Sidebar>
+            <Sidebar isFullscreen={true}>
                 <BridgeSearchSidebar
                     searchOptions={bridgeSearch.searchOptions}
                     inHandList={bridgeSearch.inHandList}

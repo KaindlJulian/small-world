@@ -10,7 +10,7 @@ export function GraphControls({
     onResetZoom,
 }) {
     return (
-        <div class='fixed bottom-4 flex'>
+        <div class='fixed bottom-4 flex max-lg:hidden'>
             <div class='flex space-x-3'>
                 <Button
                     variant={isShowingLabels.value ? 'primary' : 'secondary'}
