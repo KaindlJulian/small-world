@@ -8,6 +8,8 @@ Built with Preact, D3.js, and a custom Rust search engine compiled to WebAssembl
 
 ## What is "Small World"?
 
+<img src="resources/small_world_image.jpg" width="250px" align=right>
+
 Small World allows a player to swap a monster in their hand for any specific monster in their deck. However, the two monsters must be connected through a third "bridge" monster, which must also be in the deck.
 
 The Constraint: For the connection to be valid, each step (Hand → Bridge, Bridge → Target) must share exactly one of the following properties:
@@ -19,6 +21,7 @@ The Constraint: For the connection to be valid, each step (Hand → Bridge, Brid
 - DEF
 
 If they share zero properties, or more than one, the connection is invalid.
+
 
 ## Features
 
