@@ -1,10 +1,10 @@
 # Small World Searcher
 
+Live Demo: https://small-world-search.vercel.app/
+
 A web tool to help Yu-Gi-Oh! players visualize interactions and find "bridges" for the card Small World.
 
-Built with Preact, D3.js, and a custom Rust search engine compiled to WebAssembly.
-
-A Python script syncs with [YGOPRODeck](https://ygoprodeck.com/), updates the card database, and uploads card images to a Cloudflare R2 bucket.
+Built with Preact, D3.js, and a custom Rust search engine compiled to WebAssembly. A Python script syncs with [YGOPRODeck](https://ygoprodeck.com/), updates the card database, and uploads card images to a Cloudflare R2 bucket.
 
 ## What is "Small World"?
 
