@@ -74,7 +74,7 @@ export function DeckView() {
         <div
             class={cn(
                 'h-full divide-zinc-700 transition-all',
-                displayData.length === 0
+                deckCodesSignal.value === null
                     ? 'flex justify-center'
                     : 'grid lg:grid-cols-[1fr_440px] lg:divide-x xl:grid-cols-[1fr_650px]',
             )}
@@ -82,7 +82,7 @@ export function DeckView() {
             <CardInfo />
 
             <div class='relative flex flex-col items-center justify-center overflow-hidden'>
-                {displayData.length === 0 ? (
+                {deckCodesSignal.value === null ? (
                     <DeckInput
                         onInput={(list) => (deckCodesSignal.value = list)}
                     />
@@ -107,7 +107,7 @@ export function DeckView() {
                 )}
             </div>
 
-            {displayData.length > 0 && (
+            {deckCodesSignal.value !== null && (
                 <Sidebar class='col-span-2 lg:col-span-1'>
                     <div class='h-full transition-opacity'>
                         <DeckList
