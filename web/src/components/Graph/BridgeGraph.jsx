@@ -333,6 +333,7 @@ function createNodes(
 
     node.on('click', (event, d) => {
         event.stopPropagation();
+        console.log(d);
         setCardInfo(d);
         node.select('circle').attr('stroke', null).attr('stroke-width', null);
         d3.select(event.currentTarget)

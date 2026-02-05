@@ -12,7 +12,7 @@ import {
 } from '../components';
 import { deckCodesSignal } from '../core/signals.js';
 import { useGraphData, useSearcher } from '../hooks';
-import { cn } from '../utils';
+import { cloneWasmCard, cn } from '../utils';
 import { decode_ydke, encode_ydke_main } from '../wasm';
 
 export function DeckView() {
@@ -56,15 +56,7 @@ export function DeckView() {
             // filter out Spell/Trap cards and unrecognized IDs
             if (!c) return null;
 
-            return {
-                id: c.id,
-                name: c.name_js,
-                attribute: c.attribute_js,
-                level: c.level,
-                properties: [c.type_js],
-                atk: c.atk,
-                def: c.def,
-            };
+            return cloneWasmCard(c);
         })
         .filter((c) => c !== null);
 

@@ -24,13 +24,13 @@ export function BridgeSearchSidebar({
                     items={searchOptions}
                     placeholder='Select in hand'
                     onSelect={setInHandList}
-                    filter={(item) => !targetList.some((t) => t.id === item.id)}
+                    //filter={(item) => !targetList.some((t) => t.id === item.id)}
                 />
                 <MultiCombobox
                     items={searchOptions}
                     placeholder='Select targets'
                     onSelect={setTargetList}
-                    filter={(item) => !inHandList.some((i) => i.id === item.id)}
+                    //filter={(item) => !inHandList.some((i) => i.id === item.id)}
                 />
             </div>
 

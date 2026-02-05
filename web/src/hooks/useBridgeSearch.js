@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { cloneWasmCard } from '../utils.js';
 import { useSearcher } from './index.js';
 
 export function useBridgeSearch() {
@@ -62,8 +63,7 @@ export function useBridgeSearch() {
             }
 
             if (activeFilter.levels.length > 0) {
-                if (!activeFilter.levels.includes(card.level))
-                    return false;
+                if (!activeFilter.levels.includes(card.level)) return false;
             }
 
             if (activeFilter.minATK !== null && card.atk < activeFilter.minATK)
@@ -83,7 +83,8 @@ export function useBridgeSearch() {
         if (!searcher) return [];
         return searcher
             .get_all()
-            .map((m) => ({ id: m.id, text: m.name_js }))
+            .map((w) => cloneWasmCard(w))
+            .map((c) => ({ ...c, text: c.name }))
             .sort((a, b) => a.text.localeCompare(b.text));
     }, [searcher]);
 
