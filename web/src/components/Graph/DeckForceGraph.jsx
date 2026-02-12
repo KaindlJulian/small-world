@@ -61,16 +61,16 @@ export function DeckForceGraph({ nodes, links }) {
             const svg = d3.select(svgRef.current);
             svg.selectAll('.node-circle')
                 .transition()
-                .duration(200)
+                .duration(100)
                 .attr('stroke', null);
             svg.selectAll('.link').attr('stroke', BASE_COLOR);
             svg.selectAll('.link-label')
                 .transition()
-                .duration(200)
+                .duration(100)
                 .style('opacity', 1);
             svg.selectAll('.bridge-circle')
                 .transition()
-                .duration(200)
+                .duration(100)
                 .attr('fill', BASE_COLOR);
         } else {
             if (!svgRef.current) return;
@@ -117,7 +117,7 @@ export function DeckForceGraph({ nodes, links }) {
                     (d.source.id === target.id && d.target.id === source.id),
             )
             .transition()
-            .duration(200)
+            .duration(100)
             .style('opacity', 1);
     }, [highlightGraphLink.value]);
 
@@ -195,7 +195,7 @@ function setupDefs(svg) {
     defs.append('clipPath')
         .attr('id', 'circle-clip')
         .append('circle')
-        .attr('r', 10)
+        .attr('r', 16)
         .attr('cx', 0)
         .attr('cy', 0);
     defs.append('clipPath')
@@ -362,7 +362,7 @@ function createNodes(
             .select('circle')
             .attr('stroke', PRIMARY_COLOR)
             .transition()
-            .duration(200)
+            .duration(100)
             .attr('stroke-width', 4);
         link.attr('stroke', (l) => {
             return l.source === d || l.target === d
@@ -373,7 +373,7 @@ function createNodes(
         global
             .selectAll('.link-label')
             .transition()
-            .duration(200)
+            .duration(100)
             .style('opacity', (l) => {
                 return l.source === d || l.target === d ? 1 : 0;
             });
@@ -381,15 +381,15 @@ function createNodes(
 
     node.append('circle')
         .attr('class', 'node-circle')
-        .attr('r', 10)
+        .attr('r', 16)
         .attr('fill', 'white');
 
     node.append('image')
         .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
-        .attr('width', 20)
-        .attr('height', 20)
-        .attr('x', -10)
-        .attr('y', -10)
+        .attr('width', 32)
+        .attr('height', 32)
+        .attr('x', -16)
+        .attr('y', -16)
         .attr('preserveAspectRatio', 'xMidYMid slice')
         .attr('clip-path', 'url(#circle-clip)');
 
@@ -402,6 +402,6 @@ function resetHighlighted(node, link, global) {
     global
         .selectAll('.link-label')
         .transition()
-        .duration(200)
+        .duration(100)
         .style('opacity', 0);
 }

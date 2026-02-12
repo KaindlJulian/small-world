@@ -57,7 +57,6 @@ export function Sidebar({ isFullscreen, children }) {
                 <div class='h-1.5 w-16 rounded-full bg-zinc-500/50' />
             </div>
 
-            {/* --- Content Area --- */}
             <div class='h-full overflow-y-auto'>{children}</div>
         </div>
     );
