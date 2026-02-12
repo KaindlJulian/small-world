@@ -141,7 +141,7 @@ export function CardInfo() {
                                 <div class='h-3 w-4/6 animate-pulse rounded bg-zinc-700' />
                             </div>
                         ) : (
-                            <p class='text-sm leading-relaxed tracking-wide select-text'>
+                            <p class='text-sm leading-relaxed tracking-wide whitespace-pre-line select-text'>
                                 {card?.text}
                             </p>
                         )}

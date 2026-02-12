@@ -19,6 +19,7 @@ export async function fetchCards(passcodes) {
 
 // https://ygoprodeck.com/api-guide/#response-info
 export function mapToCard(d) {
+    d.desc = d.desc.replace(/\r\n/g, '\n');
     return {
         id: d.id,
         name: d.name,
