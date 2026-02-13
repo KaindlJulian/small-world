@@ -13,6 +13,7 @@ export function GraphControls({
         <div class='fixed bottom-4 flex max-lg:hidden'>
             <div class='flex space-x-3'>
                 <Button
+                    id='toggle-labels'
                     variant={isShowingLabels.value ? 'primary' : 'secondary'}
                     onClick={() => {
                         isShowingLabels.value = !isShowingLabels.value;
@@ -33,6 +34,7 @@ export function GraphControls({
                     </Button>
                 )}
                 <Button
+                    id='reset-zoom'
                     variant='secondary'
                     size='icon'
                     onClick={() => onResetZoom()}

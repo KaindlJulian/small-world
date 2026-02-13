@@ -129,6 +129,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                 </Button>
 
                 <Button
+                    id='toggle-view'
                     variant='secondary'
                     size='icon'
                     onClick={() =>
@@ -150,6 +151,7 @@ export function DeckList({ cards, onRemoveCard, onAddCard }) {
                     }}
                 ></Combobox>
                 <Button
+                    id='toggle-sort-direction'
                     variant='secondary'
                     size='icon'
                     onClick={() => {

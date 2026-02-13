@@ -8,9 +8,5 @@ export const queryClient = new QueryClient({
             gcTime: Infinity,
             retry: 1,
         },
-        dehydrateOptions: {
-            shouldDehydrateQuery: (query) =>
-                query.queryKey[0] !== 'small-world-searcher',
-        },
     },
 });

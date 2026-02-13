@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 /**
+ * Hook that alerts clicks outside of the passed ref
  * @param {Array} refs array of refs to ignore clicks on / decendants of
  * @param {Function} handler function to call on outside click
  */
