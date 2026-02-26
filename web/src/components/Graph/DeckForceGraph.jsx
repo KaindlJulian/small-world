@@ -9,6 +9,8 @@ import { GraphControls } from './GraphControls.jsx';
 const INITIAL_SCALE = 1.5;
 const PRIMARY_COLOR = '#14b8a6'; // teal-400
 const BASE_COLOR = '#a1a1aa'; // zinc-400
+const NODE_RADIUS = 24;
+const BRIDGE_RADIUS = 12;
 
 export function DeckForceGraph({ nodes, links }) {
     const svgRef = useRef(null);
@@ -195,13 +197,13 @@ function setupDefs(svg) {
     defs.append('clipPath')
         .attr('id', 'circle-clip')
         .append('circle')
-        .attr('r', 16)
+        .attr('r', NODE_RADIUS)
         .attr('cx', 0)
         .attr('cy', 0);
     defs.append('clipPath')
         .attr('id', 'link-clip')
         .append('circle')
-        .attr('r', 6)
+        .attr('r', BRIDGE_RADIUS - 1)
         .attr('cx', 0)
         .attr('cy', 0);
     return defs;
@@ -210,7 +212,7 @@ function setupDefs(svg) {
 function setupSimulation(nodes) {
     return d3
         .forceSimulation(nodes)
-        .force('collide', d3.forceCollide(15))
+        .force('collide', d3.forceCollide(NODE_RADIUS + 5))
         .force('charge', d3.forceManyBody().strength(-300))
         .force('center', d3.forceCenter(0, 0))
         .force('radial', d3.forceRadial(180, 0, 0).strength(0.5));
@@ -280,7 +282,7 @@ function createLinks(global, links, setCardInfo) {
         .style('cursor', 'pointer')
         .attr('transform', (d, i, nodes) => {
             const total = nodes.length;
-            const spacing = 10;
+            const spacing = BRIDGE_RADIUS + 4;
             const x = (i - (total - 1) / 2) * spacing;
             return `translate(${x}, 0)`;
         })
@@ -292,16 +294,16 @@ function createLinks(global, links, setCardInfo) {
     bridgeNodes
         .append('circle')
         .attr('class', 'bridge-circle')
-        .attr('r', 6.5)
+        .attr('r', BRIDGE_RADIUS)
         .attr('fill', PRIMARY_COLOR);
 
     bridgeNodes
         .append('image')
         .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
-        .attr('width', 12)
-        .attr('height', 12)
-        .attr('x', -6)
-        .attr('y', -6)
+        .attr('width', BRIDGE_RADIUS * 2)
+        .attr('height', BRIDGE_RADIUS * 2)
+        .attr('x', -BRIDGE_RADIUS)
+        .attr('y', -BRIDGE_RADIUS)
         .attr('preserveAspectRatio', 'xMidYMid slice')
         .attr('clip-path', 'url(#link-clip)');
 
@@ -381,15 +383,15 @@ function createNodes(
 
     node.append('circle')
         .attr('class', 'node-circle')
-        .attr('r', 16)
-        .attr('fill', 'white');
+        .attr('r', NODE_RADIUS)
+        .attr('fill', BASE_COLOR);
 
     node.append('image')
         .attr('href', (d) => `${publicAssetUrl}/cropped/${d.id}.webp`)
-        .attr('width', 32)
-        .attr('height', 32)
-        .attr('x', -16)
-        .attr('y', -16)
+        .attr('width', NODE_RADIUS * 2)
+        .attr('height', NODE_RADIUS * 2)
+        .attr('x', -NODE_RADIUS)
+        .attr('y', -NODE_RADIUS)
         .attr('preserveAspectRatio', 'xMidYMid slice')
         .attr('clip-path', 'url(#circle-clip)');
 

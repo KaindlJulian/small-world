@@ -20,7 +20,7 @@ export function GraphControls({
                         onShowLabels(isShowingLabels.value);
                     }}
                 >
-                    {isShowingLabels.value ? 'Hide Labels' : 'Show Labels'}
+                    {isShowingLabels.value ? 'Hide Bridges' : 'Show Bridges'}
                 </Button>
                 {isForceGraph && (
                     <Button

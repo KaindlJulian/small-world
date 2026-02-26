@@ -178,7 +178,9 @@ export function AboutPage() {
                                 </h3>
                                 <p class='text-sm leading-relaxed text-gray-600 dark:text-gray-300'>
                                     This bridge cannot be any monster. For the
-                                    chain to be valid, each step must share{' '}
+                                    chain to be valid, each of the two steps
+                                    (from hand to bridge, and from bridge to
+                                    target) must share{' '}
                                     <strong>exactly one</strong> property
                                     (Level, Type, Attribute, ATK, or DEF). If
                                     they share zero, or more than one, the
@@ -193,7 +195,7 @@ export function AboutPage() {
 
                                 <div class='flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-600'>
                                     <span class='text-gray-600 dark:text-gray-300'>
-                                        Share Level only?
+                                        Same Level only?
                                     </span>
                                     <span class='flex items-center gap-1 font-bold text-teal-600 dark:text-teal-400'>
                                         <svg
@@ -209,13 +211,13 @@ export function AboutPage() {
                                                 d='M5 13l4 4L19 7'
                                             />
                                         </svg>
-                                        Valid Match
+                                        Valid Connection
                                     </span>
                                 </div>
 
                                 <div class='flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-600'>
                                     <span class='text-gray-600 dark:text-gray-300'>
-                                        Share Level AND Type?
+                                        Same Level and Type?
                                     </span>
                                     <span class='flex items-center gap-1 font-bold text-red-500 dark:text-red-400'>
                                         <svg
@@ -231,13 +233,13 @@ export function AboutPage() {
                                                 d='M6 18L18 6M6 6l12 12'
                                             />
                                         </svg>
-                                        Invalid (Too Similar)
+                                        Invalid
                                     </span>
                                 </div>
 
                                 <div class='flex items-center justify-between'>
                                     <span class='text-gray-600 dark:text-gray-300'>
-                                        Share Nothing?
+                                        No common properties?
                                     </span>
                                     <span class='flex items-center gap-1 font-bold text-red-500 dark:text-red-400'>
                                         <svg
