@@ -9,7 +9,7 @@ export function SearcherProvider({ children }) {
     const { data: csvData, isSuccess } = useQuery({
         queryKey: ['small-world-csv'],
         queryFn: fetchCsv,
-        staleTime: Infinity,
+        staleTime: 1000 * 60 * 60 * 24, // 24 hours
         gcTime: Infinity,
     });
 
