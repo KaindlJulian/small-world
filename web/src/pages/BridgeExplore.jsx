@@ -31,8 +31,14 @@ export function BridgeExplore() {
                                 Start Exploring Bridges
                             </h2>
                             <p class='max-w-md text-zinc-400'>
-                                Use the sidebar to filter and search for bridge
-                                cards based on your in-hand and target cards.
+                                Use the
+                                <span class='hidden lg:inline'> sidebar </span>
+                                <span class='inline lg:hidden'>
+                                    {' '}
+                                    drawer below{' '}
+                                </span>
+                                to filter and search for bridge cards based on
+                                your in-hand and target cards.
                             </p>
                         </div>
                     </>

@@ -46,7 +46,7 @@ export function Sidebar({ isFullscreen, children }) {
             class={cn(
                 'fixed right-0 bottom-0 left-0 z-50 flex w-full flex-col bg-zinc-900 transition-transform duration-300 ease-in-out',
                 'lg:relative lg:h-full lg:min-h-100 lg:translate-y-0 lg:transform-none',
-                isFullscreen ? 'h-screen' : 'h-[85vh]',
+                isFullscreen ? 'h-screen' : 'h-[50vh]',
                 isOpen ? 'translate-y-0' : 'translate-y-[calc(100%-24px)]',
             )}
         >
