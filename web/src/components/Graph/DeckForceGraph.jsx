@@ -285,10 +285,6 @@ function createLinks(global, links, setCardInfo) {
             const spacing = BRIDGE_RADIUS + 4;
             const x = (i - (total - 1) / 2) * spacing;
             return `translate(${x}, 0)`;
-        })
-        .on('click', (event, d) => {
-            event.stopPropagation();
-            setCardInfo(d);
         });
 
     bridgeNodes
